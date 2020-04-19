@@ -1,0 +1,45 @@
+{
+  "name": "idle-insurance-fund",
+  "version": "1.0.0",
+  "description": "",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "test:truffle": "truffle test ./test/*",
+    "start-blank": "rm -rf client/src && cp -rf barebones/src client/",
+    "client": "cd client && npm run start",
+    "console:kovan": "truffle console --network kovan",
+    "compile:kovan": "truffle compile --reset --network kovan",
+    "migrate:kovan": "truffle migrate --reset --network kovan",
+    "console:rinkeby": "truffle console --network rinkeby",
+    "compile:rinkeby": "truffle compile --reset --network rinkeby",
+    "migrate:rinkeby": "truffle migrate --reset --network rinkeby"
+  },
+  "author": "masaun",
+  "license": "ISC",
+  "dependencies": {
+    "@truffle/hdwallet-provider": "^1.0.29",
+    "dotenv": "^8.2.0",
+    "eth-block-tracker": "^4.4.3",
+    "@openzeppelin/contracts": "^2.4.0",
+    "@babel/polyfill": "^7.8.3",
+    "@openzeppelin/test-helpers": "^0.5.3",
+    "@umaprotocol/truffle-ledger-provider": "^1.0.3",
+    "solidity-coverage": "^0.6.7",
+    "truffle-security": "^1.5.5"
+  },
+  "devDependencies": {
+    "@nomiclabs/buidler": "1.0.0-beta.8",
+    "@nomiclabs/buidler-truffle5": "1.0.0-beta.8",
+    "@nomiclabs/buidler-web3": "1.0.0-beta.8",
+    "@openzeppelin/cli": "^2.5.1",
+    "bignumber.js": "^9.0.0",
+    "chai": "^4.2.0",
+    "eth-gas-reporter": "^0.2.1",
+    "node-fetch": "^2.6.0",
+    "truffle-assertions": "^0.9.1",
+    "web3": "1.0.0-beta.37"
+  }
+}
