@@ -25,9 +25,10 @@ module.exports = {
     rinkeby: {
       provider: () => new HDWalletProvider(mnemonic, "https://rinkeby.infura.io/v3/" + process.env.INFURA_KEY),
       network_id: 4,
-      gas: 3000000,
+      gas: 6000000,         // 2 times than before
       gasPrice: 5000000000, // 5 gwei,
-      skipDryRun: true      // Skip dry run before migrations? (default: false for public nets)
+      skipDryRun: true,     // Skip dry run before migrations? (default: false for public nets)
+      //from: process.env.DEPLOYER_ADDRESS
     },
     // main ethereum network(mainnet)
     live: {
@@ -50,6 +51,18 @@ module.exports = {
       port: 8555,         // <-- If you change this, also set the port option in .solcover.js.
       gas: 0xfffffffffff, // <-- Use this high gas value
       gasPrice: 0x01      // <-- Use this low gas price
+    }
+  },
+
+  compilers: {
+    solc: {
+      version: "0.5.11",
+      settings: {
+        optimizer: {
+          enabled: true,
+          runs: 200
+        }
+      }
     }
   }
 }
