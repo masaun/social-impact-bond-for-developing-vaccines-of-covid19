@@ -27,7 +27,8 @@ module.exports = {
       network_id: 4,
       gas: 6000000,         // 2 times than before
       gasPrice: 5000000000, // 5 gwei,
-      skipDryRun: true      // Skip dry run before migrations? (default: false for public nets)
+      skipDryRun: true,     // Skip dry run before migrations? (default: false for public nets)
+      //from: process.env.DEPLOYER_ADDRESS
     },
     // main ethereum network(mainnet)
     live: {
