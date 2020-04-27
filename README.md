@@ -71,18 +71,18 @@ http://127.0.0.1:3000/idle-insurance-fund
 
 <br>
 
-- [Gnosis / Contract Proxy Kit (CPK)] ~Part.2~
+- [Gnosis / Contract Proxy Kit (CPK)] 〜 Part.2 〜
   - [Doc📔]：
-    - Contract Proxy Kit
+    - Contract Proxy Kit  
       https://docs.gnosis.io/safe/docs/sdks_cpk/
-    - [Tutorial①]：Integration with Compound💰（ DAI <--> cDAI ）
+    - [Tutorial①]：Integration with Compound📈（ `DAI <--> cDAI` ）  
       https://docs.gnosis.io/safe/docs/cpktutorial1/
-    - [Tutorial②]：Truffle box📦
+    - [Tutorial②]：Truffle box📦  
       https://github.com/gnosis/safe-demo
 
-  - [Video🎥]：EthCC
+  - [Video🎥]：EthCC  
     https://docs.gnosis.io/safe/docs/sdks_safe_apps/
 
-[Repos]：
-https://github.com/gnosis/contract-proxy-kit
+  - [Repos]：  
+    https://github.com/gnosis/contract-proxy-kit
 
