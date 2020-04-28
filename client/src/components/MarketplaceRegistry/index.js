@@ -36,7 +36,7 @@ export default class MarketplaceRegistry extends Component {
     _mintIdleToken = async () => {
         const { accounts, web3, idle_dai } = this.state;
 
-        const mintAmount = 10.05;  // Expected transferred value is 1.05 DAI（= 1050000000000000000 Wei）
+        const mintAmount = 1.135;  // Expected transferred value is 1.05 DAI（= 1050000000000000000 Wei）
         let _mintAmount = web3.utils.toWei(mintAmount.toString(), 'ether');
         const _clientProtocolAmounts = [];
 
@@ -60,7 +60,7 @@ export default class MarketplaceRegistry extends Component {
     }
 
     transferDAIFromUserToContract = async () => {
-        const { accounts, marketplace_registry, dai, marketplaceRegistryAddress, web3 } = this.state;
+        const { accounts, web3, marketplace_registry, dai, MARKET_REGISTRY_ADDRESS } = this.state;
 
         const _mintAmount = 105;  // Expected transferred value is 1.05 DAI（= 1050000000000000000 Wei）s
 
@@ -68,7 +68,7 @@ export default class MarketplaceRegistry extends Component {
         let decimals = 18;
         let _amount = web3.utils.toWei((_mintAmount / ((10)**2)).toString(), 'ether');
         console.log('=== _amount ===', _amount);
-        const _to = marketplaceRegistryAddress;
+        const _to = MARKET_REGISTRY_ADDRESS;
         let response1 = await dai.methods.transfer(_to, _amount).send({ from: accounts[0] });
 
         //@dev - Transfer DAI from DAI-contract to Logic-contract
@@ -138,6 +138,7 @@ export default class MarketplaceRegistry extends Component {
 
             let instanceMarketplaceRegistry = null;
             let deployedNetwork = null;
+            let MARKET_REGISTRY_ADDRESS = MarketplaceRegistry.networks[networkId.toString()].address;
 
             // Create instance of contracts
             if (MarketplaceRegistry.networks) {
@@ -153,11 +154,10 @@ export default class MarketplaceRegistry extends Component {
 
             //@dev - Create instance of DAI-contract
             let instanceDai = null;
-            let MarketplaceRegistryAddress = MarketplaceRegistry.networks[networkId.toString()].address;
-            let DaiAddress = tokenAddressList["Kovan"]["DAI"]; //@dev - DAI（on Kovan）
+            let DAI_ADDRESS = tokenAddressList["Kovan"]["DAI"]; //@dev - DAI（on Kovan）
             instanceDai = new web3.eth.Contract(
               Dai.abi,
-              DaiAddress,
+              DAI_ADDRESS,
             );
             console.log('=== instanceDai ===', instanceDai);
 
@@ -186,8 +186,9 @@ export default class MarketplaceRegistry extends Component {
                 marketplace_registry: instanceMarketplaceRegistry,
                 dai: instanceDai,
                 idle_dai: instanceIdleDAI,
-                marketplace_registry_address: MarketplaceRegistryAddress,
-                //IDLE_TOKEN_ADDRESS: IDLE_TOKEN_ADDRESS
+                MARKET_REGISTRY_ADDRESS: MARKET_REGISTRY_ADDRESS,
+                DAI_ADDRESS: DAI_ADDRESS,
+                IDLE_TOKEN_ADDRESS: IDLE_TOKEN_ADDRESS
               }, () => {
                 this.refreshValues(
                   instanceMarketplaceRegistry
