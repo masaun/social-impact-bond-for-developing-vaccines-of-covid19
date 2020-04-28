@@ -12,8 +12,9 @@ import { zeppelinSolidityHotLoaderOptions } from '../../../config/webpack';
 import styles from '../../App.module.scss';
 //import './App.css';
 
-import { walletAddressList } from '../../data/testWalletAddress.js'
+import { walletAddressList } from '../../data/walletAddress/walletAddress.js'
 import { contractAddressList } from '../../data/contractAddress/contractAddress.js'
+import { tokenAddressList } from '../../data/tokenAddress/tokenAddress.js'
 
 
 export default class MarketplaceRegistry extends Component {
@@ -28,11 +29,26 @@ export default class MarketplaceRegistry extends Component {
             route: window.location.pathname.replace("/", "")
         };
 
+        this._mintIdleToken = this._mintIdleToken.bind(this);
         this.getTestData = this.getTestData.bind(this);
     }
 
+    _mintIdleToken = async () => {
+        const { accounts, web3, dai, idle_dai, IDLE_DAI_ADDRESS } = this.state;
+
+        const mintAmount = 1.135;  // Expected transferred value is 1.05 DAI（= 1050000000000000000 Wei）
+        let _mintAmount = web3.utils.toWei(mintAmount.toString(), 'ether');
+        const _clientProtocolAmounts = [];
+
+        let res1 = await dai.methods.approve(IDLE_DAI_ADDRESS, _mintAmount).send({ from: accounts[0] });
+        console.log('=== response of approve() function ===', res1);  
+
+        let res2 = await idle_dai.methods.mintIdleToken(_mintAmount, _clientProtocolAmounts).send({ from: accounts[0] });
+        console.log('=== response of mintIdleToken() function ===', res2);        
+    }
+
     getTestData = async () => {
-        const { accounts, marketplace_registry, web3 } = this.state;
+        const { accounts, web3, marketplace_registry } = this.state;
 
         const _currentAccount = accounts[0];
         let balanceOf1 = await marketplace_registry.methods.balanceOfCurrentAccount(_currentAccount).call();
@@ -47,7 +63,7 @@ export default class MarketplaceRegistry extends Component {
     }
 
     transferDAIFromUserToContract = async () => {
-        const { accounts, marketplace_registry, dai, marketplaceRegistryAddress, web3 } = this.state;
+        const { accounts, web3, marketplace_registry, dai, MARKET_REGISTRY_ADDRESS } = this.state;
 
         const _mintAmount = 105;  // Expected transferred value is 1.05 DAI（= 1050000000000000000 Wei）s
 
@@ -55,7 +71,7 @@ export default class MarketplaceRegistry extends Component {
         let decimals = 18;
         let _amount = web3.utils.toWei((_mintAmount / ((10)**2)).toString(), 'ether');
         console.log('=== _amount ===', _amount);
-        const _to = marketplaceRegistryAddress;
+        const _to = MARKET_REGISTRY_ADDRESS;
         let response1 = await dai.methods.transfer(_to, _amount).send({ from: accounts[0] });
 
         //@dev - Transfer DAI from DAI-contract to Logic-contract
@@ -92,9 +108,11 @@ export default class MarketplaceRegistry extends Component {
      
         let MarketplaceRegistry = {};
         let Dai = {};
+        let IdleToken = {};
         try {
           MarketplaceRegistry = require("../../../../build/contracts/MarketplaceRegistry.json");  // Load artifact-file of MarketplaceRegistry
-          Dai = require("../../../../build/contracts/Dai.json");    //@dev - DAI（Underlying asset）
+          Dai = require("../../../../build/contracts/Dai.json");               //@dev - DAI（Underlying asset）
+          IdleToken = require("../../../../build/contracts/IdleToken.json");   //@dev - IdleToken（IdleDAI）
         } catch (e) {
           console.log(e);
         }
@@ -123,6 +141,7 @@ export default class MarketplaceRegistry extends Component {
 
             let instanceMarketplaceRegistry = null;
             let deployedNetwork = null;
+            let MARKET_REGISTRY_ADDRESS = MarketplaceRegistry.networks[networkId.toString()].address;
 
             // Create instance of contracts
             if (MarketplaceRegistry.networks) {
@@ -138,13 +157,21 @@ export default class MarketplaceRegistry extends Component {
 
             //@dev - Create instance of DAI-contract
             let instanceDai = null;
-            let MarketplaceRegistryAddress = MarketplaceRegistry.networks[networkId.toString()].address;
-            let DaiAddress = "0x4F96Fe3b7A6Cf9725f59d353F723c1bDb64CA6Aa"; //@dev - DAI（Underlying asset）
+            let DAI_ADDRESS = tokenAddressList["Kovan"]["DAI"]; //@dev - DAI（on Kovan）
             instanceDai = new web3.eth.Contract(
               Dai.abi,
-              DaiAddress,
+              DAI_ADDRESS,
             );
             console.log('=== instanceDai ===', instanceDai);
+
+            //@dev - Create instance of DAI-contract
+            let instanceIdleDAI = null;
+            let IDLE_DAI_ADDRESS = tokenAddressList["Kovan"]["IdleDAI"];  // IdleDAI (on Kovan)
+            instanceIdleDAI = new web3.eth.Contract(
+              IdleToken.abi,
+              IDLE_DAI_ADDRESS,
+            );
+            console.log('=== instanceIdleDAI ===', instanceIdleDAI);
 
 
             if (MarketplaceRegistry) {
@@ -161,7 +188,10 @@ export default class MarketplaceRegistry extends Component {
                 isMetaMask, 
                 marketplace_registry: instanceMarketplaceRegistry,
                 dai: instanceDai,
-                marketplace_registry_address: MarketplaceRegistryAddress,
+                idle_dai: instanceIdleDAI,
+                MARKET_REGISTRY_ADDRESS: MARKET_REGISTRY_ADDRESS,
+                DAI_ADDRESS: DAI_ADDRESS,
+                IDLE_DAI_ADDRESS: IDLE_DAI_ADDRESS
               }, () => {
                 this.refreshValues(
                   instanceMarketplaceRegistry
@@ -200,6 +230,7 @@ export default class MarketplaceRegistry extends Component {
                               borderColor={"#E8E8E8"}
                         >
                             <h4>idle Insurance Fund</h4> <br />
+                            <Button size={'small'} mt={3} mb={2} onClick={this._mintIdleToken}> Mint IdleToken（Mint IdleDAI） </Button> <br />
 
                             <Button size={'small'} mt={3} mb={2} onClick={this.getTestData}> Get Test Data </Button> <br />
                         </Card>
