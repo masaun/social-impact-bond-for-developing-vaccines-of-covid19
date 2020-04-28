@@ -12,7 +12,7 @@ import { zeppelinSolidityHotLoaderOptions } from '../../../config/webpack';
 import styles from '../../App.module.scss';
 //import './App.css';
 
-import { walletAddressList } from '../../data/walletAddress.js'
+import { walletAddressList } from '../../data/walletAddress/walletAddress.js'
 import { contractAddressList } from '../../data/contractAddress/contractAddress.js'
 
 
@@ -28,11 +28,23 @@ export default class MarketplaceRegistry extends Component {
             route: window.location.pathname.replace("/", "")
         };
 
+        this._mintIdleToken = this._mintIdleToken.bind(this);
         this.getTestData = this.getTestData.bind(this);
     }
 
+    _mintIdleToken = async () => {
+        const { accounts, web3, idle_dai } = this.state;
+
+        const mintAmount = 10.05;  // Expected transferred value is 1.05 DAI（= 1050000000000000000 Wei）
+        let _mintAmount = web3.utils.toWei(mintAmount.toString(), 'ether');
+        const _clientProtocolAmounts = [];
+
+        let response = await idle_dai.methods.mintIdleToken(_mintAmount, _clientProtocolAmounts).send({ from: accounts[0] })
+        console.log('=== response of mintIdleToken() function ===', response);        
+    }
+
     getTestData = async () => {
-        const { accounts, marketplace_registry, web3 } = this.state;
+        const { accounts, web3, marketplace_registry } = this.state;
 
         const _currentAccount = accounts[0];
         let balanceOf1 = await marketplace_registry.methods.balanceOfCurrentAccount(_currentAccount).call();
@@ -92,9 +104,11 @@ export default class MarketplaceRegistry extends Component {
      
         let MarketplaceRegistry = {};
         let Dai = {};
+        let IdleToken = {};
         try {
           MarketplaceRegistry = require("../../../../build/contracts/MarketplaceRegistry.json");  // Load artifact-file of MarketplaceRegistry
-          Dai = require("../../../../build/contracts/Dai.json");    //@dev - DAI（Underlying asset）
+          Dai = require("../../../../build/contracts/Dai.json");               //@dev - DAI（Underlying asset）
+          IdleToken = require("../../../../build/contracts/IdleToken.json");   //@dev - IdleToken（IdleDAI）
         } catch (e) {
           console.log(e);
         }
@@ -146,6 +160,25 @@ export default class MarketplaceRegistry extends Component {
             );
             console.log('=== instanceDai ===', instanceDai);
 
+            //@dev - Create instance of DAI-contract
+            let instanceIdleDAI = null;
+            let IDLE_DAI_ADDRESS = "0xC39352ed792972eEBD48F6406fD211823A243Cf1";  // IdleDAI address
+            instanceIdleDAI = new web3.eth.Contract(
+              IdleToken.abi,
+              IDLE_DAI_ADDRESS,
+            );
+            console.log('=== instanceIdleDAI ===', instanceIdleDAI);
+            // if (IdleToken.networks) {
+            //   deployedNetwork = IdleToken.networks[networkId.toString()];
+            //   if (deployedNetwork) {
+            //     instanceIdleToken = new web3.eth.Contract(
+            //       IdleToken.abi,
+            //       deployedNetwork && deployedNetwork.address,
+            //     );
+            //     console.log('=== instanceIdleToken ===', instanceIdleToken);
+            //   }
+            // }
+
 
             if (MarketplaceRegistry) {
               // Set web3, accounts, and contract to the state, and then proceed with an
@@ -161,7 +194,9 @@ export default class MarketplaceRegistry extends Component {
                 isMetaMask, 
                 marketplace_registry: instanceMarketplaceRegistry,
                 dai: instanceDai,
+                idle_dai: instanceIdleDAI,
                 marketplace_registry_address: MarketplaceRegistryAddress,
+                //IDLE_TOKEN_ADDRESS: IDLE_TOKEN_ADDRESS
               }, () => {
                 this.refreshValues(
                   instanceMarketplaceRegistry
@@ -200,6 +235,7 @@ export default class MarketplaceRegistry extends Component {
                               borderColor={"#E8E8E8"}
                         >
                             <h4>idle Insurance Fund</h4> <br />
+                            <Button size={'small'} mt={3} mb={2} onClick={this._mintIdleToken}> Mint IdleToken（Mint IdleDAI） </Button> <br />
 
                             <Button size={'small'} mt={3} mb={2} onClick={this.getTestData}> Get Test Data </Button> <br />
                         </Card>
