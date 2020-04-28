@@ -14,6 +14,7 @@ import styles from '../../App.module.scss';
 
 import { walletAddressList } from '../../data/walletAddress/walletAddress.js'
 import { contractAddressList } from '../../data/contractAddress/contractAddress.js'
+import { tokenAddressList } from '../../data/tokenAddress/tokenAddress.js'
 
 
 export default class MarketplaceRegistry extends Component {
@@ -153,7 +154,7 @@ export default class MarketplaceRegistry extends Component {
             //@dev - Create instance of DAI-contract
             let instanceDai = null;
             let MarketplaceRegistryAddress = MarketplaceRegistry.networks[networkId.toString()].address;
-            let DaiAddress = "0x4F96Fe3b7A6Cf9725f59d353F723c1bDb64CA6Aa"; //@dev - DAI（Underlying asset）
+            let DaiAddress = "0x4F96Fe3b7A6Cf9725f59d353F723c1bDb64CA6Aa"; //@dev - DAI（on Kovan）
             instanceDai = new web3.eth.Contract(
               Dai.abi,
               DaiAddress,
@@ -162,22 +163,12 @@ export default class MarketplaceRegistry extends Component {
 
             //@dev - Create instance of DAI-contract
             let instanceIdleDAI = null;
-            let IDLE_DAI_ADDRESS = "0xC39352ed792972eEBD48F6406fD211823A243Cf1";  // IdleDAI address
+            let IDLE_DAI_ADDRESS = "0x199e7c55B44fFBD2934bFC3bDeE05F6EC2b547CF";  // IdleDAI (on Kovan)
             instanceIdleDAI = new web3.eth.Contract(
               IdleToken.abi,
               IDLE_DAI_ADDRESS,
             );
             console.log('=== instanceIdleDAI ===', instanceIdleDAI);
-            // if (IdleToken.networks) {
-            //   deployedNetwork = IdleToken.networks[networkId.toString()];
-            //   if (deployedNetwork) {
-            //     instanceIdleToken = new web3.eth.Contract(
-            //       IdleToken.abi,
-            //       deployedNetwork && deployedNetwork.address,
-            //     );
-            //     console.log('=== instanceIdleToken ===', instanceIdleToken);
-            //   }
-            // }
 
 
             if (MarketplaceRegistry) {
