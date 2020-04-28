@@ -188,7 +188,7 @@ export default class MarketplaceRegistry extends Component {
                 idle_dai: instanceIdleDAI,
                 MARKET_REGISTRY_ADDRESS: MARKET_REGISTRY_ADDRESS,
                 DAI_ADDRESS: DAI_ADDRESS,
-                IDLE_TOKEN_ADDRESS: IDLE_TOKEN_ADDRESS
+                IDLE_DAI_ADDRESS: IDLE_DAI_ADDRESS
               }, () => {
                 this.refreshValues(
                   instanceMarketplaceRegistry
