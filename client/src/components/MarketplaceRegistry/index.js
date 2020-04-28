@@ -12,7 +12,7 @@ import { zeppelinSolidityHotLoaderOptions } from '../../../config/webpack';
 import styles from '../../App.module.scss';
 //import './App.css';
 
-import { walletAddressList } from '../../data/testWalletAddress.js'
+import { walletAddressList } from '../../data/walletAddress.js'
 import { contractAddressList } from '../../data/contractAddress/contractAddress.js'
 
 
