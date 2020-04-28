@@ -34,14 +34,17 @@ export default class MarketplaceRegistry extends Component {
     }
 
     _mintIdleToken = async () => {
-        const { accounts, web3, idle_dai } = this.state;
+        const { accounts, web3, dai, idle_dai, IDLE_DAI_ADDRESS } = this.state;
 
         const mintAmount = 1.135;  // Expected transferred value is 1.05 DAI（= 1050000000000000000 Wei）
         let _mintAmount = web3.utils.toWei(mintAmount.toString(), 'ether');
         const _clientProtocolAmounts = [];
 
-        let response = await idle_dai.methods.mintIdleToken(_mintAmount, _clientProtocolAmounts).send({ from: accounts[0] })
-        console.log('=== response of mintIdleToken() function ===', response);        
+        let res1 = await dai.methods.approve(IDLE_DAI_ADDRESS, _mintAmount).send({ from: accounts[0] });
+        console.log('=== response of approve() function ===', res1);  
+
+        let res2 = await idle_dai.methods.mintIdleToken(_mintAmount, _clientProtocolAmounts).send({ from: accounts[0] });
+        console.log('=== response of mintIdleToken() function ===', res2);        
     }
 
     getTestData = async () => {
