@@ -21,6 +21,7 @@ module.exports = {
       network_id: '42',
       gas: 6465030,
       gasPrice: 5000000000, // 5 gwei
+      skipDryRun: true,     // Skip dry run before migrations? (default: false for public nets)
     },
     rinkeby: {
       provider: () => new HDWalletProvider(mnemonic, "https://rinkeby.infura.io/v3/" + process.env.INFURA_KEY),
