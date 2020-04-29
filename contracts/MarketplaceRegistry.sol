@@ -34,6 +34,32 @@ contract MarketplaceRegistry is Ownable, McStorage, McConstants {
         underlyingERC20 = _erc20;
     }
 
+
+    /***
+     * @dev - Stakeholder of Social Impact Bond
+     * Service Provider - Institution for developing vaccines of COVID19
+     * Private Investor
+     * Evaluator
+     * Government
+     **/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     function testFunc(uint256 _mintAmount) public returns (bool, uint256 _approvedValue) {
         uint256 _id = 1;
         uint256 _exchangeRateCurrent = McConstants.onePercent;
@@ -42,7 +68,7 @@ contract MarketplaceRegistry is Ownable, McStorage, McConstants {
 
         address _owner = address(this); //@dev - contract address which do delegate call
         //address _owner = msg.sender;
-        address _spender = 0x5592EC0cfb4dbc12D3aB100b257153436a1f0FEa;    // DAI address on Rinkeby (borrow from Compound)
+        address _spender = underlyingERC20;    // DAI address on Kovan
 
         //@dev - Allow _spender to withdraw from your account, multiple times, up to the _value amount. 
         erc20.approve(_spender, _mintAmount.mul(10**18));
