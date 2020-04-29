@@ -86,7 +86,7 @@ contract MarketplaceRegistry is Ownable, McStorage, McConstants {
             objective.isAchieved = true;
         }
 
-        emit EvaluateOutcome(objective.governmentId, 
+        emit EvaluateOutcome(objective.serviceProviderId, 
                              objective.evaluatorId, 
                              objective.savedCostOfOutcome, 
                              objective.isEvaluated,
@@ -94,8 +94,12 @@ contract MarketplaceRegistry is Ownable, McStorage, McConstants {
     } 
 
 
-
-
+    /***
+     * @dev - Collect fund with DAI.
+     **/
+    function collectFund(uint _serviceProviderId) public returns (bool) {
+        
+    }
 
 
 
