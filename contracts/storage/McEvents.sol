@@ -7,7 +7,7 @@ contract McEvents {
 
     event DefineObjective(
         uint governmentId,
-        uint savedCost
+        uint savedCostOfObjective
     );
     
     event EvaluateOutcome(

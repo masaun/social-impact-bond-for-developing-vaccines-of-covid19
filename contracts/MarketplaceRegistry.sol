@@ -61,12 +61,12 @@ contract MarketplaceRegistry is Ownable, McStorage, McConstants {
      * @dev - Define Objective for saving cost (This objective become criteria for whether it judging success or not)
      *      - This function is executed by government only.
      **/
-    function defineObjective(uint _governmentId, uint _savedCost) public returns (bool) {
+    function defineObjective(uint _governmentId, uint _savedCostOfObjective) public returns (bool) {
         Objective storage objective = objectives[_governmentId];
         objective.governmentId = _governmentId;
-        objective.savedCost = _savedCost;
+        objective.savedCostOfObjective = _savedCostOfObjective;
 
-        emit DefineObjective(objective.governmentId, objective.savedCost);
+        emit DefineObjective(objective.governmentId, objective.savedCostOfObjective);
     }
 
     /***

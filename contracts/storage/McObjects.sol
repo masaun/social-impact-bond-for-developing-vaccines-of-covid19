@@ -7,7 +7,7 @@ contract McObjects {
     struct Objective {
         //@dev - Define objective
         uint governmentId;
-        uint savedCost;
+        uint savedCostOfObjective;
 
         //@dev - Evaluate outcome
         uint evaluatorId;
