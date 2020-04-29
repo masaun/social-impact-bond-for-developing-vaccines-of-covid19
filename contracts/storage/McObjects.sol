@@ -4,6 +4,17 @@ pragma experimental ABIEncoderV2;
 
 contract McObjects {
 
+    struct Objective {
+        uint governmentId;
+        uint savedCost;
+    }    
+
+
+
+
+    /***
+     * @dev - Example
+     **/
     enum ExampleType { TypeA, TypeB, TypeC }
 
     struct ExampleObject {

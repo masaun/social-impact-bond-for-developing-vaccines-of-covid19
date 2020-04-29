@@ -5,6 +5,13 @@ import "./McObjects.sol";
 
 contract McEvents {
 
+    event DefineObjective(
+        uint governmentId, 
+        uint savedCost
+    );
+    
+
+
     event _TransferFrom(
         address from,
         address to,
