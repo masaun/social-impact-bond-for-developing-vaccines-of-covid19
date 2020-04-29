@@ -15,6 +15,10 @@ import "./storage/McConstants.sol";
 // DAI
 import "./DAI/dai.sol";
 
+// idle.finance
+import "./idle-contracts/IdleToken.sol";
+
+
 
 /***
  * @notice - This contract is that ...
@@ -26,10 +30,12 @@ contract MarketplaceRegistry is Ownable, McStorage, McConstants {
 
     Dai public dai;  //@dev - dai.sol
     IERC20 public erc20;
+    IdleToken public idleToken;
 
-    constructor(address _erc20) public {
+    constructor(address _erc20, address _idleToken) public {
         dai = Dai(_erc20);
         erc20 = IERC20(_erc20);
+        idleToken = IdleToken(_idleToken);
 
         underlyingERC20 = _erc20;
     }
@@ -97,9 +103,7 @@ contract MarketplaceRegistry is Ownable, McStorage, McConstants {
     /***
      * @dev - Collect fund with DAI.
      **/
-    function collectFund(uint _serviceProviderId) public returns (bool) {
-        
-    }
+    //function collectFund(uint _serviceProviderId , uint _investorId) public returns (bool) {}
 
 
 
