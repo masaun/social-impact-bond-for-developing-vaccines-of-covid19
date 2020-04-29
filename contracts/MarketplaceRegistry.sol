@@ -56,6 +56,13 @@ contract MarketplaceRegistry is Ownable, McStorage, McConstants {
     function registerGovernment() public returns (bool) {}
 
 
+
+    /***
+     * @dev - Define Objective for saving cost (This objective become criteria for whether it judging success or not)
+     **/
+    function defineObjective() public returns (bool) {}
+
+
     /***
      * @dev - Lend pooled fund(DAI) to idle.finance(idleDAI)
      **/
