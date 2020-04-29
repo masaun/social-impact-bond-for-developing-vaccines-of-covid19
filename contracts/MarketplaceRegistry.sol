@@ -26,6 +26,7 @@ import "./idle-contracts/IdleToken.sol";
 contract MarketplaceRegistry is Ownable, McStorage, McConstants {
     using SafeMath for uint;
 
+    address IDLE_TOKEN_ADDRESS;
     address underlyingERC20;
 
     Dai public dai;  //@dev - dai.sol
@@ -37,6 +38,7 @@ contract MarketplaceRegistry is Ownable, McStorage, McConstants {
         erc20 = IERC20(_erc20);
         idleToken = IdleToken(_idleToken);
 
+        IDLE_TOKEN_ADDRESS = _idleToken;
         underlyingERC20 = _erc20;
     }
 
@@ -110,7 +112,11 @@ contract MarketplaceRegistry is Ownable, McStorage, McConstants {
     /***
      * @dev - Lend pooled fund(DAI) to idle.finance(idleDAI)
      **/
-    function lendPooledFund() public returns (bool) {}
+    function lendPooledFund(uint256 _mintAmount, uint256[] memory _clientProtocolAmounts) public returns (bool) {
+        // In progress
+        dai.approve(IDLE_TOKEN_ADDRESS, _mintAmount);
+        idleToken.mintIdleToken(_mintAmount, _clientProtocolAmounts);
+    }
     
     /***
      * @dev - Redeem pooled fund(DAI) from idle.finance(idleDAI)
