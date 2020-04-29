@@ -5,8 +5,15 @@ pragma experimental ABIEncoderV2;
 contract McObjects {
 
     struct Objective {
+        //@dev - Define objective
         uint governmentId;
         uint savedCost;
+
+        //@dev - Evaluate outcome
+        uint evaluatorId;
+        uint savedCostOfOutcome;
+        bool isEvaluated;
+        bool isAchieved;
     }    
 
 
