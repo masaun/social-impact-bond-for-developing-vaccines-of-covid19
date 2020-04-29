@@ -38,15 +38,22 @@ contract MarketplaceRegistry is Ownable, McStorage, McConstants {
     /***
      * @dev - Stakeholder of Social Impact Bond
      * Service Provider - Institution for developing vaccines of COVID19
-     * Private Investor
+     * Investor
      * Evaluator
      * Government
      **/
 
 
+    /***
+     * @dev - Register functions
+     **/
+    function registerInvester() public returns (bool) {}
+     
+    function registerServiceProvider() public returns (bool) {}
 
+    function registerEvaluator() public returns (bool) {}
 
-
+    function registerGovernment() public returns (bool) {}
 
 
 
