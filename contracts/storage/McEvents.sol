@@ -6,12 +6,12 @@ import "./McObjects.sol";
 contract McEvents {
 
     event DefineObjective(
-        uint governmentId,
+        uint serviceProviderId,
         uint savedCostOfObjective
     );
     
     event EvaluateOutcome(
-        uint governmentId,
+        uint serviceProviderId,
         uint evaluatorId,
         uint savedCostOfOutcome,
         bool isEvaluated,
