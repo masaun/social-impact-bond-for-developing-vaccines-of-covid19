@@ -140,61 +140,9 @@ contract MarketplaceRegistry is Ownable, McStorage, McConstants {
         Objective memory objective = objectives[_serviceProviderId];
         return objective;
     }
-    
 
-
-
-
-
-
-
-
-
-
-
-
-    /***
-     * @dev - Testing functions
-     **/
-    function testFunc(uint256 _mintAmount) public returns (bool, uint256 _approvedValue) {
-        uint256 _id = 1;
-        uint256 _exchangeRateCurrent = McConstants.onePercent;
-
-        address _to = 0x8Fc9d07b1B9542A71C4ba1702Cd230E160af6EB3;
-
-        address _owner = address(this); //@dev - contract address which do delegate call
-        //address _owner = msg.sender;
-        address _spender = underlyingERC20;    // DAI address on Kovan
-
-        //@dev - Allow _spender to withdraw from your account, multiple times, up to the _value amount. 
-        erc20.approve(_spender, _mintAmount);
-            
-        //@dev - Returns the amount which _spender is still allowed to withdraw from _owner
-        uint256 _approvedValue = erc20.allowance(_owner, _spender);
-        
-        //@dev - Expected transferred value is 1.05 DAI（= 1050000000000000000 Wei）
-        erc20.transfer(_to, _mintAmount);        
-
-        emit Example(_id, _exchangeRateCurrent, msg.sender, _approvedValue);
-
-        return (McConstants.CONFIRMED, _approvedValue);
-    }
-
-    function balanceOfCurrentAccount(address _currentAccount) public view returns (uint256 balanceOfCurrentAccount) {
-        return erc20.balanceOf(_currentAccount);
-    }
-    
-
-    function transferDAIFromUserToContract(uint256 _mintAmount) public returns (bool) {
-        address _from = address(this);
-        address _to = 0x8Fc9d07b1B9542A71C4ba1702Cd230E160af6EB3;
-
-        erc20.approve(underlyingERC20, _mintAmount);
-        uint256 _allowanceAmount = erc20.allowance(address(this), underlyingERC20);
-        //uint256 _allowanceAmount = erc20.allowance(msg.sender, address(this));
-        erc20.transferFrom(_from, _to, _mintAmount);
-
-        emit _TransferFrom(_from, _to, _mintAmount, _allowanceAmount);
+    function balanceOfContract() public view returns (uint balanceOfContract_DAI, uint balanceOfContract_idleDAI) {
+        return (dai.balanceOf(address(this)), idleToken.balanceOf(address(this)));
     }
     
 }
