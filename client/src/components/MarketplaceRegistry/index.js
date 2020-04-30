@@ -208,7 +208,6 @@ export default class MarketplaceRegistry extends Component {
                             <h4>idle Insurance Fund</h4> <br />
                             <Button size={'small'} mt={3} mb={2} onClick={this._mintIdleToken}> Mint IdleToken（Mint IdleDAI） </Button> <br />
 
-
                             <Button mainColor="DarkCyan" size={'small'} mt={3} mb={2} onClick={this._balanceOfContract}> Balance of contract </Button> <br />
                         </Card>
                     </Grid>

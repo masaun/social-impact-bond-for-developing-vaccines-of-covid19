@@ -5,12 +5,13 @@ var IERC20 = artifacts.require("IERC20");
 var tokenAddressList = require('./tokenAddress/tokenAddress.js');
 var contractAddressList = require('./contractAddress/contractAddress.js');
 
-const _erc20 = tokenAddressList["Kovan"]["DAI"];  // DAI address on Kovan
+const _erc20 = tokenAddressList["Kovan"]["DAI"];        // DAI address on Kovan
+const _idleDAI = tokenAddressList["Kovan"]["IdleDAI"];  // IdleDAI address on Kovan
 
 const depositedAmount = web3.utils.toWei("2.1");    // 2.1 DAI which is deposited in deployed contract. 
 
 module.exports = async function(deployer, network, accounts) {
-    await deployer.deploy(MarketplaceRegistry, _erc20);
+    await deployer.deploy(MarketplaceRegistry, _erc20, _idleDAI);
 
     const marketplaceRegistry = await MarketplaceRegistry.deployed();
 

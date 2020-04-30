@@ -26,19 +26,19 @@ import "./idle-contracts/contracts/IdleToken.sol";
 contract MarketplaceRegistry is Ownable, McStorage, McConstants {
     using SafeMath for uint;
 
-    address IDLE_TOKEN_ADDRESS;
+    address IDLE_DAI_ADDRESS;
     address underlyingERC20;
 
     Dai public dai;  //@dev - dai.sol
     IERC20 public erc20;
-    IdleToken public idleToken;
+    IdleToken public idleDAI;
 
-    constructor(address _erc20, address _idleToken) public {
+    constructor(address _erc20, address _idleDAI) public {
         dai = Dai(_erc20);
         erc20 = IERC20(_erc20);
-        idleToken = IdleToken(_idleToken);
+        idleDAI = IdleToken(_idleDAI);
 
-        IDLE_TOKEN_ADDRESS = _idleToken;
+        IDLE_DAI_ADDRESS = _idleDAI;
         underlyingERC20 = _erc20;
     }
 
@@ -114,8 +114,8 @@ contract MarketplaceRegistry is Ownable, McStorage, McConstants {
      **/
     function lendPooledFund(uint256 _mintAmount, uint256[] memory _clientProtocolAmounts) public returns (bool) {
         // In progress
-        dai.approve(IDLE_TOKEN_ADDRESS, _mintAmount);
-        idleToken.mintIdleToken(_mintAmount, _clientProtocolAmounts);
+        dai.approve(IDLE_DAI_ADDRESS, _mintAmount);
+        idleDAI.mintIdleToken(_mintAmount, _clientProtocolAmounts);
     }
     
     /***
@@ -142,7 +142,7 @@ contract MarketplaceRegistry is Ownable, McStorage, McConstants {
     }
 
     function balanceOfContract() public view returns (uint balanceOfContract_DAI, uint balanceOfContract_idleDAI) {
-        return (dai.balanceOf(address(this)), idleToken.balanceOf(address(this)));
+        return (dai.balanceOf(address(this)), idleDAI.balanceOf(address(this)));
     }
     
 }
