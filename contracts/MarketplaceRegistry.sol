@@ -104,6 +104,7 @@ contract MarketplaceRegistry is Ownable, McStorage, McConstants {
         objective.isEvaluated = true;
 
         //@dev - Conditional branch whether objective is achieved or not
+        require (currentTimestamp > _endDateOfObjective, "CurrentTimestamp doesn't end");
         if (currentTimestamp > _endDateOfObjective) {
             if (objective.savedCostOfOutcome >= _savedCostOfObjective) {
                 objective.isAchieved = true;
