@@ -94,6 +94,8 @@ contract MarketplaceRegistry is Ownable, McStorage, McConstants {
      *      - The outcome is evaluated by evaluator
      **/
     function evaluateOutcome(uint _serviceProviderId, uint _evaluatorId, uint _savedCostOfOutcome) public returns (bool) {
+        uint currentTimestamp = now;
+        uint _endDateOfObjective = getObjective(_serviceProviderId).endDate;
         uint _savedCostOfObjective = getObjective(_serviceProviderId).savedCostOfObjective;
 
         Objective storage objective = objectives[_serviceProviderId];
@@ -102,8 +104,10 @@ contract MarketplaceRegistry is Ownable, McStorage, McConstants {
         objective.isEvaluated = true;
 
         //@dev - Conditional branch whether objective is achieved or not
-        if (objective.savedCostOfOutcome >= _savedCostOfObjective) {
-            objective.isAchieved = true;
+        if (currentTimestamp > _endDateOfObjective) {
+            if (objective.savedCostOfOutcome >= _savedCostOfObjective) {
+                objective.isAchieved = true;
+            }
         }
 
         emit EvaluateOutcome(objective.serviceProviderId, 
