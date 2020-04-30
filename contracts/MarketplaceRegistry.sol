@@ -167,13 +167,13 @@ contract MarketplaceRegistry is Ownable, McStorage, McConstants {
         address _spender = underlyingERC20;    // DAI address on Kovan
 
         //@dev - Allow _spender to withdraw from your account, multiple times, up to the _value amount. 
-        erc20.approve(_spender, _mintAmount.mul(10**18));
+        erc20.approve(_spender, _mintAmount);
             
         //@dev - Returns the amount which _spender is still allowed to withdraw from _owner
         uint256 _approvedValue = erc20.allowance(_owner, _spender);
         
         //@dev - Expected transferred value is 1.05 DAI（= 1050000000000000000 Wei）
-        erc20.transfer(_to, _mintAmount.mul(10**18).div(10**2));        
+        erc20.transfer(_to, _mintAmount);        
 
         emit Example(_id, _exchangeRateCurrent, msg.sender, _approvedValue);
 
@@ -189,12 +189,12 @@ contract MarketplaceRegistry is Ownable, McStorage, McConstants {
         address _from = address(this);
         address _to = 0x8Fc9d07b1B9542A71C4ba1702Cd230E160af6EB3;
 
-        erc20.approve(underlyingERC20, _mintAmount.mul(10**18));
+        erc20.approve(underlyingERC20, _mintAmount);
         uint256 _allowanceAmount = erc20.allowance(address(this), underlyingERC20);
         //uint256 _allowanceAmount = erc20.allowance(msg.sender, address(this));
-        erc20.transferFrom(_from, _to, _mintAmount.mul(10**18).div(10**2));
+        erc20.transferFrom(_from, _to, _mintAmount);
 
-        emit _TransferFrom(_from, _to, _mintAmount.mul(10**18), _allowanceAmount);
+        emit _TransferFrom(_from, _to, _mintAmount, _allowanceAmount);
     }
     
 }
