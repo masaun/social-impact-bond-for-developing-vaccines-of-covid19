@@ -35,7 +35,7 @@ export default class MarketplaceRegistry extends Component {
     _mintIdleToken = async () => {
         const { accounts, web3, dai, idle_dai, IDLE_DAI_ADDRESS } = this.state;
 
-        const mintAmount = 1.135;  // Expected transferred value is 1.05 DAI（= 1050000000000000000 Wei）
+        const mintAmount = 1.135;  // Expected transferred value is 1.135 DAI（= 1135000000000000000 Wei）
         let _mintAmount = web3.utils.toWei(mintAmount.toString(), 'ether');
         const _clientProtocolAmounts = [];
 
@@ -46,6 +46,16 @@ export default class MarketplaceRegistry extends Component {
         console.log('=== response of mintIdleToken() function ===', res2);        
     }
 
+    _lendPooledFund = async () => {
+        const { accounts, web3, marketplace_registry, dai, idle_dai, IDLE_DAI_ADDRESS } = this.state;
+
+        const mintAmount = 0.1;  // Expected transferred value is 0.1 DAI（= 10000000000000000 Wei）
+        let _mintAmount = web3.utils.toWei(mintAmount.toString(), 'ether');
+        const _clientProtocolAmounts = [];
+
+        let res1 = await marketplace_registry.methods.lendPooledFund(_mintAmount, _clientProtocolAmounts).send({ from: accounts[0] });
+        console.log('=== response of lendPooledFund() function ===\n', res1);        
+    }
 
     _balanceOfContract = async () => {
         const { accounts, web3, marketplace_registry, dai, idle_dai, IDLE_DAI_ADDRESS } = this.state;
@@ -207,6 +217,8 @@ export default class MarketplaceRegistry extends Component {
                         >
                             <h4>idle Insurance Fund</h4> <br />
                             <Button size={'small'} mt={3} mb={2} onClick={this._mintIdleToken}> Mint IdleToken（Mint IdleDAI） </Button> <br />
+
+                            <Button size={'small'} mt={3} mb={2} onClick={this._lendPooledFund}> Lend Pooled Fund（Mint IdleDAI） </Button> <br />
 
                             <Button mainColor="DarkCyan" size={'small'} mt={3} mb={2} onClick={this._balanceOfContract}> Balance of contract </Button> <br />
                         </Card>

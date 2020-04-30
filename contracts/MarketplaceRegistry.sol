@@ -113,7 +113,6 @@ contract MarketplaceRegistry is Ownable, McStorage, McConstants {
      * @dev - Lend pooled fund(DAI) to idle.finance(idleDAI)
      **/
     function lendPooledFund(uint256 _mintAmount, uint256[] memory _clientProtocolAmounts) public returns (bool) {
-        // In progress
         dai.approve(IDLE_DAI_ADDRESS, _mintAmount);
         idleDAI.mintIdleToken(_mintAmount, _clientProtocolAmounts);
     }
