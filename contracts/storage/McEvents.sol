@@ -7,7 +7,9 @@ contract McEvents {
 
     event DefineObjective(
         uint serviceProviderId,
-        uint savedCostOfObjective
+        uint savedCostOfObjective,
+        uint startDate,
+        uint endDate
     );
     
     event EvaluateOutcome(

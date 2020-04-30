@@ -8,6 +8,8 @@ contract McObjects {
         //@dev - Define objective
         uint serviceProviderId;
         uint savedCostOfObjective;
+        uint startDate;
+        uint endDate;
 
         //@dev - Evaluate outcome
         uint evaluatorId;
