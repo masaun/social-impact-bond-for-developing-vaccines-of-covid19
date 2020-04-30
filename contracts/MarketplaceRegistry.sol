@@ -16,7 +16,7 @@ import "./storage/McConstants.sol";
 import "./DAI/dai.sol";
 
 // idle.finance
-import "./idle-contracts/IdleToken.sol";
+import "./idle-contracts/contracts/IdleToken.sol";
 
 
 
