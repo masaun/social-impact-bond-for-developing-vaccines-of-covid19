@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 
 // Use original Ownable.sol
-import "./lib/Ownable.sol";
+import "./lib/OwnableOriginal.sol";
 
 // Storage
 import "./storage/McStorage.sol";
@@ -21,7 +21,14 @@ import "./DAI/dai.sol";
 import "./idle-contracts/contracts/IdleToken.sol";
 
 
-contract FundAndRefundGovernment is Ownable(msg.sender), McStorage, McConstants {
+contract FundAndRefundGovernment is OwnableOriginal(msg.sender), McStorage, McConstants {
+    //@dev - Token Address
+    address IDLE_DAI_ADDRESS;
+
+    Dai public dai;  //@dev - dai.sol
+    IERC20 public erc20;
+    IdleToken public idleDAI;
+
     constructor() public {}
 
     /***
