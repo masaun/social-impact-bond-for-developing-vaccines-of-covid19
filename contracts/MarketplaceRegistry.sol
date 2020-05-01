@@ -132,9 +132,21 @@ contract MarketplaceRegistry is Ownable, McStorage, McConstants {
 
 
     /***
-     * @dev - Collect fund with DAI.
+     * @dev - Government stake fund for payment for success
+     *      - If outcome is not achieved until objective, staked fund is refunded to government
      **/
-    //function collectFund(uint _serviceProviderId , uint _investorId) public returns (bool) {}
+    function stakeFundFromGovernment(
+        uint _objectiveId, 
+        uint _governmentId, 
+        uint _stakeAmount
+    ) public returns (bool) {
+        //@dev - If outcome is not achieved until objective, staked fund is refunded to government
+        uint _refundAmount = _stakeAmount;
+        refundFundToGovernment(_governmentId, _refundAmount);
+    }
+
+    function refundFundToGovernment(uint _governmentId, uint _refundAmount) public returns (bool) {}
+    
 
 
 
@@ -148,9 +160,11 @@ contract MarketplaceRegistry is Ownable, McStorage, McConstants {
     
     /***
      * @dev - Redeem(=Withdraw) pooled fund(DAI) from idle.finance(idleDAI)
-     *      - Service Provider redeem amount which they need each time
+     *      - Service Provider redeem amount which they need from pooled fund each time
      **/
-    function redeemPooledFund(uint _redeemAmount) public returns (bool) {}
+    function redeemPooledFund(uint _redeemAmount) public returns (bool) {
+
+    }
 
     /***
      * @dev - Distribute seed money plus interest to each investors (from pooled fund(DAI))
