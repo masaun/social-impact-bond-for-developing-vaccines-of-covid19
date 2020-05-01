@@ -132,25 +132,6 @@ contract MarketplaceRegistry is Ownable, McStorage, McConstants {
 
 
     /***
-     * @dev - Government stake fund for payment for success
-     *      - If outcome is not achieved until objective, staked fund is refunded to government
-     **/
-    function stakeFundFromGovernment(
-        uint _objectiveId, 
-        uint _governmentId, 
-        uint _stakeAmount
-    ) public returns (bool) {
-        //@dev - If outcome is not achieved until objective, staked fund is refunded to government
-        uint _refundAmount = _stakeAmount;
-        refundFundToGovernment(_governmentId, _refundAmount);
-    }
-
-    function refundFundToGovernment(uint _governmentId, uint _refundAmount) public returns (bool) {}
-    
-
-
-
-    /***
      * @dev - Lend pooled fund(DAI) to idle.finance(idleDAI)
      **/
     function lendPooledFund(uint256 _mintAmount, uint256[] memory _clientProtocolAmounts) public returns (bool) {
@@ -176,7 +157,6 @@ contract MarketplaceRegistry is Ownable, McStorage, McConstants {
         //@dev - Only investors who invested service providers achieved their objective can receive returned money (principal amounts plus interest amounts)
         for (uint i=1; i < currentObjectiveId; i++) {
             Objective memory objective = objectives[i];
-
         }
     }
 
