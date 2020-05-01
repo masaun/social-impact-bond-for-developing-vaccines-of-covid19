@@ -26,6 +26,13 @@ import "./idle-contracts/contracts/IdleToken.sol";
 contract MarketplaceRegistry is Ownable, McStorage, McConstants {
     using SafeMath for uint;
 
+    //@dev - current IDs
+    uint currentServiceProviderId;
+    uint currentInvestorId;
+    uint currentEvaluatorId;
+    uint currentGovernmentId;
+
+    //@dev - Token Address
     address IDLE_DAI_ADDRESS;
     address underlyingERC20;
 
@@ -54,10 +61,10 @@ contract MarketplaceRegistry is Ownable, McStorage, McConstants {
 
     /***
      * @dev - Register functions
-     **/
-    function registerInvester() public returns (bool) {}
-     
+     **/     
     function registerServiceProvider() public returns (bool) {}
+
+    function registerInvester() public returns (bool) {}
 
     function registerEvaluator() public returns (bool) {}
 
@@ -104,7 +111,7 @@ contract MarketplaceRegistry is Ownable, McStorage, McConstants {
         objective.isEvaluated = true;
 
         //@dev - Conditional branch whether objective is achieved or not
-        require (currentTimestamp > _endDateOfObjective, "CurrentTimestamp doesn't end");
+        //require (currentTimestamp > _endDateOfObjective, "CurrentTimestamp doesn't end");
         if (currentTimestamp > _endDateOfObjective) {
             if (objective.savedCostOfOutcome >= _savedCostOfObjective) {
                 objective.isAchieved = true;
