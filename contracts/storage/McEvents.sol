@@ -6,6 +6,7 @@ import "./McObjects.sol";
 contract McEvents {
 
     event DefineObjective(
+        uint objectiveId,
         uint serviceProviderId,
         uint savedCostOfObjective,
         uint startDate,
@@ -27,14 +28,6 @@ contract McEvents {
     /***
      * @dev - Example
      **/
-    event _TransferFrom(
-        address from,
-        address to,
-        uint256 transferredAmount,
-        uint256 allowanceAmount
-    );
-
-
     event Example(
         uint256 indexed Id, 
         uint256 exchangeRateCurrent,

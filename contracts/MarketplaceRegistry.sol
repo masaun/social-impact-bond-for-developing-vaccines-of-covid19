@@ -27,6 +27,7 @@ contract MarketplaceRegistry is Ownable, McStorage, McConstants {
     using SafeMath for uint;
 
     //@dev - current IDs
+    uint currentObjectiveId;
     uint currentServiceProviderId;
     uint currentInvestorId;
     uint currentEvaluatorId;
@@ -85,15 +86,19 @@ contract MarketplaceRegistry is Ownable, McStorage, McConstants {
         uint _endDate) public returns (bool) 
     {
         Objective storage objective = objectives[_serviceProviderId];
+        objective.objectiveId = currentObjectiveId;
         objective.serviceProviderId = _serviceProviderId;
         objective.savedCostOfObjective = _savedCostOfObjective;
         objective.startDate = _startDate;
         objective.endDate = _endDate;
 
-        emit DefineObjective(objective.serviceProviderId, 
+        emit DefineObjective(objective.objectiveId,
+                             objective.serviceProviderId, 
                              objective.savedCostOfObjective, 
                              objective.startDate, 
                              objective.endDate);
+
+        currentObjectiveId++;
     }
 
     /***
@@ -142,15 +147,21 @@ contract MarketplaceRegistry is Ownable, McStorage, McConstants {
     }
     
     /***
-     * @dev - Redeem pooled fund(DAI) from idle.finance(idleDAI)
+     * @dev - Redeem(=Withdraw) pooled fund(DAI) from idle.finance(idleDAI)
      **/
     function redeemPooledFund() public returns (bool) {}
 
     /***
-     * @dev - Withdraw pooled fund(DAI) and distribute seed money plus interest to each investors
+     * @dev - Distribute seed money plus interest to each investors (from pooled fund(DAI))
      **/
-    function withdrawAndDistributePooledFund() public returns (bool) {
+    function distributePooledFund(uint _serviceProviderId) public returns (bool) {
+        Objective memory objective = objectives[_serviceProviderId];
+        bool _isAchieved = objective.isAchieved;
 
+        //@dev - Only investors who invested service providers achieved their objective can receive returned money (principal amounts plus interest amounts)
+        for () {
+
+        }
     }
 
 

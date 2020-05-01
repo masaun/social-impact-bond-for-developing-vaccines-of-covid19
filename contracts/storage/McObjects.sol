@@ -6,6 +6,7 @@ contract McObjects {
 
     struct Objective {
         //@dev - Define objective
+        uint objectiveId;
         uint serviceProviderId;
         uint savedCostOfObjective;
         uint startDate;
@@ -17,6 +18,14 @@ contract McObjects {
         bool isEvaluated;
         bool isAchieved;
     }    
+
+    struct Investor {
+        uint investorId;
+        address investorAddress;        
+    }
+    
+
+
 
 
 
