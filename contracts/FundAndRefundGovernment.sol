@@ -19,7 +19,7 @@ import "./DAI/dai.sol";
 import "./idle-contracts/contracts/IdleToken.sol";
 
 
-contract FundAndRefundGovernment is Ownable, McStorage, McConstants {
+contract FundAndRefundGovernment is Ownable(msg.sender), McStorage, McConstants {
     constructor() public {}
 
     /***
