@@ -27,11 +27,11 @@ contract MarketplaceRegistry is Ownable, McStorage, McConstants {
     using SafeMath for uint;
 
     //@dev - current IDs
-    uint currentObjectiveId;
-    uint currentServiceProviderId;
-    uint currentInvestorId;
-    uint currentEvaluatorId;
-    uint currentGovernmentId;
+    uint currentObjectiveId = 1;
+    uint currentServiceProviderId = 1;
+    uint currentInvestorId = 1;
+    uint currentEvaluatorId = 1;
+    uint currentGovernmentId = 1;
 
     //@dev - Token Address
     address IDLE_DAI_ADDRESS;
@@ -148,8 +148,9 @@ contract MarketplaceRegistry is Ownable, McStorage, McConstants {
     
     /***
      * @dev - Redeem(=Withdraw) pooled fund(DAI) from idle.finance(idleDAI)
+     *      - Service Provider redeem amount which they need each time
      **/
-    function redeemPooledFund() public returns (bool) {}
+    function redeemPooledFund(uint _redeemAmount) public returns (bool) {}
 
     /***
      * @dev - Distribute seed money plus interest to each investors (from pooled fund(DAI))
@@ -159,7 +160,8 @@ contract MarketplaceRegistry is Ownable, McStorage, McConstants {
         bool _isAchieved = objective.isAchieved;
 
         //@dev - Only investors who invested service providers achieved their objective can receive returned money (principal amounts plus interest amounts)
-        for () {
+        for (uint i=1; i < currentObjectiveId; i++) {
+            Objective memory objective = objectives[i];
 
         }
     }
