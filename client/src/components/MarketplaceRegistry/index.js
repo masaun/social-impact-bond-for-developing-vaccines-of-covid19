@@ -62,7 +62,7 @@ export default class MarketplaceRegistry extends Component {
         const { accounts, web3, marketplace_registry, dai, idle_dai, IDLE_DAI_ADDRESS } = this.state;
 
         const redeemAmount = 0.1;  // Expected transferred value is 0.1 DAI（= 10000000000000000 Wei）
-        let _redeemAmount = web3.utils.toWei(mintAmount.toString(), 'ether');
+        let _redeemAmount = web3.utils.toWei(redeemAmount.toString(), 'ether');
         const _skipRebalance = false;
         const _clientProtocolAmounts = [];
 
