@@ -5,14 +5,29 @@ import "./McObjects.sol";
 
 contract McEvents {
 
-    event _TransferFrom(
-        address from,
-        address to,
-        uint256 transferredAmount,
-        uint256 allowanceAmount
+    event DefineObjective(
+        uint objectiveId,
+        uint serviceProviderId,
+        uint savedCostOfObjective,
+        uint startDate,
+        uint endDate
+    );
+    
+    event EvaluateOutcome(
+        uint serviceProviderId,
+        uint evaluatorId,
+        uint savedCostOfOutcome,
+        bool isEvaluated,
+        bool isAchieved
     );
 
 
+
+
+
+    /***
+     * @dev - Example
+     **/
     event Example(
         uint256 indexed Id, 
         uint256 exchangeRateCurrent,

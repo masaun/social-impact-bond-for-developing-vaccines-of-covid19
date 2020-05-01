@@ -30,13 +30,12 @@ export default class MarketplaceRegistry extends Component {
         };
 
         this._mintIdleToken = this._mintIdleToken.bind(this);
-        this.getTestData = this.getTestData.bind(this);
     }
 
     _mintIdleToken = async () => {
         const { accounts, web3, dai, idle_dai, IDLE_DAI_ADDRESS } = this.state;
 
-        const mintAmount = 1.135;  // Expected transferred value is 1.05 DAI（= 1050000000000000000 Wei）
+        const mintAmount = 1.135;  // Expected transferred value is 1.135 DAI（= 1135000000000000000 Wei）
         let _mintAmount = web3.utils.toWei(mintAmount.toString(), 'ether');
         const _clientProtocolAmounts = [];
 
@@ -47,37 +46,24 @@ export default class MarketplaceRegistry extends Component {
         console.log('=== response of mintIdleToken() function ===', res2);        
     }
 
-    getTestData = async () => {
-        const { accounts, web3, marketplace_registry } = this.state;
+    _lendPooledFund = async () => {
+        const { accounts, web3, marketplace_registry, dai, idle_dai, IDLE_DAI_ADDRESS } = this.state;
 
-        const _currentAccount = accounts[0];
-        let balanceOf1 = await marketplace_registry.methods.balanceOfCurrentAccount(_currentAccount).call();
-        console.log('=== response of balanceOfCurrentAccount() / 1 ===', balanceOf1);
- 
-        const _mintAmount = 105;  // Expected transferred value is 1.05 DAI（= 1050000000000000000 Wei）s
-        let response = await marketplace_registry.methods.testFunc(_mintAmount).send({ from: accounts[0] })
-        console.log('=== response of testFunc() function ===', response);
+        const mintAmount = 0.1;  // Expected transferred value is 0.1 DAI（= 10000000000000000 Wei）
+        let _mintAmount = web3.utils.toWei(mintAmount.toString(), 'ether');
+        const _clientProtocolAmounts = [];
 
-        let balanceOf2 = await marketplace_registry.methods.balanceOfCurrentAccount(_currentAccount).call();
-        console.log('=== response of balanceOfCurrentAccount() / 2 ===', balanceOf2);
+        let res1 = await marketplace_registry.methods.lendPooledFund(_mintAmount, _clientProtocolAmounts).send({ from: accounts[0] });
+        console.log('=== response of lendPooledFund() function ===\n', res1);        
     }
 
-    transferDAIFromUserToContract = async () => {
-        const { accounts, web3, marketplace_registry, dai, MARKET_REGISTRY_ADDRESS } = this.state;
+    _balanceOfContract = async () => {
+        const { accounts, web3, marketplace_registry, dai, idle_dai, IDLE_DAI_ADDRESS } = this.state;
 
-        const _mintAmount = 105;  // Expected transferred value is 1.05 DAI（= 1050000000000000000 Wei）s
-
-        //@dev - Transfer DAI from UserWallet to DAI-contract
-        let decimals = 18;
-        let _amount = web3.utils.toWei((_mintAmount / ((10)**2)).toString(), 'ether');
-        console.log('=== _amount ===', _amount);
-        const _to = MARKET_REGISTRY_ADDRESS;
-        let response1 = await dai.methods.transfer(_to, _amount).send({ from: accounts[0] });
-
-        //@dev - Transfer DAI from DAI-contract to Logic-contract
-        let response2 = await marketplace_registry.methods.transferDAIFromUserToContract(_mintAmount).send({ from: accounts[0] });  // wei
-        console.log('=== response of transferDAIFromUserToContract() function ===', response2);
+        let res1 = await marketplace_registry.methods.balanceOfContract().call();
+        console.log('=== response of balanceOfContract() function ===\n', res1);
     }
+
 
 
     //////////////////////////////////// 
@@ -232,7 +218,9 @@ export default class MarketplaceRegistry extends Component {
                             <h4>idle Insurance Fund</h4> <br />
                             <Button size={'small'} mt={3} mb={2} onClick={this._mintIdleToken}> Mint IdleToken（Mint IdleDAI） </Button> <br />
 
-                            <Button size={'small'} mt={3} mb={2} onClick={this.getTestData}> Get Test Data </Button> <br />
+                            <Button size={'small'} mt={3} mb={2} onClick={this._lendPooledFund}> Lend Pooled Fund（Mint IdleDAI） </Button> <br />
+
+                            <Button mainColor="DarkCyan" size={'small'} mt={3} mb={2} onClick={this._balanceOfContract}> Balance of contract </Button> <br />
                         </Card>
                     </Grid>
 
