@@ -30,6 +30,7 @@ export default class MarketplaceRegistry extends Component {
         };
 
         this._mintIdleToken = this._mintIdleToken.bind(this);
+        this._redeemPooledFund = this._redeemPooledFund.bind(this);
     }
 
     _mintIdleToken = async () => {
@@ -55,6 +56,18 @@ export default class MarketplaceRegistry extends Component {
 
         let res1 = await marketplace_registry.methods.lendPooledFund(_mintAmount, _clientProtocolAmounts).send({ from: accounts[0] });
         console.log('=== response of lendPooledFund() function ===\n', res1);        
+    }
+
+    _redeemPooledFund = async () => {
+        const { accounts, web3, marketplace_registry, dai, idle_dai, IDLE_DAI_ADDRESS } = this.state;
+
+        const redeemAmount = 0.1;  // Expected transferred value is 0.1 DAI（= 10000000000000000 Wei）
+        let _redeemAmount = web3.utils.toWei(mintAmount.toString(), 'ether');
+        const _skipRebalance = false;
+        const _clientProtocolAmounts = [];
+
+        let res1 = await marketplace_registry.methods.redeemPooledFund(_redeemAmount, _skipRebalance, _clientProtocolAmounts).send({ from: accounts[0] });
+        console.log('=== response of redeemPooledFund() function ===\n', res1);            
     }
 
     _balanceOfContract = async () => {
@@ -219,6 +232,8 @@ export default class MarketplaceRegistry extends Component {
                             <Button size={'small'} mt={3} mb={2} onClick={this._mintIdleToken}> Mint IdleToken（Mint IdleDAI） </Button> <br />
 
                             <Button size={'small'} mt={3} mb={2} onClick={this._lendPooledFund}> Lend Pooled Fund（Mint IdleDAI） </Button> <br />
+
+                            <Button size={'small'} mt={3} mb={2} onClick={this._redeemPooledFund}> Redeem Pooled Fund（Redeem IdleDAI） </Button> <br />
 
                             <Button mainColor="DarkCyan" size={'small'} mt={3} mb={2} onClick={this._balanceOfContract}> Balance of contract </Button> <br />
                         </Card>

@@ -61,7 +61,7 @@ contract MarketplaceRegistry is Ownable, McStorage, McConstants {
 
 
     /***
-     * @dev - Register functions
+     * @dev - Stakeholders register by using functions below
      **/     
     function registerServiceProvider() public returns (bool) {}
 
@@ -140,11 +140,11 @@ contract MarketplaceRegistry is Ownable, McStorage, McConstants {
     }
     
     /***
-     * @dev - Redeem(=Withdraw) pooled fund(DAI) from idle.finance(idleDAI)
+     * @dev - Redeem(=Withdraw) pooled fund(DAI) from idle.finance(idleDAI) to contract(this)
      *      - Service Provider redeem amount which they need from pooled fund each time
      **/
-    function redeemPooledFund(uint _redeemAmount) public returns (bool) {
-
+    function redeemPooledFund(uint256 _redeemAmount, bool _skipRebalance, uint256[] memory _clientProtocolAmounts) public returns (bool) {
+        idleDAI.redeemIdleToken(_redeemAmount, _skipRebalance, _clientProtocolAmounts);
     }
 
     /***
