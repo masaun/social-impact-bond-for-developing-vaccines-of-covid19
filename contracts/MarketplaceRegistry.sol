@@ -6,7 +6,9 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 
 import "@openzeppelin/contracts/math/SafeMath.sol";
-import "@openzeppelin/contracts/ownership/Ownable.sol";
+
+// Use original Ownable.sol
+import "./lib/Ownable.sol";
 
 // Storage
 import "./storage/McStorage.sol";
@@ -23,7 +25,7 @@ import "./idle-contracts/contracts/IdleToken.sol";
 /***
  * @notice - This contract is that ...
  **/
-contract MarketplaceRegistry is Ownable, McStorage, McConstants {
+contract MarketplaceRegistry is Ownable(msg.sender), McStorage, McConstants {
     using SafeMath for uint;
 
     //@dev - current IDs
