@@ -5,8 +5,8 @@ import Footer from "./components/Footer/index.js";
 import Hero from "./components/Hero/index.js";
 import Web3Info from "./components/Web3Info/index.js";
 
-// MarketplaceRegistry
-import MarketplaceRegistry from "./components/MarketplaceRegistry/index.js";
+// StakeholderRegistry
+import StakeholderRegistry from "./components/StakeholderRegistry/index.js";
 
 import { Typography, Grid, TextField } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/styles';
@@ -53,9 +53,9 @@ class App extends Component {
   componentDidMount = async () => {
     const hotLoaderDisabled = zeppelinSolidityHotLoaderOptions.disabled;
  
-    let MarketplaceRegistry = {};
+    let StakeholderRegistry = {};
     try {
-      MarketplaceRegistry = require("../../build/contracts/MarketplaceRegistry.json");          // Load artifact-file of MarketplaceRegistry
+      StakeholderRegistry = require("../../build/contracts/StakeholderRegistry.json");          // Load artifact-file of StakeholderRegistry
     } catch (e) {
       console.log(e);
     }
@@ -82,22 +82,22 @@ class App extends Component {
         let balance = accounts.length > 0 ? await web3.eth.getBalance(accounts[0]): web3.utils.toWei('0');
         balance = web3.utils.fromWei(balance, 'ether');
 
-        let instanceMarketplaceRegistry = null;
+        let instanceStakeholderRegistry = null;
         let deployedNetwork = null;
 
         // Create instance of contracts
-        if (MarketplaceRegistry.networks) {
-          deployedNetwork = MarketplaceRegistry.networks[networkId.toString()];
+        if (StakeholderRegistry.networks) {
+          deployedNetwork = StakeholderRegistry.networks[networkId.toString()];
           if (deployedNetwork) {
-            instanceMarketplaceRegistry = new web3.eth.Contract(
-              MarketplaceRegistry.abi,
+            instanceStakeholderRegistry = new web3.eth.Contract(
+              StakeholderRegistry.abi,
               deployedNetwork && deployedNetwork.address,
             );
-            console.log('=== instanceMarketplaceRegistry ===', instanceMarketplaceRegistry);
+            console.log('=== instanceStakeholderRegistry ===', instanceStakeholderRegistry);
           }
         }
 
-        if (MarketplaceRegistry) {
+        if (StakeholderRegistry) {
           // Set web3, accounts, and contract to the state, and then proceed with an
           // example of interacting with the contract's methods.
           this.setState({ 
@@ -109,13 +109,13 @@ class App extends Component {
             networkType, 
             hotLoaderDisabled,
             isMetaMask, 
-            marketplace_registry: instanceMarketplaceRegistry
+            stakeholder_registry: instanceStakeholderRegistry
           }, () => {
             this.refreshValues(
-              instanceMarketplaceRegistry
+              instanceStakeholderRegistry
             );
             setInterval(() => {
-              this.refreshValues(instanceMarketplaceRegistry);
+              this.refreshValues(instanceStakeholderRegistry);
             }, 5000);
           });
         }
@@ -138,9 +138,9 @@ class App extends Component {
     }
   }
 
-  refreshValues = (instanceMarketplaceRegistry) => {
-    if (instanceMarketplaceRegistry) {
-      console.log('refreshValues of instanceMarketplaceRegistry');
+  refreshValues = (instanceStakeholderRegistry) => {
+    if (instanceStakeholderRegistry) {
+      console.log('refreshValues of instanceStakeholderRegistry');
     }
   }
 
@@ -179,7 +179,7 @@ class App extends Component {
   renderIdleInsuranceFund() {
     return (
       <div className={styles.wrapper}>
-        <MarketplaceRegistry />
+        <StakeholderRegistry />
       </div>
     );
   }

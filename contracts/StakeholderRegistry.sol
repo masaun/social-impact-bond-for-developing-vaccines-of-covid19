@@ -29,7 +29,6 @@ contract StakeholderRegistry is OwnableOriginal(msg.sender), McStorage, McConsta
     using SafeMath for uint;
 
     //@dev - current IDs
-    //uint currentObjectiveId = 1;
     uint currentServiceProviderId = 1;
     uint currentInvestorId = 1;
     uint currentEvaluatorId = 1;
