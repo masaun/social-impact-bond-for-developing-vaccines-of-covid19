@@ -20,59 +20,37 @@ import "./DAI/dai.sol";
 // idle.finance
 import "./idle-contracts/contracts/IdleToken.sol";
 
+import "./StakeholderRegistry.sol";
+
+
 
 
 /***
  * @notice - This contract is that ...
  **/
-contract MarketplaceRegistry is OwnableOriginal(msg.sender), McStorage, McConstants {
+contract SocialImpactBond is OwnableOriginal(msg.sender), McStorage, McConstants {
     using SafeMath for uint;
 
     //@dev - current IDs
     uint currentObjectiveId = 1;
-    uint currentServiceProviderId = 1;
-    uint currentInvestorId = 1;
-    uint currentEvaluatorId = 1;
-    uint currentGovernmentId = 1;
 
     //@dev - Token Address
     address IDLE_DAI_ADDRESS;
-    address underlyingERC20;
 
     Dai public dai;  //@dev - dai.sol
     IERC20 public erc20;
     IdleToken public idleDAI;
 
-    constructor(address _erc20, address _idleDAI) public {
+    StakeholderRegistry public stakeholderRegistry;
+
+    constructor(address _erc20, address _idleDAI, address _stakeholderRegistry) public {
         dai = Dai(_erc20);
         erc20 = IERC20(_erc20);
         idleDAI = IdleToken(_idleDAI);
+        stakeholderRegistry = StakeholderRegistry(_stakeholderRegistry);
 
         IDLE_DAI_ADDRESS = _idleDAI;
-        underlyingERC20 = _erc20;
     }
-
-
-    /***
-     * @dev - Stakeholder of Social Impact Bond
-     * Service Provider - Institution for developing vaccines of COVID19
-     * Investor
-     * Evaluator
-     * Government
-     **/
-
-
-    /***
-     * @dev - Stakeholders register by using functions below
-     **/     
-    function registerServiceProvider() public returns (bool) {}
-
-    function registerInvester() public returns (bool) {}
-
-    function registerEvaluator() public returns (bool) {}
-
-    function registerGovernment() public returns (bool) {}
-
 
 
     /***
@@ -175,6 +153,14 @@ contract MarketplaceRegistry is OwnableOriginal(msg.sender), McStorage, McConsta
 
     function balanceOfContract() public view returns (uint balanceOfContract_DAI, uint balanceOfContract_idleDAI) {
         return (dai.balanceOf(address(this)), idleDAI.balanceOf(address(this)));
+    }
+
+
+    /***
+     * @dev - Get IDs
+     **/
+    function getCurrentObjectiveId() public view returns (uint _currentObjectiveId) {
+        return currentObjectiveId;
     }
     
 }
