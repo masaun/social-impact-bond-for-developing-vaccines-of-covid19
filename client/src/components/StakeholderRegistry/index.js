@@ -17,7 +17,7 @@ import { contractAddressList } from '../../data/contractAddress/contractAddress.
 import { tokenAddressList } from '../../data/tokenAddress/tokenAddress.js'
 
 
-export default class MarketplaceRegistry extends Component {
+export default class StakeholderRegistry extends Component {
     constructor(props) {    
         super(props);
 
@@ -30,6 +30,7 @@ export default class MarketplaceRegistry extends Component {
         };
 
         this._mintIdleToken = this._mintIdleToken.bind(this);
+        this._redeemPooledFund = this._redeemPooledFund.bind(this);
     }
 
     _mintIdleToken = async () => {
@@ -47,20 +48,32 @@ export default class MarketplaceRegistry extends Component {
     }
 
     _lendPooledFund = async () => {
-        const { accounts, web3, marketplace_registry, dai, idle_dai, IDLE_DAI_ADDRESS } = this.state;
+        const { accounts, web3, social_impact_bond, stakeholder_registry, dai, idle_dai, IDLE_DAI_ADDRESS } = this.state;
 
         const mintAmount = 0.1;  // Expected transferred value is 0.1 DAI（= 10000000000000000 Wei）
         let _mintAmount = web3.utils.toWei(mintAmount.toString(), 'ether');
         const _clientProtocolAmounts = [];
 
-        let res1 = await marketplace_registry.methods.lendPooledFund(_mintAmount, _clientProtocolAmounts).send({ from: accounts[0] });
+        let res1 = await social_impact_bond.methods.lendPooledFund(_mintAmount, _clientProtocolAmounts).send({ from: accounts[0] });
         console.log('=== response of lendPooledFund() function ===\n', res1);        
     }
 
-    _balanceOfContract = async () => {
-        const { accounts, web3, marketplace_registry, dai, idle_dai, IDLE_DAI_ADDRESS } = this.state;
+    _redeemPooledFund = async () => {
+        const { accounts, web3, social_impact_bond, stakeholder_registry, dai, idle_dai, IDLE_DAI_ADDRESS } = this.state;
 
-        let res1 = await marketplace_registry.methods.balanceOfContract().call();
+        const redeemAmount = 0.1;  // Expected transferred value is 0.1 DAI（= 10000000000000000 Wei）
+        let _redeemAmount = web3.utils.toWei(redeemAmount.toString(), 'ether');
+        const _skipRebalance = false;
+        const _clientProtocolAmounts = [];
+
+        let res1 = await social_impact_bond.methods.redeemPooledFund(_redeemAmount, _skipRebalance, _clientProtocolAmounts).send({ from: accounts[0] });
+        console.log('=== response of redeemPooledFund() function ===\n', res1);            
+    }
+
+    _balanceOfContract = async () => {
+        const { accounts, web3, social_impact_bond, stakeholder_registry, dai, idle_dai, IDLE_DAI_ADDRESS } = this.state;
+
+        let res1 = await social_impact_bond.methods.balanceOfContract().call();
         console.log('=== response of balanceOfContract() function ===\n', res1);
     }
 
@@ -69,9 +82,9 @@ export default class MarketplaceRegistry extends Component {
     //////////////////////////////////// 
     ///// Refresh Values
     ////////////////////////////////////
-    refreshValues = (instanceMarketplaceRegistry) => {
-        if (instanceMarketplaceRegistry) {
-          console.log('refreshValues of instanceMarketplaceRegistry');
+    refreshValues = (instanceStakeholderRegistry) => {
+        if (instanceStakeholderRegistry) {
+          //console.log('refreshValues of instanceStakeholderRegistry');
         }
     }
 
@@ -92,11 +105,13 @@ export default class MarketplaceRegistry extends Component {
     componentDidMount = async () => {
         const hotLoaderDisabled = zeppelinSolidityHotLoaderOptions.disabled;
      
-        let MarketplaceRegistry = {};
+        let StakeholderRegistry = {};
+        let SocialImpactBond = {};
         let Dai = {};
         let IdleToken = {};
         try {
-          MarketplaceRegistry = require("../../../../build/contracts/MarketplaceRegistry.json");  // Load artifact-file of MarketplaceRegistry
+          StakeholderRegistry = require("../../../../build/contracts/StakeholderRegistry.json");  // Load artifact-file of StakeholderRegistry
+          SocialImpactBond = require("../../../../build/contracts/SocialImpactBond.json");  // Load artifact-file of SocialImpactBond
           Dai = require("../../../../build/contracts/Dai.json");               //@dev - DAI（Underlying asset）
           IdleToken = require("../../../../build/contracts/IdleToken.json");   //@dev - IdleToken（IdleDAI）
         } catch (e) {
@@ -125,21 +140,37 @@ export default class MarketplaceRegistry extends Component {
             let balance = accounts.length > 0 ? await web3.eth.getBalance(accounts[0]): web3.utils.toWei('0');
             balance = web3.utils.fromWei(balance, 'ether');
 
-            let instanceMarketplaceRegistry = null;
+            let instanceStakeholderRegistry = null;
             let deployedNetwork = null;
-            let MARKET_REGISTRY_ADDRESS = MarketplaceRegistry.networks[networkId.toString()].address;
+            let STAKEHOLDER_REGISTRY_ADDRESS = StakeholderRegistry.networks[networkId.toString()].address;
 
             // Create instance of contracts
-            if (MarketplaceRegistry.networks) {
-              deployedNetwork = MarketplaceRegistry.networks[networkId.toString()];
+            if (StakeholderRegistry.networks) {
+              deployedNetwork = StakeholderRegistry.networks[networkId.toString()];
               if (deployedNetwork) {
-                instanceMarketplaceRegistry = new web3.eth.Contract(
-                  MarketplaceRegistry.abi,
+                instanceStakeholderRegistry = new web3.eth.Contract(
+                  StakeholderRegistry.abi,
                   deployedNetwork && deployedNetwork.address,
                 );
-                console.log('=== instanceMarketplaceRegistry ===', instanceMarketplaceRegistry);
+                console.log('=== instanceStakeholderRegistry ===', instanceStakeholderRegistry);
               }
             }
+
+            let instanceSocialImpactBond = null;
+            let SOCIAL_IMPACT_BOND_ADDRESS = SocialImpactBond.networks[networkId.toString()].address;
+
+            // Create instance of contracts
+            if (SocialImpactBond.networks) {
+              deployedNetwork = SocialImpactBond.networks[networkId.toString()];
+              if (deployedNetwork) {
+                instanceSocialImpactBond = new web3.eth.Contract(
+                  SocialImpactBond.abi,
+                  deployedNetwork && deployedNetwork.address,
+                );
+                console.log('=== instanceSocialImpactBond ===', instanceSocialImpactBond);
+              }
+            }
+
 
             //@dev - Create instance of DAI-contract
             let instanceDai = null;
@@ -160,7 +191,7 @@ export default class MarketplaceRegistry extends Component {
             console.log('=== instanceIdleDAI ===', instanceIdleDAI);
 
 
-            if (MarketplaceRegistry) {
+            if (StakeholderRegistry || SocialImpactBond) {
               // Set web3, accounts, and contract to the state, and then proceed with an
               // example of interacting with the contract's methods.
               this.setState({ 
@@ -172,18 +203,19 @@ export default class MarketplaceRegistry extends Component {
                 networkType, 
                 hotLoaderDisabled,
                 isMetaMask, 
-                marketplace_registry: instanceMarketplaceRegistry,
+                stakeholder_registry: instanceStakeholderRegistry,
+                social_impact_bond: instanceSocialImpactBond,
                 dai: instanceDai,
                 idle_dai: instanceIdleDAI,
-                MARKET_REGISTRY_ADDRESS: MARKET_REGISTRY_ADDRESS,
+                STAKEHOLDER_REGISTRY_ADDRESS: STAKEHOLDER_REGISTRY_ADDRESS,
                 DAI_ADDRESS: DAI_ADDRESS,
                 IDLE_DAI_ADDRESS: IDLE_DAI_ADDRESS
               }, () => {
                 this.refreshValues(
-                  instanceMarketplaceRegistry
+                  instanceStakeholderRegistry
                 );
                 setInterval(() => {
-                  this.refreshValues(instanceMarketplaceRegistry);
+                  this.refreshValues(instanceStakeholderRegistry);
                 }, 5000);
               });
             }
@@ -202,7 +234,7 @@ export default class MarketplaceRegistry extends Component {
 
 
     render() {
-        const { accounts, marketplace_registry } = this.state;
+        const { accounts, stakeholder_registry } = this.state;
 
         return (
             <div className={styles.widgets}>
@@ -219,6 +251,8 @@ export default class MarketplaceRegistry extends Component {
                             <Button size={'small'} mt={3} mb={2} onClick={this._mintIdleToken}> Mint IdleToken（Mint IdleDAI） </Button> <br />
 
                             <Button size={'small'} mt={3} mb={2} onClick={this._lendPooledFund}> Lend Pooled Fund（Mint IdleDAI） </Button> <br />
+
+                            <Button size={'small'} mt={3} mb={2} onClick={this._redeemPooledFund}> Redeem Pooled Fund（Redeem IdleDAI） </Button> <br />
 
                             <Button mainColor="DarkCyan" size={'small'} mt={3} mb={2} onClick={this._balanceOfContract}> Balance of contract </Button> <br />
                         </Card>

@@ -6,7 +6,9 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 
 import "@openzeppelin/contracts/math/SafeMath.sol";
-import "@openzeppelin/contracts/ownership/Ownable.sol";
+
+// Use original Ownable.sol
+import "./lib/OwnableOriginal.sol";
 
 // Storage
 import "./storage/McStorage.sol";
@@ -18,59 +20,37 @@ import "./DAI/dai.sol";
 // idle.finance
 import "./idle-contracts/contracts/IdleToken.sol";
 
+import "./StakeholderRegistry.sol";
+
+
 
 
 /***
  * @notice - This contract is that ...
  **/
-contract MarketplaceRegistry is Ownable, McStorage, McConstants {
+contract SocialImpactBond is OwnableOriginal(msg.sender), McStorage, McConstants {
     using SafeMath for uint;
 
     //@dev - current IDs
     uint currentObjectiveId = 1;
-    uint currentServiceProviderId = 1;
-    uint currentInvestorId = 1;
-    uint currentEvaluatorId = 1;
-    uint currentGovernmentId = 1;
 
     //@dev - Token Address
     address IDLE_DAI_ADDRESS;
-    address underlyingERC20;
 
     Dai public dai;  //@dev - dai.sol
     IERC20 public erc20;
     IdleToken public idleDAI;
 
-    constructor(address _erc20, address _idleDAI) public {
+    StakeholderRegistry public stakeholderRegistry;
+
+    constructor(address _erc20, address _idleDAI, address _stakeholderRegistry) public {
         dai = Dai(_erc20);
         erc20 = IERC20(_erc20);
         idleDAI = IdleToken(_idleDAI);
+        stakeholderRegistry = StakeholderRegistry(_stakeholderRegistry);
 
         IDLE_DAI_ADDRESS = _idleDAI;
-        underlyingERC20 = _erc20;
     }
-
-
-    /***
-     * @dev - Stakeholder of Social Impact Bond
-     * Service Provider - Institution for developing vaccines of COVID19
-     * Investor
-     * Evaluator
-     * Government
-     **/
-
-
-    /***
-     * @dev - Register functions
-     **/     
-    function registerServiceProvider() public returns (bool) {}
-
-    function registerInvester() public returns (bool) {}
-
-    function registerEvaluator() public returns (bool) {}
-
-    function registerGovernment() public returns (bool) {}
-
 
 
     /***
@@ -140,11 +120,11 @@ contract MarketplaceRegistry is Ownable, McStorage, McConstants {
     }
     
     /***
-     * @dev - Redeem(=Withdraw) pooled fund(DAI) from idle.finance(idleDAI)
+     * @dev - Redeem(=Withdraw) pooled fund(DAI) from idle.finance(idleDAI) to contract(this)
      *      - Service Provider redeem amount which they need from pooled fund each time
      **/
-    function redeemPooledFund(uint _redeemAmount) public returns (bool) {
-
+    function redeemPooledFund(uint256 _redeemAmount, bool _skipRebalance, uint256[] memory _clientProtocolAmounts) public returns (bool) {
+        idleDAI.redeemIdleToken(_redeemAmount, _skipRebalance, _clientProtocolAmounts);
     }
 
     /***
@@ -173,6 +153,14 @@ contract MarketplaceRegistry is Ownable, McStorage, McConstants {
 
     function balanceOfContract() public view returns (uint balanceOfContract_DAI, uint balanceOfContract_idleDAI) {
         return (dai.balanceOf(address(this)), idleDAI.balanceOf(address(this)));
+    }
+
+
+    /***
+     * @dev - Get IDs
+     **/
+    function getCurrentObjectiveId() public view returns (uint _currentObjectiveId) {
+        return currentObjectiveId;
     }
     
 }
