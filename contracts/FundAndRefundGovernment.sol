@@ -20,16 +20,27 @@ import "./DAI/dai.sol";
 // idle.finance
 import "./idle-contracts/contracts/IdleToken.sol";
 
+// Contract
+import "./SocialImpactBond.sol";
+
 
 contract FundAndRefundGovernment is OwnableOriginal(msg.sender), McStorage, McConstants {
     //@dev - Token Address
     address IDLE_DAI_ADDRESS;
+    address SOCIAL_IMPACT_BOND;
 
     Dai public dai;  //@dev - dai.sol
     IERC20 public erc20;
     IdleToken public idleDAI;
+    SocialImpactBond public socialImpactBond;
 
-    constructor() public {}
+
+    constructor(address _erc20, address _socialImpactBond) public {
+        dai = Dai(_erc20);
+        erc20 = IERC20(_erc20);
+
+        SOCIAL_IMPACT_BOND = _socialImpactBond;
+    }
 
     /***
      * @dev - Government stake fund for payment for success
@@ -45,6 +56,9 @@ contract FundAndRefundGovernment is OwnableOriginal(msg.sender), McStorage, McCo
     /***
      * @dev - If outcome is achieved until objective, staked fund is distributed from this contract to investors
      **/
-    function payForSuccessful(uint _governmentId, uint _refundAmount) public returns (bool) {}
+    function payForSuccessful(uint _governmentId, uint _payForSuccessfulAmount) public returns (bool) {
+        dai.approve(SOCIAL_IMPACT_BOND, _payForSuccessfulAmount);
+        dai.transferFrom(address(this), SOCIAL_IMPACT_BOND, _payForSuccessfulAmount);
+    }
 
 }
