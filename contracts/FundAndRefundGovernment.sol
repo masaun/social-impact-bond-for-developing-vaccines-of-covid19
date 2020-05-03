@@ -34,11 +34,17 @@ contract FundAndRefundGovernment is OwnableOriginal(msg.sender), McStorage, McCo
     /***
      * @dev - Government stake fund for payment for success
      **/
-    function stakeFundFromGovernment(uint _objectiveId, uint _governmentId, uint _stakeAmount) public returns (bool) {}
+    //function stakeFundFromGovernment(uint _objectiveId, uint _governmentId, uint _stakeAmount) public returns (bool) {}
 
     /***
      * @dev - If outcome is not achieved until objective, staked fund is refunded to government
      **/
     function refundFundToGovernment(uint _governmentId, uint _refundAmount) public returns (bool) {}
+
+
+    /***
+     * @dev - If outcome is achieved until objective, staked fund is distributed from this contract to investors
+     **/
+    function payForSuccessful(uint _governmentId, uint _refundAmount) public returns (bool) {}
 
 }
