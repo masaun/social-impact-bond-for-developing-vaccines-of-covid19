@@ -48,17 +48,25 @@ contract FundAndRefundGovernment is OwnableOriginal(msg.sender), McStorage, McCo
     //function stakeFundFromGovernment(uint _objectiveId, uint _governmentId, uint _stakeAmount) public returns (bool) {}
 
     /***
-     * @dev - If outcome is not achieved until objective, staked fund is refunded to government
+     * @dev - If outcome is not achieved until objective, staked fund (principal amounts) is refunded to government
+     *      - In case of this, generated interest amount is distributed into investors
      **/
     function refundFundToGovernment(uint _governmentId, uint _refundAmount) public returns (bool) {}
 
 
     /***
-     * @dev - If outcome is achieved until objective, staked fund is distributed from this contract to investors
+     * @dev - If outcome is achieved until objective, staked fund is distributed from this contract to SocialImpactBond.sol contract (for investors)
      **/
     function payForSuccessful(uint _governmentId, uint _payForSuccessfulAmount) public returns (bool) {
         dai.approve(SOCIAL_IMPACT_BOND, _payForSuccessfulAmount);
         dai.transferFrom(address(this), SOCIAL_IMPACT_BOND, _payForSuccessfulAmount);
     }
 
+
+    /***
+     * @dev - Getter function
+     **/
+    function balanceOfContract() public view returns (uint balanceOfContract_DAI, uint balanceOfContract_idleDAI) {
+        return (dai.balanceOf(address(this)), idleDAI.balanceOf(address(this)));
+    }
 }
