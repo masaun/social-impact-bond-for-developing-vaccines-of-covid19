@@ -1,4 +1,4 @@
-var FundAndRefundGovernment = artifacts.require("FundAndRefundGovernment");
+var FundManagerForGovernment = artifacts.require("FundManagerForGovernment");
 
 //@dev - Import from exported file
 var tokenAddressList = require('./tokenAddress/tokenAddress.js');
@@ -10,10 +10,10 @@ module.exports = function(deployer, network, accounts) {
     // Initialize owner address if you want to transfer ownership of contract to some other address
     let ownerAddress = walletAddressList["WalletAddress1"];
 
-    deployer.deploy(FundAndRefundGovernment).then(async function(fundAndRefundGovernment) {
+    deployer.deploy(FundManagerForGovernment).then(async function(fundManagerForGovernment) {
         if(ownerAddress && ownerAddress!="") {
             console.log(`=== Transfering ownerhip to address ${ownerAddress} ===`)
-            await fundAndRefundGovernment.transferOwnership(ownerAddress);
+            await fundManagerForGovernment.transferOwnership(ownerAddress);
         }
     });
 };

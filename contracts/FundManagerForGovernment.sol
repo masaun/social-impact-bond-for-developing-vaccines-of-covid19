@@ -24,7 +24,7 @@ import "./idle-contracts/contracts/IdleToken.sol";
 import "./SocialImpactBond.sol";
 
 
-contract FundAndRefundGovernment is OwnableOriginal(msg.sender), McStorage, McConstants {
+contract FundManagerForGovernment is OwnableOriginal(msg.sender), McStorage, McConstants {
     //@dev - Token Address
     address IDLE_DAI_ADDRESS;
     address SOCIAL_IMPACT_BOND;
