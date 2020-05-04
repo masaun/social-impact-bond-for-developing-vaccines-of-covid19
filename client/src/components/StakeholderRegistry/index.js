@@ -32,6 +32,7 @@ export default class StakeholderRegistry extends Component {
         this._mintIdleToken = this._mintIdleToken.bind(this);
         this._redeemPooledFund = this._redeemPooledFund.bind(this);
         this._createProxyContract = this._createProxyContract.bind(this);
+        this._defineObjective = this._defineObjective.bind(this);
     }
 
     _mintIdleToken = async () => {
@@ -84,6 +85,21 @@ export default class StakeholderRegistry extends Component {
         let res1 = await social_impact_bond.methods.createProxyContract().send({ from: accounts[0] });
         console.log('=== response of createProxyContract() function ===\n', res1);
     }
+
+    _defineObjective = async () => {
+        const { accounts, web3, social_impact_bond } = this.state;
+
+        const _serviceProviderId = 1
+        const _savedCostOfObjective = web3.utils.toWei('100', 'ether'); 
+        const _startDate = 1588550400;  // Monday, May 4, 2020 12:00:00 AM
+        const _endDate = 1588636799;    // Monday, May 4, 2020 11:59:59 PM
+
+        let res1 = await social_impact_bond.methods.defineObjective(_serviceProviderId,
+                                                                    _savedCostOfObjective,
+                                                                    _startDate,
+                                                                    _endDate).send({ from: accounts[0] });
+        console.log('=== response of defineObjective() function ===\n', res1);
+    } 
 
 
 
@@ -263,6 +279,8 @@ export default class StakeholderRegistry extends Component {
                             <Button size={'small'} mt={3} mb={2} onClick={this._redeemPooledFund}> Redeem Pooled Fund（Redeem IdleDAI） </Button> <br />
 
                             <Button size={'small'} mt={3} mb={2} onClick={this._createProxyContract}> Create Proxy Contract </Button> <br />
+
+                            <Button size={'small'} mt={3} mb={2} onClick={this._defineObjective}> Define Objective </Button> <br />
 
                             <Button mainColor="DarkCyan" size={'small'} mt={3} mb={2} onClick={this._balanceOfContract}> Balance of contract </Button> <br />
                         </Card>
