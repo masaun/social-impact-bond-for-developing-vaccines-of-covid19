@@ -10,6 +10,7 @@ contract McEvents {
 
     event DefineObjective(
         uint objectiveId,
+        address objectiveAddress,
         uint serviceProviderId,
         uint savedCostOfObjective,
         uint startDate,

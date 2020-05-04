@@ -95,12 +95,14 @@ contract SocialImpactBond is OwnableOriginal(msg.sender), McStorage, McConstants
         //@dev - Create and save new objective
         Objective storage objective = objectives[currentObjectiveId];
         objective.objectiveId = currentObjectiveId;
+        objective.objectiveAddress = _proxyContractAddress;
         objective.serviceProviderId = _serviceProviderId;
         objective.savedCostOfObjective = _savedCostOfObjective;
         objective.startDate = _startDate;
         objective.endDate = _endDate;
 
         emit DefineObjective(objective.objectiveId,
+                             objective.objectiveAddress,
                              objective.serviceProviderId, 
                              objective.savedCostOfObjective, 
                              objective.startDate, 
