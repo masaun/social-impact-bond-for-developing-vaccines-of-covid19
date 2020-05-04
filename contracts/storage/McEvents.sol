@@ -2,6 +2,9 @@ pragma solidity ^0.5.11;
 
 import "./McObjects.sol";
 
+// Original Contract
+import "../ProxyContractFactory.sol";
+
 
 contract McEvents {
 
@@ -21,7 +24,11 @@ contract McEvents {
         bool isAchieved
     );
 
-
+    event CreateProxyContract (
+        ProxyContractFactory proxyContract
+        //address proxyContractAddress
+    );
+    
 
 
 
