@@ -110,6 +110,18 @@ contract SocialImpactBond is OwnableOriginal(msg.sender), McStorage, McConstants
                              objective.isAchieved);        
     } 
 
+    /***
+     * @dev - Distribute seed money plus interest to each investors (from pooled fund(DAI))
+     **/
+    function distributePooledFund(uint _objectiveId,uint _serviceProviderId) public returns (bool) {
+        Objective memory objective = objectives[_objectiveId];
+        bool _isAchieved = objective.isAchieved;
+
+        //@dev - Only investors who invested service providers achieved their objective can receive returned money (principal amounts plus interest amounts)
+        for (uint i=1; i < currentObjectiveId; i++) {
+            Objective memory objective = objectives[i];
+        }
+    }
 
     /***
      * @dev - Lend pooled fund(DAI) to idle.finance(idleDAI)
@@ -126,21 +138,6 @@ contract SocialImpactBond is OwnableOriginal(msg.sender), McStorage, McConstants
     function redeemPooledFund(uint256 _redeemAmount, bool _skipRebalance, uint256[] memory _clientProtocolAmounts) public returns (bool) {
         idleDAI.redeemIdleToken(_redeemAmount, _skipRebalance, _clientProtocolAmounts);
     }
-
-    /***
-     * @dev - Distribute seed money plus interest to each investors (from pooled fund(DAI))
-     **/
-    function distributePooledFund(uint _objectiveId,uint _serviceProviderId) public returns (bool) {
-        Objective memory objective = objectives[_objectiveId];
-        bool _isAchieved = objective.isAchieved;
-
-        //@dev - Only investors who invested service providers achieved their objective can receive returned money (principal amounts plus interest amounts)
-        for (uint i=1; i < currentObjectiveId; i++) {
-            Objective memory objective = objectives[i];
-        }
-    }
-
-
 
 
     /***
