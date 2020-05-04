@@ -31,6 +31,7 @@ export default class StakeholderRegistry extends Component {
 
         this._mintIdleToken = this._mintIdleToken.bind(this);
         this._redeemPooledFund = this._redeemPooledFund.bind(this);
+        this._createProxyContract = this._createProxyContract.bind(this);
     }
 
     _mintIdleToken = async () => {
@@ -75,6 +76,13 @@ export default class StakeholderRegistry extends Component {
 
         let res1 = await social_impact_bond.methods.balanceOfContract().call();
         console.log('=== response of balanceOfContract() function ===\n', res1);
+    }
+
+    _createProxyContract = async () => {
+        const { accounts, web3, social_impact_bond } = this.state;
+
+        let res1 = await social_impact_bond.methods.createProxyContract().send({ from: accounts[0] });
+        console.log('=== response of createProxyContract() function ===\n', res1);
     }
 
 
@@ -253,6 +261,8 @@ export default class StakeholderRegistry extends Component {
                             <Button size={'small'} mt={3} mb={2} onClick={this._lendPooledFund}> Lend Pooled Fund（Mint IdleDAI） </Button> <br />
 
                             <Button size={'small'} mt={3} mb={2} onClick={this._redeemPooledFund}> Redeem Pooled Fund（Redeem IdleDAI） </Button> <br />
+
+                            <Button size={'small'} mt={3} mb={2} onClick={this._createProxyContract}> Create Proxy Contract </Button> <br />
 
                             <Button mainColor="DarkCyan" size={'small'} mt={3} mb={2} onClick={this._balanceOfContract}> Balance of contract </Button> <br />
                         </Card>
