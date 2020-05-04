@@ -82,15 +82,14 @@ contract SocialImpactBond is OwnableOriginal(msg.sender), McStorage, McConstants
      * @param _endDate - Timestamp of ending date
      **/
     function defineObjective(
-        uint _saltNonce,
+        //uint _saltNonce,
         uint _serviceProviderId, 
         uint _savedCostOfObjective, 
         uint _startDate, 
         uint _endDate) public returns (bool) 
     {
         //@dev - Create new contract address for new objective
-        createProxyContract();
-        //address _proxyContractAddress = createProxyContract();
+        address _proxyContractAddress = createProxyContract();
         //address _proxyContractAddress = proxyContractFactory(_saltNonce);
 
         //@dev - Create and save new objective
