@@ -89,7 +89,7 @@ contract SocialImpactBond is OwnableOriginal(msg.sender), McStorage, McConstants
         uint _endDate) public returns (bool) 
     {
         //@dev - Create new contract address for new objective
-        address _proxyContractAddress = createProxyContract();
+        ProxyContractFactory _proxyContractAddress = createProxyContract();
         //address _proxyContractAddress = proxyContractFactory(_saltNonce);
 
         //@dev - Create and save new objective
