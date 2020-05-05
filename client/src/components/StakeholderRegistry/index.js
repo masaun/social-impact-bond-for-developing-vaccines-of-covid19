@@ -33,6 +33,9 @@ export default class StakeholderRegistry extends Component {
         this._redeemPooledFund = this._redeemPooledFund.bind(this);
         this._createProxyContract = this._createProxyContract.bind(this);
         this._defineObjective = this._defineObjective.bind(this);
+
+        /////// Test Functions
+        this.timestampFromDate = this.timestampFromDate.bind(this);
     }
 
     _mintIdleToken = async () => {
@@ -91,10 +94,6 @@ export default class StakeholderRegistry extends Component {
 
         const _serviceProviderId = 1
         const _savedCostOfObjective = web3.utils.toWei('100', 'ether');
-
-        const _startDate1 = await bokkypoobahs_datetime_contract.methods.timestampFromDate(2020, 5, 4).call();
-        console.log('=== _startDate1 ===', _startDate1);
-
         const _startDate = { startDateYear: 2020, startDateMonth: 5, startDateDay: 4 };  // Monday, May 4, 2020 12:00:00 AM
         //const _startDate = 1588550400;  // Monday, May 4, 2020 12:00:00 AM
         const _endDate = { endDateYear: 2020, endDateMonth: 5, endDateDay: 5 };    // Monday, May 5, 2020 12:00:00 AM
@@ -111,6 +110,15 @@ export default class StakeholderRegistry extends Component {
         console.log('=== response of defineObjective() function ===\n', res1);
     } 
 
+    /***
+     * @dev - Test Functions
+     **/
+    timestampFromDate = async () => {
+        const { accounts, web3, bokkypoobahs_datetime_contract } = this.state;
+
+        const dateToTimestamp = await bokkypoobahs_datetime_contract.methods.timestampFromDate(2020, 5, 4).call();
+        console.log('=== dateToTimestamp ===', dateToTimestamp);
+    }
 
 
     //////////////////////////////////// 
@@ -304,6 +312,17 @@ export default class StakeholderRegistry extends Component {
                             <Button size={'small'} mt={3} mb={2} onClick={this._defineObjective}> Define Objective </Button> <br />
 
                             <Button mainColor="DarkCyan" size={'small'} mt={3} mb={2} onClick={this._balanceOfContract}> Balance of contract </Button> <br />
+                        </Card>
+
+                        <Card width={"auto"} 
+                              maxWidth={"420px"} 
+                              mx={"auto"} 
+                              my={5} 
+                              p={20} 
+                              borderColor={"#E8E8E8"}
+                        >
+                            <h4>Test Functions</h4> <br />
+                            <Button mainColor="DarkCyan" size={'small'} mt={3} mb={2} onClick={this.timestampFromDate}> Timestamp From Date </Button> <br />
                         </Card>
                     </Grid>
 
