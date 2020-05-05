@@ -48,6 +48,7 @@ contract SocialImpactBond is OwnableOriginal(msg.sender), McStorage, McConstants
 
     StakeholderRegistry public stakeholderRegistry;
 
+
     constructor(address _erc20, address _idleDAI, address _stakeholderRegistry, address _bokkyPooBahsDateTimeContract) public {
         dai = Dai(_erc20);
         erc20 = IERC20(_erc20);

@@ -87,10 +87,14 @@ export default class StakeholderRegistry extends Component {
     }
 
     _defineObjective = async () => {
-        const { accounts, web3, social_impact_bond } = this.state;
+        const { accounts, web3, social_impact_bond, bokkypoobahs_datetime_contract } = this.state;
 
         const _serviceProviderId = 1
-        const _savedCostOfObjective = web3.utils.toWei('100', 'ether'); 
+        const _savedCostOfObjective = web3.utils.toWei('100', 'ether');
+
+        const _startDate1 = await bokkypoobahs_datetime_contract.methods.timestampFromDate(2020, 5, 4).call();
+        console.log('=== _startDate1 ===', _startDate1);
+
         const _startDate = { startDateYear: 2020, startDateMonth: 5, startDateDay: 4 };  // Monday, May 4, 2020 12:00:00 AM
         //const _startDate = 1588550400;  // Monday, May 4, 2020 12:00:00 AM
         const _endDate = { endDateYear: 2020, endDateMonth: 5, endDateDay: 5 };    // Monday, May 5, 2020 12:00:00 AM
@@ -223,7 +227,7 @@ export default class StakeholderRegistry extends Component {
 
             //@dev - Create instance of BokkyPooBahsDateTimeContract.sol
             let instanceBokkyPooBahsDateTimeContract = null;
-            let BOKKYPOOBAHS_DATETIME_CONTRACT_ADDRESS = tokenAddressList["Kovan"]["IdleDAI"]["BokkyPooBahsDateTimeContract"];  // IdleDAI (on Kovan)
+            let BOKKYPOOBAHS_DATETIME_CONTRACT_ADDRESS = contractAddressList["Kovan"]["BokkyPooBahsDateTimeLibrary"]["BokkyPooBahsDateTimeContract"];  // IdleDAI (on Kovan)
             instanceBokkyPooBahsDateTimeContract = new web3.eth.Contract(
               BokkyPooBahsDateTimeContract.abi,
               BOKKYPOOBAHS_DATETIME_CONTRACT_ADDRESS,
