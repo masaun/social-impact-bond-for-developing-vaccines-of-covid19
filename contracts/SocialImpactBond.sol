@@ -88,7 +88,9 @@ contract SocialImpactBond is OwnableOriginal(msg.sender), McStorage, McConstants
     function defineObjective(
         //uint _saltNonce,
         uint _serviceProviderId, 
-        uint _savedCostOfObjective,
+        uint _estimatedBudgetAmount,  // Estimated budget amount by the government
+        uint _requestedBudgetAmount,  // Requested budget amount by service providers (ask this budget for investors)
+        //uint _savedCostOfObjective,
         uint _startDateYear,
         uint _startDateMonth,
         uint _startDateDay,
@@ -104,11 +106,16 @@ contract SocialImpactBond is OwnableOriginal(msg.sender), McStorage, McConstants
         ProxyContractFactory _proxyContractAddress = createProxyContract();
         //address _proxyContractAddress = proxyContractFactory(_saltNonce);
 
+        //@dev - Calculate expected saving cost of objective
+        uint _savedCostOfObjective = _estimatedBudgetAmount.sub(_requestedBudgetAmount);
+
         //@dev - Create and save new objective
         Objective storage objective = objectives[currentObjectiveId];
         objective.objectiveId = currentObjectiveId;
         objective.objectiveAddress = _proxyContractAddress;
         objective.serviceProviderId = _serviceProviderId;
+        objective.estimatedBudgetAmount = _estimatedBudgetAmount;
+        objective.requestedBudgetAmount = _requestedBudgetAmount;
         objective.savedCostOfObjective = _savedCostOfObjective;
         objective.startDate = _startDate;
         objective.endDate = _endDate;
@@ -116,6 +123,8 @@ contract SocialImpactBond is OwnableOriginal(msg.sender), McStorage, McConstants
         emit DefineObjective(objective.objectiveId,
                              objective.objectiveAddress,
                              objective.serviceProviderId, 
+                             objective.estimatedBudgetAmount,
+                             objective.requestedBudgetAmount,
                              objective.savedCostOfObjective, 
                              objective.startDate, 
                              objective.endDate);
