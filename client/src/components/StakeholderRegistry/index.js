@@ -91,15 +91,19 @@ export default class StakeholderRegistry extends Component {
 
         const _serviceProviderId = 1
         const _savedCostOfObjective = web3.utils.toWei('100', 'ether'); 
-        const _startDate = bokkypoobahs_datetime_contract.methods.get;  // Monday, May 4, 2020 12:00:00 AM
+        const _startDate = { startDateYear: 2020, startDateMonth: 5, startDateDay: 4 };  // Monday, May 4, 2020 12:00:00 AM
         //const _startDate = 1588550400;  // Monday, May 4, 2020 12:00:00 AM
-        const _endDate = 1588636799;    // Monday, May 4, 2020 11:59:59 PM
+        const _endDate = { endDateYear: 2020, endDateMonth: 5, endDateDay: 5 };    // Monday, May 5, 2020 12:00:00 AM
         //const _endDate = 1588636799;    // Monday, May 4, 2020 11:59:59 PM
 
         let res1 = await social_impact_bond.methods.defineObjective(_serviceProviderId,
                                                                     _savedCostOfObjective,
-                                                                    _startDate,
-                                                                    _endDate).send({ from: accounts[0] });
+                                                                    _startDate["startDateYear"],
+                                                                    _startDate["startDateMonth"],
+                                                                    _startDate["startDateDay"],
+                                                                    _endDate["endDateYear"],
+                                                                    _endDate["endDateMonth"],
+                                                                    _endDate["endDateDay"]).send({ from: accounts[0] });
         console.log('=== response of defineObjective() function ===\n', res1);
     } 
 

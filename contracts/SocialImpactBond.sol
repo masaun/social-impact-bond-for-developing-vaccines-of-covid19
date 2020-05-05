@@ -89,10 +89,18 @@ contract SocialImpactBond is OwnableOriginal(msg.sender), McStorage, McConstants
     function defineObjective(
         //uint _saltNonce,
         uint _serviceProviderId, 
-        uint _savedCostOfObjective, 
-        uint _startDate, 
-        uint _endDate) public returns (bool) 
+        uint _savedCostOfObjective,
+        uint _startDateYear,
+        uint _startDateMonth,
+        uint _startDateDay,
+        uint _endDateYear,
+        uint _endDateMonth,
+        uint _endDateDay) public returns (bool) 
     {
+        //@dev - Convert dateTime from date(YYYY/MM/DD) to timestamp
+        uint _startDate = bokkyPooBahsDateTimeContract.timestampFromDate(_startDateYear, _startDateMonth, _startDateDay);
+        uint _endDate = bokkyPooBahsDateTimeContract.timestampFromDate(_endDateYear, _endDateMonth, _endDateDay);
+
         //@dev - Create new contract address for new objective
         ProxyContractFactory _proxyContractAddress = createProxyContract();
         //address _proxyContractAddress = proxyContractFactory(_saltNonce);
