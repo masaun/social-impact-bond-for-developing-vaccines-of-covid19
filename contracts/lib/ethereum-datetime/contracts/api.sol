@@ -1,4 +1,4 @@
-contract DateTimeAPI {
+interface DateTimeAPI {
         /*
          *  Abstract contract for interfacing with the DateTime contract.
          *
