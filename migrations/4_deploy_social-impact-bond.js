@@ -9,11 +9,12 @@ var contractAddressList = require('./contractAddress/contractAddress.js');
 const _erc20 = tokenAddressList["Kovan"]["DAI"];        // DAI address on Kovan
 const _idleDAI = tokenAddressList["Kovan"]["IdleDAI"];  // IdleDAI address on Kovan
 const _stakeholderRegistry = StakeholderRegistry.address;
+const _bokkyPooBahsDateTimeContract = contractAddressList["Kovan"]["BokkyPooBahsDateTimeLibrary"]["BokkyPooBahsDateTimeContract"]
 
 const depositedAmount = web3.utils.toWei("2.1");    // 2.1 DAI which is deposited in deployed contract. 
 
 module.exports = async function(deployer, network, accounts) {
-    await deployer.deploy(SocialImpactBond, _erc20, _idleDAI, _stakeholderRegistry);
+    await deployer.deploy(SocialImpactBond, _erc20, _idleDAI, _stakeholderRegistry, _bokkyPooBahsDateTimeContract);
 
     const socialImpactBond = await SocialImpactBond.deployed();
 

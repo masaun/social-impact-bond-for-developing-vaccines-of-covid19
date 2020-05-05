@@ -20,6 +20,9 @@ import "./DAI/dai.sol";
 // idle.finance
 import "./idle-contracts/contracts/IdleToken.sol";
 
+// DateTime
+import "./lib/BokkyPooBahsDateTimeLibrary/contracts/BokkyPooBahsDateTimeContract.sol";
+
 // Original Contract
 import "./StakeholderRegistry.sol";
 import "./ProxyContractFactory.sol";
@@ -41,14 +44,16 @@ contract SocialImpactBond is OwnableOriginal(msg.sender), McStorage, McConstants
     Dai public dai;  //@dev - dai.sol
     IERC20 public erc20;
     IdleToken public idleDAI;
+    BokkyPooBahsDateTimeContract public bokkyPooBahsDateTimeContract;
 
     StakeholderRegistry public stakeholderRegistry;
 
-    constructor(address _erc20, address _idleDAI, address _stakeholderRegistry) public {
+    constructor(address _erc20, address _idleDAI, address _stakeholderRegistry, address _bokkyPooBahsDateTimeContract) public {
         dai = Dai(_erc20);
         erc20 = IERC20(_erc20);
         idleDAI = IdleToken(_idleDAI);
         stakeholderRegistry = StakeholderRegistry(_stakeholderRegistry);
+        bokkyPooBahsDateTimeContract = BokkyPooBahsDateTimeContract(_bokkyPooBahsDateTimeContract);
 
         IDLE_DAI_ADDRESS = _idleDAI;
     }
