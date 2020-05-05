@@ -10,6 +10,7 @@ contract McEvents {
 
     event DefineObjective(
         uint objectiveId,
+        ProxyContractFactory objectiveAddress,
         uint serviceProviderId,
         uint savedCostOfObjective,
         uint startDate,

@@ -20,6 +20,9 @@ import "./DAI/dai.sol";
 // idle.finance
 import "./idle-contracts/contracts/IdleToken.sol";
 
+// DateTime
+import "./lib/BokkyPooBahsDateTimeLibrary/contracts/BokkyPooBahsDateTimeContract.sol";
+
 // Original Contract
 import "./StakeholderRegistry.sol";
 import "./ProxyContractFactory.sol";
@@ -41,14 +44,16 @@ contract SocialImpactBond is OwnableOriginal(msg.sender), McStorage, McConstants
     Dai public dai;  //@dev - dai.sol
     IERC20 public erc20;
     IdleToken public idleDAI;
+    BokkyPooBahsDateTimeContract public bokkyPooBahsDateTimeContract;
 
     StakeholderRegistry public stakeholderRegistry;
 
-    constructor(address _erc20, address _idleDAI, address _stakeholderRegistry) public {
+    constructor(address _erc20, address _idleDAI, address _stakeholderRegistry, address _bokkyPooBahsDateTimeContract) public {
         dai = Dai(_erc20);
         erc20 = IERC20(_erc20);
         idleDAI = IdleToken(_idleDAI);
         stakeholderRegistry = StakeholderRegistry(_stakeholderRegistry);
+        bokkyPooBahsDateTimeContract = BokkyPooBahsDateTimeContract(_bokkyPooBahsDateTimeContract);
 
         IDLE_DAI_ADDRESS = _idleDAI;
     }
@@ -69,7 +74,7 @@ contract SocialImpactBond is OwnableOriginal(msg.sender), McStorage, McConstants
     //     bytes32 salt = keccak256(abi.encode(msg.sender, _saltNonce));
     //     address proxyContractAddress;
     //     assembly {
-    //       proxyContractAddress := create2(0, add(bytecode, 0x20), mload(bytecode), salt)
+    //         proxyContractAddress := create2(0, add(bytecode, 0x20), mload(bytecode), salt)
     //     }
     // }
     
@@ -82,26 +87,27 @@ contract SocialImpactBond is OwnableOriginal(msg.sender), McStorage, McConstants
      * @param _endDate - Timestamp of ending date
      **/
     function defineObjective(
-        uint _saltNonce,
+        //uint _saltNonce,
         uint _serviceProviderId, 
         uint _savedCostOfObjective, 
         uint _startDate, 
         uint _endDate) public returns (bool) 
     {
         //@dev - Create new contract address for new objective
-        createProxyContract();
-        //address _proxyContractAddress = createProxyContract();
+        ProxyContractFactory _proxyContractAddress = createProxyContract();
         //address _proxyContractAddress = proxyContractFactory(_saltNonce);
 
         //@dev - Create and save new objective
         Objective storage objective = objectives[currentObjectiveId];
         objective.objectiveId = currentObjectiveId;
+        objective.objectiveAddress = _proxyContractAddress;
         objective.serviceProviderId = _serviceProviderId;
         objective.savedCostOfObjective = _savedCostOfObjective;
         objective.startDate = _startDate;
         objective.endDate = _endDate;
 
         emit DefineObjective(objective.objectiveId,
+                             objective.objectiveAddress,
                              objective.serviceProviderId, 
                              objective.savedCostOfObjective, 
                              objective.startDate, 

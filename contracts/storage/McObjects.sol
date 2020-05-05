@@ -1,12 +1,16 @@
 pragma solidity ^0.5.11;
 pragma experimental ABIEncoderV2;
 
+// Original Contract
+import "../ProxyContractFactory.sol";
+
 
 contract McObjects {
 
     struct Objective {
         //@dev - Define objective
         uint objectiveId;
+        ProxyContractFactory objectiveAddress;
         uint serviceProviderId;
         uint savedCostOfObjective;
         uint startDate;
