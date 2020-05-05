@@ -48,6 +48,7 @@ contract SocialImpactBond is OwnableOriginal(msg.sender), McStorage, McConstants
 
     StakeholderRegistry public stakeholderRegistry;
 
+
     constructor(address _erc20, address _idleDAI, address _stakeholderRegistry, address _bokkyPooBahsDateTimeContract) public {
         dai = Dai(_erc20);
         erc20 = IERC20(_erc20);
@@ -83,16 +84,22 @@ contract SocialImpactBond is OwnableOriginal(msg.sender), McStorage, McConstants
     /***
      * @dev - Define Objective for saving cost (This objective become criteria for whether it judging success or not)
      *      - This function is executed by government only.
-     * @param _startDate - Timestamp of starting date
-     * @param _endDate - Timestamp of ending date
      **/
     function defineObjective(
         //uint _saltNonce,
         uint _serviceProviderId, 
-        uint _savedCostOfObjective, 
-        uint _startDate, 
-        uint _endDate) public returns (bool) 
+        uint _savedCostOfObjective,
+        uint _startDateYear,
+        uint _startDateMonth,
+        uint _startDateDay,
+        uint _endDateYear,
+        uint _endDateMonth,
+        uint _endDateDay) public returns (bool) 
     {
+        //@dev - Convert dateTime from date(YYYY/MM/DD) to timestamp
+        uint _startDate = bokkyPooBahsDateTimeContract.timestampFromDate(_startDateYear, _startDateMonth, _startDateDay);
+        uint _endDate = bokkyPooBahsDateTimeContract.timestampFromDate(_endDateYear, _endDateMonth, _endDateDay);
+
         //@dev - Create new contract address for new objective
         ProxyContractFactory _proxyContractAddress = createProxyContract();
         //address _proxyContractAddress = proxyContractFactory(_saltNonce);

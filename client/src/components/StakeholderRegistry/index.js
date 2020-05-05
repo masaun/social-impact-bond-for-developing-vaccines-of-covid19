@@ -33,6 +33,9 @@ export default class StakeholderRegistry extends Component {
         this._redeemPooledFund = this._redeemPooledFund.bind(this);
         this._createProxyContract = this._createProxyContract.bind(this);
         this._defineObjective = this._defineObjective.bind(this);
+
+        /////// Test Functions
+        this.timestampFromDate = this.timestampFromDate.bind(this);
     }
 
     _mintIdleToken = async () => {
@@ -87,20 +90,35 @@ export default class StakeholderRegistry extends Component {
     }
 
     _defineObjective = async () => {
-        const { accounts, web3, social_impact_bond } = this.state;
+        const { accounts, web3, social_impact_bond, bokkypoobahs_datetime_contract } = this.state;
 
         const _serviceProviderId = 1
-        const _savedCostOfObjective = web3.utils.toWei('100', 'ether'); 
-        const _startDate = 1588550400;  // Monday, May 4, 2020 12:00:00 AM
-        const _endDate = 1588636799;    // Monday, May 4, 2020 11:59:59 PM
+        const _savedCostOfObjective = web3.utils.toWei('100', 'ether');
+        const _startDate = { startDateYear: 2020, startDateMonth: 5, startDateDay: 4 };  // Monday, May 4, 2020 12:00:00 AM
+        //const _startDate = 1588550400;  // Monday, May 4, 2020 12:00:00 AM
+        const _endDate = { endDateYear: 2020, endDateMonth: 5, endDateDay: 5 };    // Monday, May 5, 2020 12:00:00 AM
+        //const _endDate = 1588636799;    // Monday, May 4, 2020 11:59:59 PM
 
         let res1 = await social_impact_bond.methods.defineObjective(_serviceProviderId,
                                                                     _savedCostOfObjective,
-                                                                    _startDate,
-                                                                    _endDate).send({ from: accounts[0] });
+                                                                    _startDate["startDateYear"],
+                                                                    _startDate["startDateMonth"],
+                                                                    _startDate["startDateDay"],
+                                                                    _endDate["endDateYear"],
+                                                                    _endDate["endDateMonth"],
+                                                                    _endDate["endDateDay"]).send({ from: accounts[0] });
         console.log('=== response of defineObjective() function ===\n', res1);
     } 
 
+    /***
+     * @dev - Test Functions
+     **/
+    timestampFromDate = async () => {
+        const { accounts, web3, bokkypoobahs_datetime_contract } = this.state;
+
+        const dateToTimestamp = await bokkypoobahs_datetime_contract.methods.timestampFromDate(2020, 5, 4).call();
+        console.log('=== dateToTimestamp ===', dateToTimestamp);
+    }
 
 
     //////////////////////////////////// 
@@ -133,11 +151,13 @@ export default class StakeholderRegistry extends Component {
         let SocialImpactBond = {};
         let Dai = {};
         let IdleToken = {};
+        let BokkyPooBahsDateTimeContract = {};
         try {
           StakeholderRegistry = require("../../../../build/contracts/StakeholderRegistry.json");  // Load artifact-file of StakeholderRegistry
           SocialImpactBond = require("../../../../build/contracts/SocialImpactBond.json");  // Load artifact-file of SocialImpactBond
           Dai = require("../../../../build/contracts/Dai.json");               //@dev - DAI（Underlying asset）
           IdleToken = require("../../../../build/contracts/IdleToken.json");   //@dev - IdleToken（IdleDAI）
+          BokkyPooBahsDateTimeContract = require("../../../../build/contracts/BokkyPooBahsDateTimeContract.json");   //@dev - BokkyPooBahsDateTimeContract.sol (for calculate timestamp)
         } catch (e) {
           console.log(e);
         }
@@ -195,7 +215,6 @@ export default class StakeholderRegistry extends Component {
               }
             }
 
-
             //@dev - Create instance of DAI-contract
             let instanceDai = null;
             let DAI_ADDRESS = tokenAddressList["Kovan"]["DAI"]; //@dev - DAI（on Kovan）
@@ -205,7 +224,7 @@ export default class StakeholderRegistry extends Component {
             );
             console.log('=== instanceDai ===', instanceDai);
 
-            //@dev - Create instance of DAI-contract
+            //@dev - Create instance of IdleDAI
             let instanceIdleDAI = null;
             let IDLE_DAI_ADDRESS = tokenAddressList["Kovan"]["IdleDAI"];  // IdleDAI (on Kovan)
             instanceIdleDAI = new web3.eth.Contract(
@@ -213,6 +232,15 @@ export default class StakeholderRegistry extends Component {
               IDLE_DAI_ADDRESS,
             );
             console.log('=== instanceIdleDAI ===', instanceIdleDAI);
+
+            //@dev - Create instance of BokkyPooBahsDateTimeContract.sol
+            let instanceBokkyPooBahsDateTimeContract = null;
+            let BOKKYPOOBAHS_DATETIME_CONTRACT_ADDRESS = contractAddressList["Kovan"]["BokkyPooBahsDateTimeLibrary"]["BokkyPooBahsDateTimeContract"];  // IdleDAI (on Kovan)
+            instanceBokkyPooBahsDateTimeContract = new web3.eth.Contract(
+              BokkyPooBahsDateTimeContract.abi,
+              BOKKYPOOBAHS_DATETIME_CONTRACT_ADDRESS,
+            );
+            console.log('=== instanceBokkyPooBahsDateTimeContract ===', instanceBokkyPooBahsDateTimeContract);
 
 
             if (StakeholderRegistry || SocialImpactBond) {
@@ -231,6 +259,7 @@ export default class StakeholderRegistry extends Component {
                 social_impact_bond: instanceSocialImpactBond,
                 dai: instanceDai,
                 idle_dai: instanceIdleDAI,
+                bokkypoobahs_datetime_contract: instanceBokkyPooBahsDateTimeContract,
                 STAKEHOLDER_REGISTRY_ADDRESS: STAKEHOLDER_REGISTRY_ADDRESS,
                 DAI_ADDRESS: DAI_ADDRESS,
                 IDLE_DAI_ADDRESS: IDLE_DAI_ADDRESS
@@ -283,6 +312,17 @@ export default class StakeholderRegistry extends Component {
                             <Button size={'small'} mt={3} mb={2} onClick={this._defineObjective}> Define Objective </Button> <br />
 
                             <Button mainColor="DarkCyan" size={'small'} mt={3} mb={2} onClick={this._balanceOfContract}> Balance of contract </Button> <br />
+                        </Card>
+
+                        <Card width={"auto"} 
+                              maxWidth={"420px"} 
+                              mx={"auto"} 
+                              my={5} 
+                              p={20} 
+                              borderColor={"#E8E8E8"}
+                        >
+                            <h4>Test Functions</h4> <br />
+                            <Button mainColor="DarkCyan" size={'small'} mt={3} mb={2} onClick={this.timestampFromDate}> Timestamp From Date </Button> <br />
                         </Card>
                     </Grid>
 
