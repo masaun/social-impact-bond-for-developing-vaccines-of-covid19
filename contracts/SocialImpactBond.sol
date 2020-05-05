@@ -84,8 +84,6 @@ contract SocialImpactBond is OwnableOriginal(msg.sender), McStorage, McConstants
     /***
      * @dev - Define Objective for saving cost (This objective become criteria for whether it judging success or not)
      *      - This function is executed by government only.
-     * @param _startDate - Timestamp of starting date
-     * @param _endDate - Timestamp of ending date
      **/
     function defineObjective(
         //uint _saltNonce,
