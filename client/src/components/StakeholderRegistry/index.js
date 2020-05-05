@@ -91,8 +91,10 @@ export default class StakeholderRegistry extends Component {
 
         const _serviceProviderId = 1
         const _savedCostOfObjective = web3.utils.toWei('100', 'ether'); 
-        const _startDate = 1588550400;  // Monday, May 4, 2020 12:00:00 AM
+        const _startDate = bokkypoobahs_datetime_contract.methods.get;  // Monday, May 4, 2020 12:00:00 AM
+        //const _startDate = 1588550400;  // Monday, May 4, 2020 12:00:00 AM
         const _endDate = 1588636799;    // Monday, May 4, 2020 11:59:59 PM
+        //const _endDate = 1588636799;    // Monday, May 4, 2020 11:59:59 PM
 
         let res1 = await social_impact_bond.methods.defineObjective(_serviceProviderId,
                                                                     _savedCostOfObjective,
@@ -133,11 +135,13 @@ export default class StakeholderRegistry extends Component {
         let SocialImpactBond = {};
         let Dai = {};
         let IdleToken = {};
+        let BokkyPooBahsDateTimeContract = {};
         try {
           StakeholderRegistry = require("../../../../build/contracts/StakeholderRegistry.json");  // Load artifact-file of StakeholderRegistry
           SocialImpactBond = require("../../../../build/contracts/SocialImpactBond.json");  // Load artifact-file of SocialImpactBond
           Dai = require("../../../../build/contracts/Dai.json");               //@dev - DAI（Underlying asset）
           IdleToken = require("../../../../build/contracts/IdleToken.json");   //@dev - IdleToken（IdleDAI）
+          BokkyPooBahsDateTimeContract = require("../../../../build/contracts/BokkyPooBahsDateTimeContract.json");   //@dev - BokkyPooBahsDateTimeContract.sol (for calculate timestamp)
         } catch (e) {
           console.log(e);
         }
@@ -195,7 +199,6 @@ export default class StakeholderRegistry extends Component {
               }
             }
 
-
             //@dev - Create instance of DAI-contract
             let instanceDai = null;
             let DAI_ADDRESS = tokenAddressList["Kovan"]["DAI"]; //@dev - DAI（on Kovan）
@@ -205,7 +208,7 @@ export default class StakeholderRegistry extends Component {
             );
             console.log('=== instanceDai ===', instanceDai);
 
-            //@dev - Create instance of DAI-contract
+            //@dev - Create instance of IdleDAI
             let instanceIdleDAI = null;
             let IDLE_DAI_ADDRESS = tokenAddressList["Kovan"]["IdleDAI"];  // IdleDAI (on Kovan)
             instanceIdleDAI = new web3.eth.Contract(
@@ -213,6 +216,15 @@ export default class StakeholderRegistry extends Component {
               IDLE_DAI_ADDRESS,
             );
             console.log('=== instanceIdleDAI ===', instanceIdleDAI);
+
+            //@dev - Create instance of BokkyPooBahsDateTimeContract.sol
+            let instanceBokkyPooBahsDateTimeContract = null;
+            let BOKKYPOOBAHS_DATETIME_CONTRACT_ADDRESS = tokenAddressList["Kovan"]["IdleDAI"]["BokkyPooBahsDateTimeContract"];  // IdleDAI (on Kovan)
+            instanceBokkyPooBahsDateTimeContract = new web3.eth.Contract(
+              BokkyPooBahsDateTimeContract.abi,
+              BOKKYPOOBAHS_DATETIME_CONTRACT_ADDRESS,
+            );
+            console.log('=== instanceBokkyPooBahsDateTimeContract ===', instanceBokkyPooBahsDateTimeContract);
 
 
             if (StakeholderRegistry || SocialImpactBond) {
@@ -231,6 +243,7 @@ export default class StakeholderRegistry extends Component {
                 social_impact_bond: instanceSocialImpactBond,
                 dai: instanceDai,
                 idle_dai: instanceIdleDAI,
+                bokkypoobahs_datetime_contract: instanceBokkyPooBahsDateTimeContract,
                 STAKEHOLDER_REGISTRY_ADDRESS: STAKEHOLDER_REGISTRY_ADDRESS,
                 DAI_ADDRESS: DAI_ADDRESS,
                 IDLE_DAI_ADDRESS: IDLE_DAI_ADDRESS
