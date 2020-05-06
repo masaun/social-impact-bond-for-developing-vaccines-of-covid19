@@ -34,6 +34,9 @@ export default class StakeholderRegistry extends Component {
         this._createProxyContract = this._createProxyContract.bind(this);
         this._defineObjective = this._defineObjective.bind(this);
 
+        /////// Getter Functions
+        this._getObjective = this._getObjective.bind(this);
+
         /////// Test Functions
         this.timestampFromDate = this.timestampFromDate.bind(this);
     }
@@ -75,13 +78,6 @@ export default class StakeholderRegistry extends Component {
         console.log('=== response of redeemPooledFund() function ===\n', res1);            
     }
 
-    _balanceOfContract = async () => {
-        const { accounts, web3, social_impact_bond, stakeholder_registry, dai, idle_dai, IDLE_DAI_ADDRESS } = this.state;
-
-        let res1 = await social_impact_bond.methods.balanceOfContract().call();
-        console.log('=== response of balanceOfContract() function ===\n', res1);
-    }
-
     _createProxyContract = async () => {
         const { accounts, web3, social_impact_bond } = this.state;
 
@@ -93,14 +89,20 @@ export default class StakeholderRegistry extends Component {
         const { accounts, web3, social_impact_bond, bokkypoobahs_datetime_contract } = this.state;
 
         const _serviceProviderId = 1
-        const _savedCostOfObjective = web3.utils.toWei('100', 'ether');
+        
+        //const _savedCostOfObjective = web3.utils.toWei('100', 'ether');
+        const _estimatedBudgetAmount = web3.utils.toWei('200', 'ether');
+        const _requestedBudgetAmount = web3.utils.toWei('150', 'ether');
+
         const _startDate = { startDateYear: 2020, startDateMonth: 5, startDateDay: 4 };  // Monday, May 4, 2020 12:00:00 AM
         //const _startDate = 1588550400;  // Monday, May 4, 2020 12:00:00 AM
         const _endDate = { endDateYear: 2020, endDateMonth: 5, endDateDay: 5 };    // Monday, May 5, 2020 12:00:00 AM
         //const _endDate = 1588636799;    // Monday, May 4, 2020 11:59:59 PM
 
         let res1 = await social_impact_bond.methods.defineObjective(_serviceProviderId,
-                                                                    _savedCostOfObjective,
+                                                                    _estimatedBudgetAmount,
+                                                                    _requestedBudgetAmount,
+                                                                    //_savedCostOfObjective,
                                                                     _startDate["startDateYear"],
                                                                     _startDate["startDateMonth"],
                                                                     _startDate["startDateDay"],
@@ -109,6 +111,26 @@ export default class StakeholderRegistry extends Component {
                                                                     _endDate["endDateDay"]).send({ from: accounts[0] });
         console.log('=== response of defineObjective() function ===\n', res1);
     } 
+
+
+    /***
+     * @dev - Getter function
+     **/
+    _balanceOfContract = async () => {
+        const { accounts, web3, social_impact_bond, stakeholder_registry, dai, idle_dai, IDLE_DAI_ADDRESS } = this.state;
+
+        let res1 = await social_impact_bond.methods.balanceOfContract().call();
+        console.log('=== response of balanceOfContract() function ===\n', res1);
+    }
+
+    _getObjective = async () => {
+        const { accounts, web3, social_impact_bond, stakeholder_registry, dai, idle_dai, IDLE_DAI_ADDRESS } = this.state;
+
+        const _objectiveId = 1;
+        let res1 = await social_impact_bond.methods.getObjective(_objectiveId).call();
+        console.log('=== response of getObjective() function ===\n', res1);
+    }
+
 
     /***
      * @dev - Test Functions
@@ -312,6 +334,8 @@ export default class StakeholderRegistry extends Component {
                             <Button size={'small'} mt={3} mb={2} onClick={this._defineObjective}> Define Objective </Button> <br />
 
                             <Button mainColor="DarkCyan" size={'small'} mt={3} mb={2} onClick={this._balanceOfContract}> Balance of contract </Button> <br />
+
+                            <Button mainColor="DarkCyan" size={'small'} mt={3} mb={2} onClick={this._getObjective}> Get Objective </Button> <br />
                         </Card>
 
                         <Card width={"auto"} 
