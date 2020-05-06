@@ -36,6 +36,7 @@ export default class StakeholderRegistry extends Component {
         this._createProxyContract = this._createProxyContract.bind(this);
         this._defineObjective = this._defineObjective.bind(this);
         this._investForObjective = this._investForObjective.bind(this);
+        this._evaluateOutcome = this._evaluateOutcome.bind(this);
 
         /////// Getter Functions
         this._getObjective = this._getObjective.bind(this);
@@ -146,6 +147,16 @@ export default class StakeholderRegistry extends Component {
         console.log('=== response of registerInvestedInvestorId() function ===\n', res3);
     }
 
+    _evaluateOutcome = async () => {
+        const { accounts, web3, dai, social_impact_bond, stakeholder_registry, bokkypoobahs_datetime_contract } = this.state;
+
+        const _objectiveId = 1
+        const _evaluatorId = 1
+        const _savedCostOfOutcome = web3.utils.toWei('120', 'ether');
+
+        let res = await social_impact_bond.methods.evaluateOutcome(_objectiveId, _evaluatorId, _savedCostOfOutcome).send({ from: accounts[0] });
+        console.log('=== response of evaluateOutcome() function ===\n', res);
+    }
 
 
     /***
@@ -374,6 +385,8 @@ export default class StakeholderRegistry extends Component {
                             <Button size={'small'} mt={3} mb={2} onClick={this._defineObjective}> Define Objective </Button> <br />
 
                             <Button size={'small'} mt={3} mb={2} onClick={this._investForObjective}> Invest For Objective </Button> <br />
+
+                            <Button size={'small'} mt={3} mb={2} onClick={this._evaluateOutcome}> Evaluate Outcome </Button> <br />
 
                             <hr />
 
