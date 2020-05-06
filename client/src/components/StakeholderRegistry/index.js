@@ -132,7 +132,7 @@ export default class StakeholderRegistry extends Component {
         console.log('=== response of getInvestorId() function ===\n', _investorId);
 
         const _objectiveId = 1;
-        const _investmentAmount = await web3.utils.toWei('25', 'ether');
+        const _investmentAmount = await web3.utils.toWei('1', 'ether');
 
         const objective = await social_impact_bond.methods.getObjective(_objectiveId).call();
         const _objectiveAddress = objective.objectiveAddress;
