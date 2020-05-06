@@ -124,10 +124,11 @@ contract SocialImpactBond is OwnableOriginal(msg.sender), McStorage, McConstants
      **/
     function investForObjective(uint _objectiveId, uint _investorId, uint _investmentAmount) public returns (bool) {
         address investor = msg.sender;
-        ProxyContractFactory receiver = getObjective(_objectiveId).objectiveAddress;
+        ProxyContractFactory _recipient = getObjective(_objectiveId).objectiveAddress;
+        address recipient = address(_recipient);
         address spender = address(this);
         dai.approve(spender, _investmentAmount);
-        dai.transferFrom(investor, address(receiver), _investmentAmount);
+        dai.transferFrom(investor, recipient, _investmentAmount);
     }
     
 
