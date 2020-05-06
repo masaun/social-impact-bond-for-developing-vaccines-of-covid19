@@ -24,7 +24,12 @@ contract McObjects {
         uint savedCostOfOutcome;
         bool isEvaluated;
         bool isAchieved;
-    }    
+    }
+
+    struct InvestorOfObjective {
+        uint objectiveId;
+        uint investorId;
+    }
 
     struct Investor {
         uint investorId;

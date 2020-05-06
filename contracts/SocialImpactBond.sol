@@ -119,6 +119,13 @@ contract SocialImpactBond is OwnableOriginal(msg.sender), McStorage, McConstants
         currentObjectiveId++;
     }
 
+    function registerInvestedInvestorId(uint _objectiveId, uint _investorId) public returns (bool) {
+        InvestorOfObjective storage investorOfObjective = investorOfObjectives[_objectiveId];
+        investorOfObjective.objectiveId = _objectiveId;
+        investorOfObjective.investorId = _investorId;
+        emit RegisterInvestedInvestorId(investorOfObjective.objectiveId, investorOfObjective.investorId);
+    }
+    
     /***
      * @dev - Investors invest for a objective which they selected
      **/

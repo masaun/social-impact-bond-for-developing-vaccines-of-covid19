@@ -65,7 +65,7 @@ contract StakeholderRegistry is OwnableOriginal(msg.sender), McStorage, McConsta
     function registerServiceProvider() public returns (bool) {}
 
     function registerInvestor(address _investorAddress) public returns (bool) {
-        Investor storage investor = investors[currentInvestorId];
+        Investor storage investor = investors[_investorAddress];
         investor.investorId = currentInvestorId;
         investor.investorAddress = _investorAddress;
         emit RegisterInvester(investor.investorId, investor.investorAddress);
@@ -82,7 +82,7 @@ contract StakeholderRegistry is OwnableOriginal(msg.sender), McStorage, McConsta
      * @dev - Get IDs
      **/
     function getInvestorId(address _investorAddress) public view returns (uint _investorId) {
-        return investors[_investorAddress];
+        return investors[_investorAddress].investorId;
     }
 
     function getAllOfCurrentId() 
