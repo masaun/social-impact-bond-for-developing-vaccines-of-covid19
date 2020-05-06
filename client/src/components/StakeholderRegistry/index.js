@@ -117,7 +117,7 @@ export default class StakeholderRegistry extends Component {
         const { accounts, web3, dai, social_impact_bond, stakeholder_registry, bokkypoobahs_datetime_contract } = this.state;
 
         const _investorAddress = accounts[0];
-        const _investorId = stakeholder_registry.methods.getInvestorId(_investorAddress).call();
+        const _investorId = await stakeholder_registry.methods.getInvestorId(_investorAddress).call();
         console.log('=== response of getInvestorId() function ===\n', _investorId);
 
         const _objectiveId = 1;
