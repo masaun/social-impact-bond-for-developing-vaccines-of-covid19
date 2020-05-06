@@ -32,6 +32,11 @@ contract McEvents {
         //address proxyContractAddress
     );
     
+    event RegisterInvester(
+        uint investorId,
+        address investorAddress
+    );
+    
 
 
 

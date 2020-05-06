@@ -118,13 +118,14 @@ export default class StakeholderRegistry extends Component {
 
         const investor = accounts[0];
         const _investorId = getInvestorId(investor);
+        console.log('=== response of getInvestorId() function ===\n', _investorId);
 
         const _objectiveId = 1;
         const _investmentAmount = await web3.utils.toWei('25', 'ether');
 
         const objective = await social_impact_bond.methods.getObjective(_objectiveId).call();
         const _objectiveAddress = objective.objectiveAddress;
-        console.log('=== response of _objectiveAddress function ===\n', _objectiveAddress);
+        console.log('=== response of getObjective() function ===\n', _objectiveAddress);
 
         let res1 = await dai.methods.approve(_objectiveAddress, _investmentAmount).send({ from: accounts[0] });
         let res2 = await dai.methods.transfer(_objectiveAddress, _investmentAmount).send({ from: accounts[0] });
