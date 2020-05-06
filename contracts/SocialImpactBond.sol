@@ -67,26 +67,11 @@ contract SocialImpactBond is OwnableOriginal(msg.sender), McStorage, McConstants
     }
     
 
-
-    // function proxyContractFactory(uint256 saltNonce) public returns (address proxyContractAddress) {
-    //     //@dev - Create new contract address for new objective
-    //     //bytes contractBytecode = hex"";
-    //     bytes memory bytecode = type(this).creationCode;
-    //     bytes32 salt = keccak256(abi.encode(msg.sender, _saltNonce));
-    //     address proxyContractAddress;
-    //     assembly {
-    //         proxyContractAddress := create2(0, add(bytecode, 0x20), mload(bytecode), salt)
-    //     }
-    // }
-    
-
-
     /***
      * @dev - Define Objective for saving cost (This objective become criteria for whether it judging success or not)
      *      - This function is executed by government only.
      **/
     function defineObjective(
-        //uint _saltNonce,
         uint _serviceProviderId, 
         uint _estimatedBudgetAmount,  // Estimated budget amount by the government
         uint _requestedBudgetAmount,  // Requested budget amount by service providers (ask this budget for investors)
