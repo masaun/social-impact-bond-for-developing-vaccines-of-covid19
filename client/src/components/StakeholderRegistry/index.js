@@ -29,6 +29,8 @@ export default class StakeholderRegistry extends Component {
             route: window.location.pathname.replace("/", "")
         };
 
+        this._registerInvestor = this._registerInvestor.bind(this);
+
         this._mintIdleToken = this._mintIdleToken.bind(this);
         this._redeemPooledFund = this._redeemPooledFund.bind(this);
         this._createProxyContract = this._createProxyContract.bind(this);
@@ -41,6 +43,15 @@ export default class StakeholderRegistry extends Component {
         /////// Test Functions
         this.timestampFromDate = this.timestampFromDate.bind(this);
     }
+
+    _registerInvestor = async () => {
+        const { accounts, web3, stakeholder_registry } = this.state;
+
+        const _investorAddress = accounts[0];
+        let res1 = await stakeholder_registry.methods.registerInvestor(_investorAddress).send({ from: accounts[0] });
+        console.log('=== response of registerInvestor() function ===\n', res1);
+    }
+
 
     _mintIdleToken = async () => {
         const { accounts, web3, dai, idle_dai, IDLE_DAI_ADDRESS } = this.state;
@@ -347,6 +358,11 @@ export default class StakeholderRegistry extends Component {
                               borderColor={"#E8E8E8"}
                         >
                             <h4>idle Insurance Fund</h4> <br />
+
+                            <Button size={'small'} mt={3} mb={2} onClick={this._registerInvestor}> Register Investor </Button> <br />
+
+                            <hr />
+
                             <Button size={'small'} mt={3} mb={2} onClick={this._mintIdleToken}> Mint IdleToken（Mint IdleDAI） </Button> <br />
 
                             <Button size={'small'} mt={3} mb={2} onClick={this._lendPooledFund}> Lend Pooled Fund（Mint IdleDAI） </Button> <br />
@@ -358,6 +374,8 @@ export default class StakeholderRegistry extends Component {
                             <Button size={'small'} mt={3} mb={2} onClick={this._defineObjective}> Define Objective </Button> <br />
 
                             <Button size={'small'} mt={3} mb={2} onClick={this._investForObjective}> Invest For Objective </Button> <br />
+
+                            <hr />
 
                             <Button mainColor="DarkCyan" size={'small'} mt={3} mb={2} onClick={this._balanceOfContract}> Balance of contract </Button> <br />
 
