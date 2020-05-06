@@ -158,6 +158,8 @@ export default class StakeholderRegistry extends Component {
         console.log('=== response of evaluateOutcome() function ===\n', res);
     }
 
+    
+
 
     /***
      * @dev - Getter function

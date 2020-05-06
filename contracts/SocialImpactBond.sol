@@ -159,7 +159,7 @@ contract SocialImpactBond is OwnableOriginal(msg.sender), McStorage, McConstants
     /***
      * @dev - Distribute seed money plus interest to each investors (from pooled fund(DAI))
      **/
-    function distributePooledFund(uint _objectiveId,uint _serviceProviderId) public returns (bool) {
+    function distributePooledFund(uint _objectiveId) public returns (bool) {
         Objective memory objective = objectives[_objectiveId];
         bool _isAchieved = objective.isAchieved;
 
