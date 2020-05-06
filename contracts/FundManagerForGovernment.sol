@@ -47,6 +47,7 @@ contract FundManagerForGovernment is OwnableOriginal(msg.sender), McStorage, McC
      **/
     //function stakeFundFromGovernment(uint _objectiveId, uint _governmentId, uint _stakeAmount) public returns (bool) {}
 
+
     /***
      * @dev - If outcome is not achieved until objective, staked fund (principal amounts) is refunded to government
      *      - In case of this, generated interest amount is distributed into investors

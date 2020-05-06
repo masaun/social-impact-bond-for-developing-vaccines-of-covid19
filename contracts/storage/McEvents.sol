@@ -12,6 +12,8 @@ contract McEvents {
         uint objectiveId,
         ProxyContractFactory objectiveAddress,
         uint serviceProviderId,
+        uint estimatedBudgetAmount,  // Estimated budget amount by the government
+        uint requestedBudgetAmount,  // Requested budget amount by service providers (ask this budget for investors)
         uint savedCostOfObjective,
         uint startDate,
         uint endDate
@@ -30,6 +32,15 @@ contract McEvents {
         //address proxyContractAddress
     );
     
+    event RegisterInvester(
+        uint investorId,
+        address investorAddress
+    );
+    
+    event RegisterInvestedInvestorId(
+        uint objectiveId, 
+        uint investorId
+    );
 
 
 
