@@ -27,7 +27,7 @@ contract McObjects {
 
     struct Investor {
         uint investorId;
-        address investorAddress;        
+        address investorAddress;           
     }
     
 

@@ -74,6 +74,10 @@ contract StakeholderRegistry is OwnableOriginal(msg.sender), McStorage, McConsta
     /***
      * @dev - Get IDs
      **/
+    function getInvestorId(address _investorAddress) public view returns (uint _investorId) {
+        return investors[_investorAddress];
+    }
+
     function getAllOfCurrentId() 
         public 
         view

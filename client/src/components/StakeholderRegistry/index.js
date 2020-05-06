@@ -114,10 +114,12 @@ export default class StakeholderRegistry extends Component {
     } 
 
     _investForObjective = async () => {
-        const { accounts, web3, dai, social_impact_bond, bokkypoobahs_datetime_contract } = this.state;
+        const { accounts, web3, dai, social_impact_bond, stakeholder_registry, bokkypoobahs_datetime_contract } = this.state;
+
+        const investor = accounts[0];
+        const _investorId = getInvestorId(investor);
 
         const _objectiveId = 1;
-        const _investorId = 1;
         const _investmentAmount = await web3.utils.toWei('25', 'ether');
 
         const objective = await social_impact_bond.methods.getObjective(_objectiveId).call();
