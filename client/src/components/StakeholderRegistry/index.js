@@ -41,6 +41,7 @@ export default class StakeholderRegistry extends Component {
 
         /////// Getter Functions
         this._getObjective = this._getObjective.bind(this);
+        this._countTargetInvestors = this._countTargetInvestors.bind(this);
 
         /////// Test Functions
         this.timestampFromDate = this.timestampFromDate.bind(this);
@@ -179,11 +180,19 @@ export default class StakeholderRegistry extends Component {
     }
 
     _getObjective = async () => {
-        const { accounts, web3, social_impact_bond, stakeholder_registry, dai, idle_dai, IDLE_DAI_ADDRESS } = this.state;
+        const { accounts, web3, dai, social_impact_bond } = this.state;
 
         const _objectiveId = 1;
         let res1 = await social_impact_bond.methods.getObjective(_objectiveId).call();
         console.log('=== response of getObjective() function ===\n', res1);
+    }
+
+    _countTargetInvestors = async () => {
+        const { accounts, web3, dai, social_impact_bond } = this.state;
+
+        const _objectiveId = 1;
+        let res = await social_impact_bond.methods.countTargetInvestors(_objectiveId).call();
+        console.log('=== response of countTargetInvestors() function ===\n', res);                
     }
 
 
@@ -404,6 +413,8 @@ export default class StakeholderRegistry extends Component {
                             <Button mainColor="DarkCyan" size={'small'} mt={3} mb={2} onClick={this._balanceOfContract}> Balance of contract </Button> <br />
 
                             <Button mainColor="DarkCyan" size={'small'} mt={3} mb={2} onClick={this._getObjective}> Get Objective </Button> <br />
+
+                            <Button mainColor="DarkCyan" size={'small'} mt={3} mb={2} onClick={this._countTargetInvestors}> Count Target Investors </Button>
                         </Card>
 
                         <Card width={"auto"} 
