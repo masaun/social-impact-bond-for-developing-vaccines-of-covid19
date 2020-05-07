@@ -163,13 +163,14 @@ contract SocialImpactBond is OwnableOriginal(msg.sender), McStorage, McConstants
         Objective memory objective = objectives[_objectiveId];
         bool _isAchieved = objective.isAchieved;
 
-        //InvestorOfObjective memory investorOfObjective = investorOfObjectives[_objectiveId];
-
+        uint _currentInvestorId = stakeholderRegistry.getCurrentInvestorId();
+        InvestorOfObjective memory investorOfObjective = investorOfObjectives[_objectiveId];
 
         //@dev - Only investors who invested service providers achieved their objective can receive returned money (principal amounts plus interest amounts)
         if (_isAchieved == true) {
-            for (uint i=1; i < currentObjectiveId; i++) {
+            for (uint i=1; i < _currentInvestorId; i++) {
                 // In progress
+                
             }
         }
 

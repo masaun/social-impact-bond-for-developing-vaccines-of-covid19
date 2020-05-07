@@ -19,7 +19,7 @@ contract McStorage is McObjects, McEvents {
     ///////////////////////////////////
     mapping (uint => Objective) objectives;
     mapping (uint => InvestorOfObjective) investorOfObjectives;
-
+    
     mapping (address => Investor) investors;
     
 
