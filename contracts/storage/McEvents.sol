@@ -43,6 +43,12 @@ contract McEvents {
         address investorAddress
     );
 
+    event DistributePooledFund(
+        uint countTargetInvestors, 
+        uint balanceOfObjectiveId, 
+        uint dividedAmount
+    );
+    
 
 
     /***

@@ -185,6 +185,7 @@ contract SocialImpactBond is OwnableOriginal(msg.sender), McStorage, McConstants
             }
         }
 
+        emit DistributePooledFund(_countTargetInvestors, balanceOfObjectiveId, dividedAmount);
     }
 
     function countTargetInvestors(uint _objectiveId) public view returns (uint _countTargetInvestors) {
