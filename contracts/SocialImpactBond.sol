@@ -119,11 +119,14 @@ contract SocialImpactBond is OwnableOriginal(msg.sender), McStorage, McConstants
         currentObjectiveId++;
     }
 
-    function registerInvestedInvestorId(uint _objectiveId, uint _investorId) public returns (bool) {
+    function registerInvestedInvestor(uint _objectiveId, uint _investorId, address _investorAddress) public returns (bool) {
         InvestorOfObjective storage investorOfObjective = investorOfObjectives[_objectiveId];
         investorOfObjective.objectiveId = _objectiveId;
         investorOfObjective.investorId = _investorId;
-        emit RegisterInvestedInvestorId(investorOfObjective.objectiveId, investorOfObjective.investorId);
+        investorOfObjective.investorAddress = _investorAddress;
+        emit RegisterInvestedInvestor(investorOfObjective.objectiveId, 
+                                      investorOfObjective.investorId, 
+                                      investorOfObjective.investorAddress);
     }
     
 
@@ -163,18 +166,44 @@ contract SocialImpactBond is OwnableOriginal(msg.sender), McStorage, McConstants
         Objective memory objective = objectives[_objectiveId];
         bool _isAchieved = objective.isAchieved;
 
-        uint _currentInvestorId = stakeholderRegistry.getCurrentInvestorId();
-        InvestorOfObjective memory investorOfObjective = investorOfObjectives[_objectiveId];
+        uint _countTargetInvestors = countTargetInvestors(_objectiveId);
+        uint balanceOfObjectiveId = address(objective.objectiveAddress).balance;
+        uint dividedAmount = balanceOfObjectiveId.div(_countTargetInvestors);
 
-        //@dev - Only investors who invested service providers achieved their objective can receive returned money (principal amounts plus interest amounts)
+        //@dev - Only investors who invested for achived objective can receive returned money (principal amounts plus interest amounts)
         if (_isAchieved == true) {
-            for (uint i=1; i < _currentInvestorId; i++) {
-                // In progress
-                
+            uint _currentInvestorId = stakeholderRegistry.getCurrentInvestorId();
+            for (uint i=1; i <= _countTargetInvestors; i++) {
+                InvestorOfObjective memory investorOfObjective = investorOfObjectives[i];
+                if (investorOfObjective.objectiveId == _objectiveId) {
+                    //@dev - Distribute amount (which are divided by number of investors who invested achieved objective)
+                    dai.approve(address(this), dividedAmount);
+                    dai.transfer(investorOfObjective.investorAddress, dividedAmount);
+                }
             }
         }
 
     }
+
+    function countTargetInvestors(uint _objectiveId) public view returns (uint _countTargetInvestors) {
+        Objective memory objective = objectives[_objectiveId];
+        bool _isAchieved = objective.isAchieved;
+
+        //@dev - Count target investors
+        uint _countTargetInvestors;
+        if (_isAchieved == true) {
+            uint _currentInvestorId = stakeholderRegistry.getCurrentInvestorId();
+            for (uint i=1; i < _currentInvestorId; i++) {
+                InvestorOfObjective memory investorOfObjective = investorOfObjectives[i];
+                if (investorOfObjective.objectiveId == _objectiveId) {
+                    _countTargetInvestors++;
+                }
+            }
+        }
+
+        return _countTargetInvestors;
+    }
+
 
     /***
      * @dev - Lend pooled fund(DAI) to idle.finance(idleDAI)

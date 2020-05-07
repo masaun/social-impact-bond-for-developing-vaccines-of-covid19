@@ -144,7 +144,7 @@ export default class StakeholderRegistry extends Component {
         let res2 = await dai.methods.transfer(_objectiveAddress, _investmentAmount).send({ from: accounts[0] });
         console.log('=== response of investForObjective() function ===\n', res2);
 
-        let res3 = await social_impact_bond.methods.registerInvestedInvestorId(_objectiveId, _investorId).send({ from: accounts[0] });
+        let res3 = await social_impact_bond.methods.registerInvestedInvestor(_objectiveId, _investorId, _investorAddress).send({ from: accounts[0] });
         console.log('=== response of registerInvestedInvestorId() function ===\n', res3);
     }
 

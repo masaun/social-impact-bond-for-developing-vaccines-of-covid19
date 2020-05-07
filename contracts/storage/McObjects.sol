@@ -28,6 +28,7 @@ contract McObjects {
     struct InvestorOfObjective {
         uint objectiveId;
         uint investorId;
+        address investorAddress;
     }
 
     struct Investor {

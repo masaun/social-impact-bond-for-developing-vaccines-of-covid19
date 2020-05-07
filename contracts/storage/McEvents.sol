@@ -37,9 +37,10 @@ contract McEvents {
         address investorAddress
     );
     
-    event RegisterInvestedInvestorId(
+    event RegisterInvestedInvestor(
         uint objectiveId, 
-        uint investorId
+        uint investorId,
+        address investorAddress
     );
 
 
