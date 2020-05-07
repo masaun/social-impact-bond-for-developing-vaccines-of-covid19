@@ -164,7 +164,7 @@ export default class StakeholderRegistry extends Component {
 
         const _objectiveId = 1;
         let res = await social_impact_bond.methods.distributePooledFund(_objectiveId).send({ from: accounts[0] });
-        console.log('=== response of evaluateOutcome() function ===\n', res);        
+        console.log('=== response of distributePooledFund() function ===\n', res);        
     }
 
 
