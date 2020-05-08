@@ -47,6 +47,7 @@ contract SocialImpactBond is OwnableOriginal(msg.sender), McStorage, McConstants
     BokkyPooBahsDateTimeContract public bokkyPooBahsDateTimeContract;
 
     StakeholderRegistry public stakeholderRegistry;
+    ProxyContractFactory public proxyContractFactory;
 
 
     constructor(address _erc20, address _idleDAI, address _stakeholderRegistry, address _bokkyPooBahsDateTimeContract) public {
@@ -178,10 +179,11 @@ contract SocialImpactBond is OwnableOriginal(msg.sender), McStorage, McConstants
                 address _investorAddress = address(investorOfObjective.investorAddress);
                 if (investorOfObjective.objectiveId == _objectiveId) {
                     //@dev - Distribute amount (which are divided by number of investors who invested achieved objective)
-                    dai.approve(address(this), dividedAmount);
+                    //dai.approve(address(this), dividedAmount);
 
                     //@dev - Replace below with transferring from objectiveId contract to target investors
-                    dai.transfer(_investorAddress, dividedAmount);
+                    //dai.transfer(_investorAddress, dividedAmount);
+                    proxyContractFactory = ProxyContractFactory();
                 }
             }
         }
