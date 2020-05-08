@@ -407,7 +407,7 @@ export default class StakeholderRegistry extends Component {
 
                             <Button size={'small'} mt={3} mb={2} onClick={this._redeemPooledFund}> Redeem Pooled Fund（Redeem IdleDAI） </Button> <br />
 
-                            <Button size={'small'} mt={3} mb={2} onClick={this._createProxyContract}> Create Proxy Contract </Button> <br />
+                            <hr />
 
                             <Button size={'small'} mt={3} mb={2} onClick={this._defineObjective}> Define Objective </Button> <br />
 
@@ -436,6 +436,8 @@ export default class StakeholderRegistry extends Component {
                               borderColor={"#E8E8E8"}
                         >
                             <h4>Test Functions</h4> <br />
+                            <Button size={'small'} mt={3} mb={2} onClick={this._createProxyContract}> Create Proxy Contract </Button> <br />
+                            
                             <Button mainColor="DarkCyan" size={'small'} mt={3} mb={2} onClick={this.timestampFromDate}> Timestamp From Date </Button> <br />
                         </Card>
                     </Grid>
