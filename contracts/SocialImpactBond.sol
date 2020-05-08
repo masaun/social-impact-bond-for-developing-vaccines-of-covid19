@@ -36,7 +36,7 @@ contract SocialImpactBond is OwnableOriginal(msg.sender), McStorage, McConstants
     using SafeMath for uint;
 
     //@dev - current IDs
-    uint currentObjectiveId = 1;
+    uint public currentObjectiveId = 1;
 
     //@dev - Token Address
     address IDLE_DAI_ADDRESS;
@@ -175,12 +175,13 @@ contract SocialImpactBond is OwnableOriginal(msg.sender), McStorage, McConstants
             uint _currentInvestorId = stakeholderRegistry.getCurrentInvestorId();
             for (uint i=1; i <= _countTargetInvestors; i++) {
                 InvestorOfObjective memory investorOfObjective = investorOfObjectives[i];
+                address _investorAddress = address(investorOfObjective.investorAddress);
                 if (investorOfObjective.objectiveId == _objectiveId) {
                     //@dev - Distribute amount (which are divided by number of investors who invested achieved objective)
                     dai.approve(address(this), dividedAmount);
 
                     //@dev - Replace below with transferring from objectiveId contract to target investors
-                    dai.transfer(investorOfObjective.investorAddress, dividedAmount);
+                    dai.transfer(_investorAddress, dividedAmount);
                 }
             }
         }

@@ -42,6 +42,7 @@ export default class StakeholderRegistry extends Component {
         /////// Getter Functions
         this._balanceOfObjective = this._balanceOfObjective.bind(this);
         this._getObjective = this._getObjective.bind(this);
+        this._getAllObjectives = this._getAllObjectives.bind(this);
         this._countTargetInvestors = this._countTargetInvestors.bind(this);
 
         /////// Test Functions
@@ -194,6 +195,18 @@ export default class StakeholderRegistry extends Component {
         const _objectiveId = 1;
         let res1 = await social_impact_bond.methods.getObjective(_objectiveId).call();
         console.log('=== response of getObjective() function ===\n', res1);
+    }
+
+    _getAllObjectives = async () => {
+        const { accounts, web3, dai, social_impact_bond } = this.state;
+
+        const _currentObjectiveId = await social_impact_bond.methods.currentObjectiveId().call();
+        console.log('=== response of _currentObjectiveId function ===\n', _currentObjectiveId);
+
+        for (let i=1; i < _currentObjectiveId; i++) {
+            let res1 = await social_impact_bond.methods.getObjective(i).call();
+            console.log('=== response of getObjective() function ===\n', res1);
+        }    
     }
 
     _countTargetInvestors = async () => {
@@ -425,6 +438,8 @@ export default class StakeholderRegistry extends Component {
 
                             <Button mainColor="DarkCyan" size={'small'} mt={3} mb={2} onClick={this._getObjective}> Get Objective </Button> <br />
 
+                            <Button mainColor="DarkCyan" size={'small'} mt={3} mb={2} onClick={this._getAllObjectives}> Get All Objectives </Button> <br />
+
                             <Button mainColor="DarkCyan" size={'small'} mt={3} mb={2} onClick={this._countTargetInvestors}> Count Target Investors </Button>
                         </Card>
 
@@ -437,7 +452,7 @@ export default class StakeholderRegistry extends Component {
                         >
                             <h4>Test Functions</h4> <br />
                             <Button size={'small'} mt={3} mb={2} onClick={this._createProxyContract}> Create Proxy Contract </Button> <br />
-                            
+
                             <Button mainColor="DarkCyan" size={'small'} mt={3} mb={2} onClick={this.timestampFromDate}> Timestamp From Date </Button> <br />
                         </Card>
                     </Grid>
