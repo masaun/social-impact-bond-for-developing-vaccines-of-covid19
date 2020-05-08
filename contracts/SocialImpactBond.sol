@@ -167,6 +167,7 @@ contract SocialImpactBond is OwnableOriginal(msg.sender), McStorage, McConstants
         bool _isAchieved = objective.isAchieved;
 
         uint _countTargetInvestors = countTargetInvestors(_objectiveId);
+        dai.approve(address(this), dai.balanceOf(address(objective.objectiveAddress)));
         uint balanceOfObjectiveId = dai.balanceOf(address(objective.objectiveAddress));
         //uint balanceOfObjectiveId = address(objective.objectiveAddress).balance;
         uint dividedAmount = balanceOfObjectiveId.div(_countTargetInvestors);
