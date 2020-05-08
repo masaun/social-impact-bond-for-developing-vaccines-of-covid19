@@ -40,6 +40,7 @@ export default class StakeholderRegistry extends Component {
         this._distributePooledFund = this._distributePooledFund.bind(this);
 
         /////// Getter Functions
+        this._balanceOfObjective = this._balanceOfObjective.bind(this);
         this._getObjective = this._getObjective.bind(this);
         this._countTargetInvestors = this._countTargetInvestors.bind(this);
 
@@ -146,7 +147,7 @@ export default class StakeholderRegistry extends Component {
         console.log('=== response of investForObjective() function ===\n', res2);
 
         let res3 = await social_impact_bond.methods.registerInvestedInvestor(_objectiveId, _investorId, _investorAddress).send({ from: accounts[0] });
-        console.log('=== response of registerInvestedInvestorId() function ===\n', res3);
+        console.log('=== response of registerInvestedInvestor() function ===\n', res3);
     }
 
     _evaluateOutcome = async () => {
@@ -177,6 +178,14 @@ export default class StakeholderRegistry extends Component {
 
         let res1 = await social_impact_bond.methods.balanceOfContract().call();
         console.log('=== response of balanceOfContract() function ===\n', res1);
+    }
+
+    _balanceOfObjective = async () => {
+        const { accounts, web3, dai, social_impact_bond } = this.state;
+
+        const _objectiveId = 1;
+        let res1 = await social_impact_bond.methods.balanceOfObjective(_objectiveId).call();
+        console.log('=== response of balanceOfObjective() function ===\n', res1);        
     }
 
     _getObjective = async () => {
@@ -411,6 +420,8 @@ export default class StakeholderRegistry extends Component {
                             <hr />
 
                             <Button mainColor="DarkCyan" size={'small'} mt={3} mb={2} onClick={this._balanceOfContract}> Balance of contract </Button> <br />
+
+                            <Button mainColor="DarkCyan" size={'small'} mt={3} mb={2} onClick={this._balanceOfObjective}> Balance of Objective </Button> <br />
 
                             <Button mainColor="DarkCyan" size={'small'} mt={3} mb={2} onClick={this._getObjective}> Get Objective </Button> <br />
 

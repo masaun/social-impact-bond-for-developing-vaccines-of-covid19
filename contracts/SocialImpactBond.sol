@@ -167,10 +167,9 @@ contract SocialImpactBond is OwnableOriginal(msg.sender), McStorage, McConstants
         bool _isAchieved = objective.isAchieved;
 
         uint _countTargetInvestors = countTargetInvestors(_objectiveId);
-        dai.approve(address(this), dai.balanceOf(address(objective.objectiveAddress)));
-        uint balanceOfObjectiveId = dai.balanceOf(address(objective.objectiveAddress));
-        //uint balanceOfObjectiveId = address(objective.objectiveAddress).balance;
-        uint dividedAmount = balanceOfObjectiveId.div(_countTargetInvestors);
+        uint balanceOfObjective = dai.balanceOf(address(objective.objectiveAddress));
+        //uint balanceOfObjective = address(objective.objectiveAddress).balance;
+        uint dividedAmount = balanceOfObjective.div(_countTargetInvestors);
 
         //@dev - Only investors who invested for achived objective can receive returned money (principal amounts plus interest amounts)
         if (_isAchieved == true) {
@@ -187,7 +186,7 @@ contract SocialImpactBond is OwnableOriginal(msg.sender), McStorage, McConstants
             }
         }
 
-        emit DistributePooledFund(_countTargetInvestors, balanceOfObjectiveId, dividedAmount);
+        emit DistributePooledFund(_countTargetInvestors, balanceOfObjective, dividedAmount);
     }
 
     function countTargetInvestors(uint _objectiveId) public view returns (uint _countTargetInvestors) {
@@ -238,6 +237,13 @@ contract SocialImpactBond is OwnableOriginal(msg.sender), McStorage, McConstants
     function balanceOfContract() public view returns (uint balanceOfContract_DAI, uint balanceOfContract_idleDAI) {
         return (dai.balanceOf(address(this)), idleDAI.balanceOf(address(this)));
     }
+
+    function balanceOfObjective(uint _objectiveId) public view returns (uint balanceOfObjective_DAI) {
+        Objective memory objective = objectives[_objectiveId];
+        uint _balanceOfObjective = dai.balanceOf(address(objective.objectiveAddress));
+        return _balanceOfObjective;
+    }
+    
 
 
     /***
