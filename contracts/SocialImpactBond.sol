@@ -121,7 +121,6 @@ contract SocialImpactBond is OwnableOriginal(msg.sender), McStorage, McConstants
 
     function registerInvestedInvestor(uint _objectiveId, uint _investorId, address _investorAddress) public returns (bool) {
         InvestorOfObjective storage investorOfObjective = investorOfObjectives[_investorId];
-        //InvestorOfObjective storage investorOfObjective = investorOfObjectives[_objectiveId];
         investorOfObjective.objectiveId = _objectiveId;
         investorOfObjective.investorId = _investorId;
         investorOfObjective.investorAddress = _investorAddress;

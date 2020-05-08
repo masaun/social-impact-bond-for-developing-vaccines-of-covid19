@@ -205,12 +205,15 @@ export default class StakeholderRegistry extends Component {
 
         for (let i=1; i < _currentObjectiveId; i++) {
             let res1 = await social_impact_bond.methods.getObjective(i).call();
-            console.log('=== response of getObjective() function ===\n', res1);
+            console.log('=== response of _getAllObjectives function ===\n', res1);
         }    
     }
 
     _countTargetInvestors = async () => {
-        const { accounts, web3, dai, social_impact_bond } = this.state;
+        const { accounts, web3, dai, stakeholder_registry, social_impact_bond } = this.state;
+
+        const _currentInvestorId = await stakeholder_registry.methods.getCurrentInvestorId().call();
+        console.log('=== response of _currentInvestorId function ===\n', _currentInvestorId);                
 
         const _objectiveId = 1;
         let res = await social_impact_bond.methods.countTargetInvestors(_objectiveId).call();
