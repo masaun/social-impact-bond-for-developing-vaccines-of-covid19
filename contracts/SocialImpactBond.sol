@@ -26,8 +26,7 @@ import "./lib/BokkyPooBahsDateTimeLibrary/contracts/BokkyPooBahsDateTimeContract
 // Original Contract
 import "./StakeholderRegistry.sol";
 import "./ProxyContractFactory.sol";
-import "./FundManagerForGovernment.sol";
-
+import "./ProxyContractForGovernmentFundFactory.sol";
 
 
 /***
@@ -49,6 +48,7 @@ contract SocialImpactBond is OwnableOriginal(msg.sender), McStorage, McConstants
 
     StakeholderRegistry public stakeholderRegistry;
     ProxyContractFactory public proxyContractFactory;
+    ProxyContractForGovernmentFundFactory public proxyContractForGovernmentFundFactory;
 
 
     constructor(address _erc20, address _idleDAI, address _stakeholderRegistry, address _bokkyPooBahsDateTimeContract) public {
@@ -62,13 +62,23 @@ contract SocialImpactBond is OwnableOriginal(msg.sender), McStorage, McConstants
     }
 
     /***
-     * @dev - Created ProxyContract works as a wallet of each objective 
+     * @dev - Created ProxyContract works as a wallet of each objective for working capital
      **/
     function createProxyContract() public returns (ProxyContractFactory _proxyContract) {
         ProxyContractFactory proxyContract = new ProxyContractFactory();
         emit CreateProxyContract(proxyContract);
         return proxyContract;
     }
+
+    /***
+     * @dev - Created ProxyContract works as a wallet of each objective for paying for successful
+     **/
+    function createProxyContractForGovernmentFund() public returns (ProxyContractForGovernmentFundFactory _proxyContractForGovernmentFund) {
+        ProxyContractForGovernmentFundFactory proxyContractForGovernmentFund = new ProxyContractForGovernmentFundFactory();
+        emit CreateProxyContractForGovernmentFund(proxyContractForGovernmentFund);
+        return proxyContractForGovernmentFund;
+    }
+
     
 
     /***

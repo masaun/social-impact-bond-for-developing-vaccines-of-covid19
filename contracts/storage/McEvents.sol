@@ -4,6 +4,7 @@ import "./McObjects.sol";
 
 // Original Contract
 import "../ProxyContractFactory.sol";
+import "../ProxyContractForGovernmentFundFactory.sol";
 
 
 contract McEvents {
@@ -29,7 +30,10 @@ contract McEvents {
 
     event CreateProxyContract (
         ProxyContractFactory proxyContract
-        //address proxyContractAddress
+    );
+
+    event CreateProxyContractForGovernmentFund (
+        ProxyContractForGovernmentFundFactory proxyContractForGovernmentFund
     );
     
     event RegisterInvester(

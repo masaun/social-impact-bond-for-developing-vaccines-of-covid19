@@ -45,7 +45,7 @@ contract FundManagerForGovernment is OwnableOriginal(msg.sender), McStorage, McC
     /***
      * @dev - Government stake fund for payment for success
      **/
-    //function stakeFundFromGovernment(uint _objectiveId, uint _governmentId, uint _stakeAmount) public returns (bool) {}
+    function stakeFundFromGovernment(uint _objectiveId, uint _governmentId, uint _stakeAmount) public returns (bool) {}
 
 
     /***
