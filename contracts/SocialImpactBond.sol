@@ -180,10 +180,6 @@ contract SocialImpactBond is OwnableOriginal(msg.sender), McStorage, McConstants
                 InvestorOfObjective memory investorOfObjective = investorOfObjectives[i];
                 if (investorOfObjective.objectiveId == _objectiveId) {
                     //@dev - Distribute amount (which are divided by number of investors who invested achieved objective)
-                    //dai.approve(address(this), dividedAmount);
-
-                    //@dev - Replace below with transferring from objectiveId contract to target investors
-                    //dai.transfer(_investorAddress, dividedAmount);
                     address _investorAddress = address(investorOfObjective.investorAddress);
                     proxyContractFactory.transferDAI(_investorAddress, dividedAmount);
                 }
