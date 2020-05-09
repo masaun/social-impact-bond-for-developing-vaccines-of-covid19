@@ -65,6 +65,12 @@ contract McEvents {
         address investorAddress, 
         uint dividedAmount
     );
+
+    event StakeFundFromGovernment(
+        address spender, 
+        address proxyContractForGovernmentFundAddress, 
+        uint _stakeAmount
+    );
     
 
 

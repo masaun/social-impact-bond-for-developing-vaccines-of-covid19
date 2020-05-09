@@ -45,7 +45,18 @@ contract FundManagerForGovernment is OwnableOriginal(msg.sender), McStorage, McC
     /***
      * @dev - Government stake fund for payment for success
      **/
-    function stakeFundFromGovernment(uint _objectiveId, uint _governmentId, uint _stakeAmount) public returns (bool) {}
+    function stakeFundFromGovernment(uint _objectiveId, uint _governmentId, uint _stakeAmount) public returns (bool) {
+        //@dev - Call funded address which correspond to objectiveId
+        Objective storage objective = objectives[_objectiveId];
+        address _proxyContractForGovernmentFundAddress = address(objective.objectiveAddressForGovernmentFund);
+
+        //@dev - Transfer from this contract address to funded address
+        address spender = msg.sender;
+        dai.approve(spender, _stakeAmount);
+        dai.transfer(_proxyContractForGovernmentFundAddress, _stakeAmount);
+
+        emit StakeFundFromGovernment(spender, _proxyContractForGovernmentFundAddress, _stakeAmount); 
+    }
 
 
     /***
