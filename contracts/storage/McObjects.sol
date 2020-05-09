@@ -12,7 +12,6 @@ contract McObjects {
         uint objectiveId;
         ProxyContractFactory objectiveAddress;
         uint serviceProviderId;
-        uint[] investorsId;
         uint estimatedBudgetAmount;  // Estimated budget amount by the government
         uint requestedBudgetAmount;  // Requested budget amount by service providers (ask this budget for investors)
         uint savedCostOfObjective;
@@ -29,6 +28,7 @@ contract McObjects {
     struct InvestorOfObjective {
         uint objectiveId;
         uint investorId;
+        address investorAddress;
     }
 
     struct Investor {

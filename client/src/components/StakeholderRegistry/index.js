@@ -36,9 +36,14 @@ export default class StakeholderRegistry extends Component {
         this._createProxyContract = this._createProxyContract.bind(this);
         this._defineObjective = this._defineObjective.bind(this);
         this._investForObjective = this._investForObjective.bind(this);
+        this._evaluateOutcome = this._evaluateOutcome.bind(this);
+        this._distributePooledFund = this._distributePooledFund.bind(this);
 
         /////// Getter Functions
+        this._balanceOfObjective = this._balanceOfObjective.bind(this);
         this._getObjective = this._getObjective.bind(this);
+        this._getAllObjectives = this._getAllObjectives.bind(this);
+        this._countTargetInvestors = this._countTargetInvestors.bind(this);
 
         /////// Test Functions
         this.timestampFromDate = this.timestampFromDate.bind(this);
@@ -132,7 +137,7 @@ export default class StakeholderRegistry extends Component {
         console.log('=== response of getInvestorId() function ===\n', _investorId);
 
         const _objectiveId = 1;
-        const _investmentAmount = await web3.utils.toWei('25', 'ether');
+        const _investmentAmount = await web3.utils.toWei('0.123', 'ether');
 
         const objective = await social_impact_bond.methods.getObjective(_objectiveId).call();
         const _objectiveAddress = objective.objectiveAddress;
@@ -142,10 +147,28 @@ export default class StakeholderRegistry extends Component {
         let res2 = await dai.methods.transfer(_objectiveAddress, _investmentAmount).send({ from: accounts[0] });
         console.log('=== response of investForObjective() function ===\n', res2);
 
-        let res3 = await social_impact_bond.methods.registerInvestedInvestorId(_objectiveId, _investorId).send({ from: accounts[0] });
-        console.log('=== response of registerInvestedInvestorId() function ===\n', res3);
+        let res3 = await social_impact_bond.methods.registerInvestedInvestor(_objectiveId, _investorId, _investorAddress).send({ from: accounts[0] });
+        console.log('=== response of registerInvestedInvestor() function ===\n', res3);
     }
 
+    _evaluateOutcome = async () => {
+        const { accounts, web3, dai, social_impact_bond, stakeholder_registry, bokkypoobahs_datetime_contract } = this.state;
+
+        const _objectiveId = 1
+        const _evaluatorId = 1
+        const _savedCostOfOutcome = web3.utils.toWei('120', 'ether');
+
+        let res = await social_impact_bond.methods.evaluateOutcome(_objectiveId, _evaluatorId, _savedCostOfOutcome).send({ from: accounts[0] });
+        console.log('=== response of evaluateOutcome() function ===\n', res);
+    }
+
+    _distributePooledFund = async () => {
+        const { accounts, web3, dai, social_impact_bond, stakeholder_registry, bokkypoobahs_datetime_contract } = this.state;
+
+        const _objectiveId = 1;
+        let res = await social_impact_bond.methods.distributePooledFund(_objectiveId).send({ from: accounts[0] });
+        console.log('=== response of distributePooledFund() function ===\n', res);        
+    }
 
 
     /***
@@ -158,12 +181,43 @@ export default class StakeholderRegistry extends Component {
         console.log('=== response of balanceOfContract() function ===\n', res1);
     }
 
+    _balanceOfObjective = async () => {
+        const { accounts, web3, dai, social_impact_bond } = this.state;
+
+        const _objectiveId = 1;
+        let res1 = await social_impact_bond.methods.balanceOfObjective(_objectiveId).call();
+        console.log('=== response of balanceOfObjective() function ===\n', res1);        
+    }
+
     _getObjective = async () => {
-        const { accounts, web3, social_impact_bond, stakeholder_registry, dai, idle_dai, IDLE_DAI_ADDRESS } = this.state;
+        const { accounts, web3, dai, social_impact_bond } = this.state;
 
         const _objectiveId = 1;
         let res1 = await social_impact_bond.methods.getObjective(_objectiveId).call();
         console.log('=== response of getObjective() function ===\n', res1);
+    }
+
+    _getAllObjectives = async () => {
+        const { accounts, web3, dai, social_impact_bond } = this.state;
+
+        const _currentObjectiveId = await social_impact_bond.methods.currentObjectiveId().call();
+        console.log('=== response of _currentObjectiveId function ===\n', _currentObjectiveId);
+
+        for (let i=1; i < _currentObjectiveId; i++) {
+            let res1 = await social_impact_bond.methods.getObjective(i).call();
+            console.log('=== response of _getAllObjectives function ===\n', res1);
+        }    
+    }
+
+    _countTargetInvestors = async () => {
+        const { accounts, web3, dai, stakeholder_registry, social_impact_bond } = this.state;
+
+        const _currentInvestorId = await stakeholder_registry.methods.getCurrentInvestorId().call();
+        console.log('=== response of _currentInvestorId function ===\n', _currentInvestorId);                
+
+        const _objectiveId = 1;
+        let res = await social_impact_bond.methods.countTargetInvestors(_objectiveId).call();
+        console.log('=== response of countTargetInvestors() function ===\n', res);                
     }
 
 
@@ -369,17 +423,27 @@ export default class StakeholderRegistry extends Component {
 
                             <Button size={'small'} mt={3} mb={2} onClick={this._redeemPooledFund}> Redeem Pooled Fund（Redeem IdleDAI） </Button> <br />
 
-                            <Button size={'small'} mt={3} mb={2} onClick={this._createProxyContract}> Create Proxy Contract </Button> <br />
+                            <hr />
 
                             <Button size={'small'} mt={3} mb={2} onClick={this._defineObjective}> Define Objective </Button> <br />
 
                             <Button size={'small'} mt={3} mb={2} onClick={this._investForObjective}> Invest For Objective </Button> <br />
 
+                            <Button size={'small'} mt={3} mb={2} onClick={this._evaluateOutcome}> Evaluate Outcome </Button> <br />
+
+                            <Button size={'small'} mt={3} mb={2} onClick={this._distributePooledFund}> Distribute Pooled Fund </Button> <br />
+
                             <hr />
 
                             <Button mainColor="DarkCyan" size={'small'} mt={3} mb={2} onClick={this._balanceOfContract}> Balance of contract </Button> <br />
 
+                            <Button mainColor="DarkCyan" size={'small'} mt={3} mb={2} onClick={this._balanceOfObjective}> Balance of Objective </Button> <br />
+
                             <Button mainColor="DarkCyan" size={'small'} mt={3} mb={2} onClick={this._getObjective}> Get Objective </Button> <br />
+
+                            <Button mainColor="DarkCyan" size={'small'} mt={3} mb={2} onClick={this._getAllObjectives}> Get All Objectives </Button> <br />
+
+                            <Button mainColor="DarkCyan" size={'small'} mt={3} mb={2} onClick={this._countTargetInvestors}> Count Target Investors </Button>
                         </Card>
 
                         <Card width={"auto"} 
@@ -390,6 +454,8 @@ export default class StakeholderRegistry extends Component {
                               borderColor={"#E8E8E8"}
                         >
                             <h4>Test Functions</h4> <br />
+                            <Button size={'small'} mt={3} mb={2} onClick={this._createProxyContract}> Create Proxy Contract </Button> <br />
+
                             <Button mainColor="DarkCyan" size={'small'} mt={3} mb={2} onClick={this.timestampFromDate}> Timestamp From Date </Button> <br />
                         </Card>
                     </Grid>

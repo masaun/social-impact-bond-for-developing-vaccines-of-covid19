@@ -37,11 +37,23 @@ contract McEvents {
         address investorAddress
     );
     
-    event RegisterInvestedInvestorId(
+    event RegisterInvestedInvestor(
         uint objectiveId, 
-        uint investorId
+        uint investorId,
+        address investorAddress
     );
 
+    event DistributePooledFund(
+        uint countTargetInvestors, 
+        uint balanceOfObjectiveId, 
+        uint dividedAmount
+    );
+    
+    event TransferDAI(
+        address spender, 
+        address investorAddress, 
+        uint dividedAmount
+    );
 
 
     /***
