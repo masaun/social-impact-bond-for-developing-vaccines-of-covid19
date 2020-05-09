@@ -26,6 +26,7 @@ import "./lib/BokkyPooBahsDateTimeLibrary/contracts/BokkyPooBahsDateTimeContract
 // Original Contract
 import "./StakeholderRegistry.sol";
 import "./ProxyContractFactory.sol";
+import "./FundManagerForGovernment.sol";
 
 
 

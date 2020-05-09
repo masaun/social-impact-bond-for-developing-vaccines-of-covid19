@@ -63,10 +63,21 @@ contract FundManagerForGovernment is OwnableOriginal(msg.sender), McStorage, McC
     /***
      * @dev - If outcome is achieved until objective, staked fund is distributed from this contract to SocialImpactBond.sol contract (for investors)
      **/
-    function payForSuccessful(uint _governmentId, uint _payForSuccessfulAmount) public returns (bool) {
-        dai.approve(SOCIAL_IMPACT_BOND, _payForSuccessfulAmount);
-        dai.transferFrom(address(this), SOCIAL_IMPACT_BOND, _payForSuccessfulAmount);
+    function payForSuccessful(address investorAddress, uint dividedAmount) public returns (bool) {
+        address spender = msg.sender;
+        dai.approve(spender, dividedAmount);
+        dai.transfer(investorAddress, dividedAmount);
+
+        emit PayForSuccessful(spender, investorAddress, dividedAmount);        
     }
+
+    // function transferDAI(address investorAddress, uint dividedAmount) public returns (bool) {
+    //     address spender = msg.sender;
+    //     dai.approve(spender, dividedAmount);
+    //     dai.transfer(investorAddress, dividedAmount);
+
+    //     emit TransferDAI(spender, investorAddress, dividedAmount);
+    // }
 
 
     /***

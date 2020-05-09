@@ -55,6 +55,13 @@ contract McEvents {
         uint dividedAmount
     );
 
+    event PayForSuccessful(
+        address spender, 
+        address investorAddress, 
+        uint dividedAmount
+    );
+    
+
 
     /***
      * @dev - Example
