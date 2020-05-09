@@ -71,7 +71,7 @@ contract SocialImpactBond is OwnableOriginal(msg.sender), McStorage, McConstants
     }
 
     /***
-     * @dev - Created ProxyContract works as a wallet of each objective for paying for successful
+     * @dev - Created ProxyContractForGovernmentFund works as a wallet of each objective for paying for successful
      **/
     function createProxyContractForGovernmentFund() public returns (ProxyContractForGovernmentFundFactory _proxyContractForGovernmentFund) {
         ProxyContractForGovernmentFundFactory proxyContractForGovernmentFund = new ProxyContractForGovernmentFundFactory();
@@ -103,7 +103,7 @@ contract SocialImpactBond is OwnableOriginal(msg.sender), McStorage, McConstants
 
         //@dev - Create new contract address for new objective
         ProxyContractFactory _proxyContractAddress = createProxyContract();
-        //address _proxyContractAddress = proxyContractFactory(_saltNonce);
+        ProxyContractForGovernmentFundFactory _proxyContractForGovernmentFundAddress = createProxyContractForGovernmentFund();
 
         //@dev - Calculate expected saving cost of objective
         uint _savedCostOfObjective = _estimatedBudgetAmount.sub(_requestedBudgetAmount);
@@ -112,6 +112,7 @@ contract SocialImpactBond is OwnableOriginal(msg.sender), McStorage, McConstants
         Objective storage objective = objectives[currentObjectiveId];
         objective.objectiveId = currentObjectiveId;
         objective.objectiveAddress = _proxyContractAddress;
+        objective.objectiveAddressForGovernmentFund = _proxyContractForGovernmentFundAddress;
         objective.serviceProviderId = _serviceProviderId;
         objective.estimatedBudgetAmount = _estimatedBudgetAmount;
         objective.requestedBudgetAmount = _requestedBudgetAmount;
@@ -121,6 +122,7 @@ contract SocialImpactBond is OwnableOriginal(msg.sender), McStorage, McConstants
 
         emit DefineObjective(objective.objectiveId,
                              objective.objectiveAddress,
+                             objective.objectiveAddressForGovernmentFund,
                              objective.serviceProviderId, 
                              objective.estimatedBudgetAmount,
                              objective.requestedBudgetAmount,
