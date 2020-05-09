@@ -49,6 +49,11 @@ contract McEvents {
         uint dividedAmount
     );
     
+    event TransferDAI(
+        address spender, 
+        address investorAddress, 
+        uint dividedAmount
+    );
 
 
     /***
