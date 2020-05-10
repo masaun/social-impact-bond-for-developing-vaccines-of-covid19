@@ -179,10 +179,10 @@ contract SocialImpactBond is OwnableOriginal(msg.sender), McStorage, McConstants
     function distributePooledFund(uint _objectiveId) public returns (bool) {
         Objective memory objective = objectives[_objectiveId];
         bool _isAchieved = objective.isAchieved;
-        //address _objectiveAddress = address(objective.objectiveAddress);
-        address _objectiveAddressForGovernmentFund = address(objective.objectiveAddressForGovernmentFund);
-        //proxyContractFactory = ProxyContractFactory(_objectiveAddress);
-        proxyGovernmentFundFactory = ProxyGovernmentFundFactory(_objectiveAddressForGovernmentFund);
+        address _objectiveAddress = address(objective.objectiveAddress);
+        //address _objectiveAddressForGovernmentFund = address(objective.objectiveAddressForGovernmentFund);
+        proxyContractFactory = ProxyContractFactory(_objectiveAddress);
+        //proxyGovernmentFundFactory = ProxyGovernmentFundFactory(_objectiveAddressForGovernmentFund);
 
         uint _countTargetInvestors = countTargetInvestors(_objectiveId);
         uint balanceOfObjective = balanceOfObjective(_objectiveId);
@@ -196,8 +196,8 @@ contract SocialImpactBond is OwnableOriginal(msg.sender), McStorage, McConstants
                 if (investorOfObjective.objectiveId == _objectiveId) {
                     //@dev - Distribute amount (which are divided by number of investors who invested achieved objective)
                     address _investorAddress = address(investorOfObjective.investorAddress);
-                    //proxyContractFactory.transferDAI(_investorAddress, dividedAmount);
-                    proxyGovernmentFundFactory.transferDAI(_investorAddress, dividedAmount);
+                    proxyContractFactory.transferDAI(_investorAddress, dividedAmount);
+                    //proxyGovernmentFundFactory.transferDAI(_investorAddress, dividedAmount);
                 }
             }
         }
