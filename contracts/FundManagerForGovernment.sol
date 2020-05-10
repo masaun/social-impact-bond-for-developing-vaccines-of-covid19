@@ -45,7 +45,18 @@ contract FundManagerForGovernment is OwnableOriginal(msg.sender), McStorage, McC
     /***
      * @dev - Government stake fund for payment for success
      **/
-    //function stakeFundFromGovernment(uint _objectiveId, uint _governmentId, uint _stakeAmount) public returns (bool) {}
+    function stakeFundFromGovernment(uint _objectiveId, uint _governmentId, uint _stakeAmount) public returns (bool) {
+        //@dev - Call funded address which correspond to objectiveId
+        Objective storage objective = objectives[_objectiveId];
+        address _proxyContractForGovernmentFundAddress = address(objective.objectiveAddressForGovernmentFund);
+
+        //@dev - Transfer from this contract address to funded address
+        address spender = _proxyContractForGovernmentFundAddress;  //@dev - Spender is destination contract address 
+        dai.approve(spender, _stakeAmount);
+        dai.transfer(_proxyContractForGovernmentFundAddress, _stakeAmount);
+
+        emit StakeFundFromGovernment(spender, _proxyContractForGovernmentFundAddress, _stakeAmount); 
+    }
 
 
     /***
@@ -63,10 +74,21 @@ contract FundManagerForGovernment is OwnableOriginal(msg.sender), McStorage, McC
     /***
      * @dev - If outcome is achieved until objective, staked fund is distributed from this contract to SocialImpactBond.sol contract (for investors)
      **/
-    function payForSuccessful(uint _governmentId, uint _payForSuccessfulAmount) public returns (bool) {
-        dai.approve(SOCIAL_IMPACT_BOND, _payForSuccessfulAmount);
-        dai.transferFrom(address(this), SOCIAL_IMPACT_BOND, _payForSuccessfulAmount);
+    function payForSuccessful(address investorAddress, uint dividedAmount) public returns (bool) {
+        address spender = msg.sender;
+        dai.approve(spender, dividedAmount);
+        dai.transfer(investorAddress, dividedAmount);
+
+        emit PayForSuccessful(spender, investorAddress, dividedAmount);        
     }
+
+    // function transferDAI(address investorAddress, uint dividedAmount) public returns (bool) {
+    //     address spender = msg.sender;
+    //     dai.approve(spender, dividedAmount);
+    //     dai.transfer(investorAddress, dividedAmount);
+
+    //     emit TransferDAI(spender, investorAddress, dividedAmount);
+    // }
 
 
     /***

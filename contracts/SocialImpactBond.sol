@@ -26,7 +26,7 @@ import "./lib/BokkyPooBahsDateTimeLibrary/contracts/BokkyPooBahsDateTimeContract
 // Original Contract
 import "./StakeholderRegistry.sol";
 import "./ProxyContractFactory.sol";
-
+import "./ProxyContractForGovernmentFundFactory.sol";
 
 
 /***
@@ -48,6 +48,7 @@ contract SocialImpactBond is OwnableOriginal(msg.sender), McStorage, McConstants
 
     StakeholderRegistry public stakeholderRegistry;
     ProxyContractFactory public proxyContractFactory;
+    ProxyContractForGovernmentFundFactory public proxyContractForGovernmentFundFactory;
 
 
     constructor(address _erc20, address _idleDAI, address _stakeholderRegistry, address _bokkyPooBahsDateTimeContract) public {
@@ -61,13 +62,23 @@ contract SocialImpactBond is OwnableOriginal(msg.sender), McStorage, McConstants
     }
 
     /***
-     * @dev - Created ProxyContract works as a wallet of each objective 
+     * @dev - Created ProxyContract works as a wallet of each objective for working capital
      **/
     function createProxyContract() public returns (ProxyContractFactory _proxyContract) {
         ProxyContractFactory proxyContract = new ProxyContractFactory();
         emit CreateProxyContract(proxyContract);
         return proxyContract;
     }
+
+    /***
+     * @dev - Created ProxyContractForGovernmentFund works as a wallet of each objective for paying for successful
+     **/
+    function createProxyContractForGovernmentFund() public returns (ProxyContractForGovernmentFundFactory _proxyContractForGovernmentFund) {
+        ProxyContractForGovernmentFundFactory proxyContractForGovernmentFund = new ProxyContractForGovernmentFundFactory();
+        emit CreateProxyContractForGovernmentFund(proxyContractForGovernmentFund);
+        return proxyContractForGovernmentFund;
+    }
+
     
 
     /***
@@ -92,7 +103,7 @@ contract SocialImpactBond is OwnableOriginal(msg.sender), McStorage, McConstants
 
         //@dev - Create new contract address for new objective
         ProxyContractFactory _proxyContractAddress = createProxyContract();
-        //address _proxyContractAddress = proxyContractFactory(_saltNonce);
+        ProxyContractForGovernmentFundFactory _proxyContractForGovernmentFundAddress = createProxyContractForGovernmentFund();
 
         //@dev - Calculate expected saving cost of objective
         uint _savedCostOfObjective = _estimatedBudgetAmount.sub(_requestedBudgetAmount);
@@ -101,6 +112,7 @@ contract SocialImpactBond is OwnableOriginal(msg.sender), McStorage, McConstants
         Objective storage objective = objectives[currentObjectiveId];
         objective.objectiveId = currentObjectiveId;
         objective.objectiveAddress = _proxyContractAddress;
+        objective.objectiveAddressForGovernmentFund = _proxyContractForGovernmentFundAddress;
         objective.serviceProviderId = _serviceProviderId;
         objective.estimatedBudgetAmount = _estimatedBudgetAmount;
         objective.requestedBudgetAmount = _requestedBudgetAmount;
@@ -110,6 +122,7 @@ contract SocialImpactBond is OwnableOriginal(msg.sender), McStorage, McConstants
 
         emit DefineObjective(objective.objectiveId,
                              objective.objectiveAddress,
+                             objective.objectiveAddressForGovernmentFund,
                              objective.serviceProviderId, 
                              objective.estimatedBudgetAmount,
                              objective.requestedBudgetAmount,
@@ -166,8 +179,10 @@ contract SocialImpactBond is OwnableOriginal(msg.sender), McStorage, McConstants
     function distributePooledFund(uint _objectiveId) public returns (bool) {
         Objective memory objective = objectives[_objectiveId];
         bool _isAchieved = objective.isAchieved;
-        address _objectiveAddress = address(objective.objectiveAddress);
-        proxyContractFactory = ProxyContractFactory(_objectiveAddress);
+        //address _objectiveAddress = address(objective.objectiveAddress);
+        address _objectiveAddressForGovernmentFund = address(objective.objectiveAddressForGovernmentFund);
+        //proxyContractFactory = ProxyContractFactory(_objectiveAddress);
+        proxyContractForGovernmentFundFactory = ProxyContractForGovernmentFundFactory(_objectiveAddressForGovernmentFund);
 
         uint _countTargetInvestors = countTargetInvestors(_objectiveId);
         uint balanceOfObjective = balanceOfObjective(_objectiveId);
@@ -181,7 +196,8 @@ contract SocialImpactBond is OwnableOriginal(msg.sender), McStorage, McConstants
                 if (investorOfObjective.objectiveId == _objectiveId) {
                     //@dev - Distribute amount (which are divided by number of investors who invested achieved objective)
                     address _investorAddress = address(investorOfObjective.investorAddress);
-                    proxyContractFactory.transferDAI(_investorAddress, dividedAmount);
+                    //proxyContractFactory.transferDAI(_investorAddress, dividedAmount);
+                    proxyContractForGovernmentFundFactory.transferDAI(_investorAddress, dividedAmount);
                 }
             }
         }
