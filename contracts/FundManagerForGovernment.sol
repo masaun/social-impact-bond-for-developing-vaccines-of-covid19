@@ -21,7 +21,7 @@ import "./DAI/dai.sol";
 import "./idle-contracts/contracts/IdleToken.sol";
 
 // Contract
-import "./SocialImpactBond.sol";
+import "./ProxyContractFactory.sol";
 import "./ProxyGovernmentFundFactory.sol";
 
 
@@ -33,16 +33,13 @@ contract FundManagerForGovernment is OwnableOriginal(msg.sender), McStorage, McC
     Dai public dai;  //@dev - dai.sol
     IERC20 public erc20;
     IdleToken public idleDAI;
-    SocialImpactBond public socialImpactBond;
+    ProxyContractFactory public proxyContractFactory;
     ProxyGovernmentFundFactory public proxyGovernmentFundFactory;
 
 
     constructor(address _erc20, address _socialImpactBond) public {
         dai = Dai(_erc20);
         erc20 = IERC20(_erc20);
-        socialImpactBond = SocialImpactBond(_socialImpactBond);
-
-        SOCIAL_IMPACT_BOND = _socialImpactBond;
     }
 
     /***
@@ -51,13 +48,17 @@ contract FundManagerForGovernment is OwnableOriginal(msg.sender), McStorage, McC
     function stakeFundFromGovernment(uint _objectiveId, uint _governmentId, uint _stakeAmount) public returns (bool) {
         //@dev - Call funded address which correspond to objectiveId
         Objective memory objective = objectives[_objectiveId];
-        address _objectiveAddressForGovernmentFund = address(objective.objectiveAddressForGovernmentFund);
-        proxyGovernmentFundFactory = ProxyGovernmentFundFactory(_objectiveAddressForGovernmentFund);
+        
+        //address _objectiveAddressForGovernmentFund = address(objective.objectiveAddressForGovernmentFund);
+        //proxyGovernmentFundFactory = ProxyGovernmentFundFactory(_objectiveAddressForGovernmentFund);
+        address _objectiveAddress = address(objective.objectiveAddress);
+        proxyContractFactory = ProxyContractFactory(_objectiveAddress);
 
         //@dev - Transfer from this contract address to funded address
-        proxyGovernmentFundFactory.transferDAI(_objectiveAddressForGovernmentFund, _stakeAmount);
+        proxyContractFactory.transferDAI(_objectiveAddress, _stakeAmount);
+        //proxyGovernmentFundFactory.transferDAI(_objectiveAddressForGovernmentFund, _stakeAmount);
 
-        emit StakeFundFromGovernment(_objectiveAddressForGovernmentFund, _stakeAmount); 
+        emit StakeFundFromGovernment(_objectiveAddress, _stakeAmount); 
     }
 
 
