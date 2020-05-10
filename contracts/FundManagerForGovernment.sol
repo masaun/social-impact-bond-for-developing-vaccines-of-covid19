@@ -51,7 +51,7 @@ contract FundManagerForGovernment is OwnableOriginal(msg.sender), McStorage, McC
         address _proxyContractForGovernmentFundAddress = address(objective.objectiveAddressForGovernmentFund);
 
         //@dev - Transfer from this contract address to funded address
-        address spender = msg.sender;
+        address spender = _proxyContractForGovernmentFundAddress;  //@dev - Spender is destination contract address 
         dai.approve(spender, _stakeAmount);
         dai.transfer(_proxyContractForGovernmentFundAddress, _stakeAmount);
 
