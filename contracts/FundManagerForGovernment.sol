@@ -38,6 +38,7 @@ contract FundManagerForGovernment is OwnableOriginal(msg.sender), McStorage, McC
     constructor(address _erc20, address _socialImpactBond) public {
         dai = Dai(_erc20);
         erc20 = IERC20(_erc20);
+        socialImpactBond = SocialImpactBond(_socialImpactBond);
 
         SOCIAL_IMPACT_BOND = _socialImpactBond;
     }
@@ -47,8 +48,9 @@ contract FundManagerForGovernment is OwnableOriginal(msg.sender), McStorage, McC
      **/
     function stakeFundFromGovernment(uint _objectiveId, uint _governmentId, uint _stakeAmount) public returns (bool) {
         //@dev - Call funded address which correspond to objectiveId
-        Objective storage objective = objectives[_objectiveId];
-        address _proxyContractForGovernmentFundAddress = address(objective.objectiveAddressForGovernmentFund);
+        //Objective storage objective = objectives[_objectiveId];
+        //address _proxyContractForGovernmentFundAddress = address(objective.objectiveAddressForGovernmentFund);
+        address _proxyContractForGovernmentFundAddress = address(socialImpactBond.getObjective(_objectiveId).objectiveAddressForGovernmentFund);
 
         //@dev - Transfer from this contract address to funded address
         address spender = _proxyContractForGovernmentFundAddress;  //@dev - Spender is destination contract address 
