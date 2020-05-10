@@ -4,7 +4,7 @@ import "./McObjects.sol";
 
 // Original Contract
 import "../ProxyContractFactory.sol";
-import "../ProxyContractForGovernmentFundFactory.sol";
+import "../ProxyGovernmentFundFactory.sol";
 
 
 contract McEvents {
@@ -12,7 +12,7 @@ contract McEvents {
     event DefineObjective(
         uint objectiveId,
         ProxyContractFactory objectiveAddress,
-        ProxyContractForGovernmentFundFactory objectiveAddressForGovernmentFund,
+        ProxyGovernmentFundFactory objectiveAddressForGovernmentFund,
         uint serviceProviderId,
         uint estimatedBudgetAmount,  // Estimated budget amount by the government
         uint requestedBudgetAmount,  // Requested budget amount by service providers (ask this budget for investors)
@@ -33,8 +33,8 @@ contract McEvents {
         ProxyContractFactory proxyContract
     );
 
-    event CreateProxyContractForGovernmentFund (
-        ProxyContractForGovernmentFundFactory proxyContractForGovernmentFund
+    event CreateProxyGovernmentFund (
+        ProxyGovernmentFundFactory proxyGovernmentFund
     );
     
     event RegisterInvester(
