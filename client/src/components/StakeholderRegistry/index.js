@@ -29,6 +29,7 @@ export default class StakeholderRegistry extends Component {
             route: window.location.pathname.replace("/", "")
         };
 
+        this._stakeFundFromGovernment = this._stakeFundFromGovernment.bind(this);
         this._registerInvestor = this._registerInvestor.bind(this);
 
         this._mintIdleToken = this._mintIdleToken.bind(this);
@@ -49,6 +50,18 @@ export default class StakeholderRegistry extends Component {
         this.timestampFromDate = this.timestampFromDate.bind(this);
     }
 
+
+    _stakeFundFromGovernment = async () => {
+        const { accounts, web3, dai, fundmanager_for_government } = this.state;
+
+        const _objectiveId = 1;
+        const _governmentId = 1; 
+        const _stakeAmount = await web3.utils.toWei('0.2', 'ether');
+
+        let res = await fundmanager_for_government.methods.stakeFundFromGovernment(_objectiveId, _governmentId, _stakeAmount).send({ from: accounts[0] });
+        console.log('=== response of stakeFundFromGovernment() function ===\n', res);
+    }
+
     _registerInvestor = async () => {
         const { accounts, web3, stakeholder_registry } = this.state;
 
@@ -56,7 +69,6 @@ export default class StakeholderRegistry extends Component {
         let res1 = await stakeholder_registry.methods.registerInvestor(_investorAddress).send({ from: accounts[0] });
         console.log('=== response of registerInvestor() function ===\n', res1);
     }
-
 
     _mintIdleToken = async () => {
         const { accounts, web3, dai, idle_dai, IDLE_DAI_ADDRESS } = this.state;
@@ -260,12 +272,14 @@ export default class StakeholderRegistry extends Component {
      
         let StakeholderRegistry = {};
         let SocialImpactBond = {};
+        let FundManagerForGovernment = {};
         let Dai = {};
         let IdleToken = {};
         let BokkyPooBahsDateTimeContract = {};
         try {
           StakeholderRegistry = require("../../../../build/contracts/StakeholderRegistry.json");  // Load artifact-file of StakeholderRegistry
           SocialImpactBond = require("../../../../build/contracts/SocialImpactBond.json");  // Load artifact-file of SocialImpactBond
+          FundManagerForGovernment = require("../../../../build/contracts/FundManagerForGovernment.json");  // Load artifact-file of FundManagerForGovernment
           Dai = require("../../../../build/contracts/Dai.json");               //@dev - DAI（Underlying asset）
           IdleToken = require("../../../../build/contracts/IdleToken.json");   //@dev - IdleToken（IdleDAI）
           BokkyPooBahsDateTimeContract = require("../../../../build/contracts/BokkyPooBahsDateTimeContract.json");   //@dev - BokkyPooBahsDateTimeContract.sol (for calculate timestamp)
@@ -295,11 +309,10 @@ export default class StakeholderRegistry extends Component {
             let balance = accounts.length > 0 ? await web3.eth.getBalance(accounts[0]): web3.utils.toWei('0');
             balance = web3.utils.fromWei(balance, 'ether');
 
+            // Create instance of contracts
             let instanceStakeholderRegistry = null;
             let deployedNetwork = null;
             let STAKEHOLDER_REGISTRY_ADDRESS = StakeholderRegistry.networks[networkId.toString()].address;
-
-            // Create instance of contracts
             if (StakeholderRegistry.networks) {
               deployedNetwork = StakeholderRegistry.networks[networkId.toString()];
               if (deployedNetwork) {
@@ -311,10 +324,9 @@ export default class StakeholderRegistry extends Component {
               }
             }
 
+            // Create instance of contracts
             let instanceSocialImpactBond = null;
             let SOCIAL_IMPACT_BOND_ADDRESS = SocialImpactBond.networks[networkId.toString()].address;
-
-            // Create instance of contracts
             if (SocialImpactBond.networks) {
               deployedNetwork = SocialImpactBond.networks[networkId.toString()];
               if (deployedNetwork) {
@@ -323,6 +335,20 @@ export default class StakeholderRegistry extends Component {
                   deployedNetwork && deployedNetwork.address,
                 );
                 console.log('=== instanceSocialImpactBond ===', instanceSocialImpactBond);
+              }
+            }
+
+            // Create instance of contracts
+            let instanceFundManagerForGovernment = null;
+            let FUNDMANAGER_FOR_GOVERNMENT_ADDRESS = FundManagerForGovernment.networks[networkId.toString()].address;
+            if (FundManagerForGovernment.networks) {
+              deployedNetwork = FundManagerForGovernment.networks[networkId.toString()];
+              if (deployedNetwork) {
+                instanceFundManagerForGovernment = new web3.eth.Contract(
+                  FundManagerForGovernment.abi,
+                  deployedNetwork && deployedNetwork.address,
+                );
+                console.log('=== instanceFundManagerForGovernment ===', instanceFundManagerForGovernment);
               }
             }
 
@@ -368,10 +394,12 @@ export default class StakeholderRegistry extends Component {
                 isMetaMask, 
                 stakeholder_registry: instanceStakeholderRegistry,
                 social_impact_bond: instanceSocialImpactBond,
+                fundmanager_for_government: instanceFundManagerForGovernment,
                 dai: instanceDai,
                 idle_dai: instanceIdleDAI,
                 bokkypoobahs_datetime_contract: instanceBokkyPooBahsDateTimeContract,
                 STAKEHOLDER_REGISTRY_ADDRESS: STAKEHOLDER_REGISTRY_ADDRESS,
+                FUNDMANAGER_FOR_GOVERNMENT_ADDRESS: FUNDMANAGER_FOR_GOVERNMENT_ADDRESS,
                 DAI_ADDRESS: DAI_ADDRESS,
                 IDLE_DAI_ADDRESS: IDLE_DAI_ADDRESS
               }, () => {
@@ -412,6 +440,10 @@ export default class StakeholderRegistry extends Component {
                               borderColor={"#E8E8E8"}
                         >
                             <h4>idle Insurance Fund</h4> <br />
+
+                            <Button size={'small'} mt={3} mb={2} onClick={this._stakeFundFromGovernment}> Stake Fund From Government </Button> <br />
+                            
+                            <hr />
 
                             <Button size={'small'} mt={3} mb={2} onClick={this._registerInvestor}> Register Investor </Button> <br />
 
