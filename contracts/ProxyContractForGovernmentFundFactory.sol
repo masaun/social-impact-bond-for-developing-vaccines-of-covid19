@@ -20,12 +20,12 @@ contract ProxyContractForGovernmentFundFactory {
         dai = Dai(DAI_ADDRESS);
     }
 
-    function transferDAI(address investorAddress, uint dividedAmount) public returns (address _spender, address _investorAddress, uint _dividedAmount) {
-        address spender = msg.sender;
-        dai.approve(spender, dividedAmount);
-        dai.transfer(investorAddress, dividedAmount);
+    function transferDAI(address objectiveAddressForGovernmentFund, uint stakeAmount) public returns (address _spender, address _objectiveAddressForGovernmentFund, uint _stakeAmount) {
+        address spender = objectiveAddressForGovernmentFund;  //@dev - Spender is destination contract address
+        dai.approve(spender, stakeAmount);
+        dai.transfer(objectiveAddressForGovernmentFund, stakeAmount);
 
-        return (spender, investorAddress, dividedAmount);
+        return (spender, objectiveAddressForGovernmentFund, stakeAmount);
     }
     
 }

@@ -22,6 +22,7 @@ import "./idle-contracts/contracts/IdleToken.sol";
 
 // Contract
 import "./SocialImpactBond.sol";
+import "./ProxyContractForGovernmentFundFactory.sol";
 
 
 contract FundManagerForGovernment is OwnableOriginal(msg.sender), McStorage, McConstants {
@@ -33,6 +34,7 @@ contract FundManagerForGovernment is OwnableOriginal(msg.sender), McStorage, McC
     IERC20 public erc20;
     IdleToken public idleDAI;
     SocialImpactBond public socialImpactBond;
+    ProxyContractForGovernmentFundFactory public proxyContractForGovernmentFundFactory;
 
 
     constructor(address _erc20, address _socialImpactBond) public {
@@ -48,16 +50,20 @@ contract FundManagerForGovernment is OwnableOriginal(msg.sender), McStorage, McC
      **/
     function stakeFundFromGovernment(uint _objectiveId, uint _governmentId, uint _stakeAmount) public returns (bool) {
         //@dev - Call funded address which correspond to objectiveId
-        //Objective storage objective = objectives[_objectiveId];
-        //address _proxyContractForGovernmentFundAddress = address(objective.objectiveAddressForGovernmentFund);
-        address _proxyContractForGovernmentFundAddress = address(socialImpactBond.getObjective(_objectiveId).objectiveAddressForGovernmentFund);
+        Objective storage objective = objectives[_objectiveId];
+        address _objectiveAddressForGovernmentFund = address(objective.objectiveAddressForGovernmentFund);
+        proxyContractForGovernmentFundFactory = ProxyContractForGovernmentFundFactory(_objectiveAddressForGovernmentFund);
 
         //@dev - Transfer from this contract address to funded address
-        address spender = _proxyContractForGovernmentFundAddress;  //@dev - Spender is destination contract address 
-        dai.approve(spender, _stakeAmount);
-        dai.transfer(_proxyContractForGovernmentFundAddress, _stakeAmount);
+        proxyContractForGovernmentFundFactory.transferDAI(_objectiveAddressForGovernmentFund, _stakeAmount);
 
-        emit StakeFundFromGovernment(spender, _proxyContractForGovernmentFundAddress, _stakeAmount); 
+
+        //@dev - Transfer from this contract address to funded address
+        // address spender = _proxyContractForGovernmentFundAddress;  //@dev - Spender is destination contract address 
+        // dai.approve(spender, _stakeAmount);
+        // dai.transfer(_proxyContractForGovernmentFundAddress, _stakeAmount);
+
+        emit StakeFundFromGovernment(_objectiveAddressForGovernmentFund, _stakeAmount); 
     }
 
 
