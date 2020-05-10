@@ -55,7 +55,7 @@ contract FundManagerForGovernment is OwnableOriginal(msg.sender), McStorage, McC
         proxyContractFactory = ProxyContractFactory(_objectiveAddress);
 
         //@dev - Transfer from this contract address to funded address
-        proxyContractFactory.transferDAI(_objectiveAddress, _stakeAmount);
+        proxyContractFactory.transferDaiFromGoverment(_objectiveAddress, _stakeAmount);
         //proxyGovernmentFundFactory.transferDAI(_objectiveAddressForGovernmentFund, _stakeAmount);
 
         emit StakeFundFromGovernment(_objectiveAddress, _stakeAmount); 
