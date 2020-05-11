@@ -227,6 +227,26 @@ contract SocialImpactBond is OwnableOriginal(msg.sender), McStorage, McConstants
 
 
     /***
+     * @dev - Government stake fund for payment for success
+     **/
+    function stakeFundFromGovernment(uint _objectiveId, uint _governmentId, uint _stakeAmount) public returns (bool) {
+        //@dev - Call funded address which correspond to objectiveId
+        Objective memory objective = objectives[_objectiveId];
+        
+        //address _objectiveAddressForGovernmentFund = address(objective.objectiveAddressForGovernmentFund);
+        address _objectiveAddress = address(objective.objectiveAddress);
+        proxyContractFactory = ProxyContractFactory(_objectiveAddress);
+
+        //@dev - Transfer from this contract address to funded address
+        proxyContractFactory.transferDaiFromGoverment(_objectiveAddress, _stakeAmount);
+
+        emit StakeFundFromGovernment(_objectiveAddress, _stakeAmount); 
+    }
+
+
+
+
+    /***
      * @dev - Lend pooled fund(DAI) to idle.finance(idleDAI)
      **/
     function lendPooledFund(uint256 _mintAmount, uint256[] memory _clientProtocolAmounts) public returns (bool) {

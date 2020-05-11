@@ -52,20 +52,23 @@ export default class StakeholderRegistry extends Component {
 
 
     _stakeFundFromGovernment = async () => {
-        const { accounts, web3, dai, fundmanager_for_government, FUNDMANAGER_FOR_GOVERNMENT_ADDRESS } = this.state;
+        const { accounts, web3, dai, social_impact_bond, fundmanager_for_government, SOCIAL_IMPACT_BOND_ADDRESS, FUNDMANAGER_FOR_GOVERNMENT_ADDRESS } = this.state;
 
         const _objectiveId = 1;
         const _governmentId = 1; 
         const _stakeAmount = await web3.utils.toWei('0.2', 'ether');
 
         //@dev - User transfer stakeAmount to FundManagerForGovernment contract
-        let res1 = await dai.methods.approve(FUNDMANAGER_FOR_GOVERNMENT_ADDRESS, _stakeAmount).send({ from: accounts[0] });
-        let res2 = await dai.methods.transfer(FUNDMANAGER_FOR_GOVERNMENT_ADDRESS, _stakeAmount).send({ from: accounts[0] });
+        let res1 = await dai.methods.approve(SOCIAL_IMPACT_BOND_ADDRESS, _stakeAmount).send({ from: accounts[0] });
+        let res2 = await dai.methods.transfer(SOCIAL_IMPACT_BOND_ADDRESS, _stakeAmount).send({ from: accounts[0] });
+        // let res1 = await dai.methods.approve(FUNDMANAGER_FOR_GOVERNMENT_ADDRESS, _stakeAmount).send({ from: accounts[0] });
+        // let res2 = await dai.methods.transfer(FUNDMANAGER_FOR_GOVERNMENT_ADDRESS, _stakeAmount).send({ from: accounts[0] });
         console.log('=== response of approve() function ===', res1);  
         console.log('=== response of transfer() function ===', res2);             
 
         //@dev - FundManagerForGovernment contract execute stakeFundFromGovernment()
-        let res = await fundmanager_for_government.methods.stakeFundFromGovernment(_objectiveId, _governmentId, _stakeAmount).send({ from: accounts[0] });
+        let res = await social_impact_bond.methods.stakeFundFromGovernment(_objectiveId, _governmentId, _stakeAmount).send({ from: accounts[0] });
+        // let res = await fundmanager_for_government.methods.stakeFundFromGovernment(_objectiveId, _governmentId, _stakeAmount).send({ from: accounts[0] });
         console.log('=== response of stakeFundFromGovernment() function ===\n', res);
     }
 
@@ -409,6 +412,7 @@ export default class StakeholderRegistry extends Component {
                 idle_dai: instanceIdleDAI,
                 bokkypoobahs_datetime_contract: instanceBokkyPooBahsDateTimeContract,
                 STAKEHOLDER_REGISTRY_ADDRESS: STAKEHOLDER_REGISTRY_ADDRESS,
+                SOCIAL_IMPACT_BOND_ADDRESS: SOCIAL_IMPACT_BOND_ADDRESS,
                 FUNDMANAGER_FOR_GOVERNMENT_ADDRESS: FUNDMANAGER_FOR_GOVERNMENT_ADDRESS,
                 DAI_ADDRESS: DAI_ADDRESS,
                 IDLE_DAI_ADDRESS: IDLE_DAI_ADDRESS

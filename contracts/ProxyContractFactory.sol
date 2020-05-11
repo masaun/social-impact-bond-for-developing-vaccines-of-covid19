@@ -32,7 +32,7 @@ contract ProxyContractFactory is McEvents {
     }
     
     function transferDaiFromGoverment(address objectiveAddress, uint stakeAmount) public returns (bool) {
-        address spender = objectiveAddress;
+        address spender = msg.sender;
         dai.approve(spender, stakeAmount);
         dai.transfer(objectiveAddress, stakeAmount);
 
