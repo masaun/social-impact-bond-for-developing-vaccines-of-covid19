@@ -3,7 +3,12 @@
 
 ***
 ## 【Introduction of Social Impact Bond for developing vaccines of COVID19】
-- 
+- This is a dApp of Social Impact Bond for developing vaccines of COVID19
+  - This dApp aim to support institution which try to develop vaccines of COVID19 by structure of Social Impact Bond.
+  
+
+
+
 
 &nbsp;
 
