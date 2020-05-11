@@ -53,13 +53,15 @@ contract FundManagerForGovernment is OwnableOriginal(msg.sender), McStorage, McC
     function stakeFundFromGovernment(uint _objectiveId, uint _governmentId, uint _stakeAmount) public returns (bool) {
         //@dev - Call funded address which correspond to objectiveId
         Objective memory objective = getObjective(_objectiveId);
-        address _objectiveAddress = address(objective.objectiveAddress);
-        //address _objectiveAddressForGovernmentFund = address(objective.objectiveAddressForGovernmentFund);
+        //address _objectiveAddress = address(objective.objectiveAddress);
+        address _objectiveAddressForGovernmentFund = address(objective.objectiveAddressForGovernmentFund);
 
         //@dev - Transfer from this contract address to funded address
-        transferDaiFromGoverment(_objectiveAddress, _stakeAmount);
+        //transferDaiFromGoverment(_objectiveAddress, _stakeAmount);
+        transferDaiFromGoverment(_objectiveAddressForGovernmentFund, _stakeAmount);
 
-        emit StakeFundFromGovernment(_objectiveAddress, _stakeAmount); 
+        //emit StakeFundFromGovernment(_objectiveAddress, _stakeAmount);
+        emit StakeFundFromGovernment(_objectiveAddressForGovernmentFund, _stakeAmount); 
     }
 
     function transferDaiFromGoverment(address objectiveAddress, uint stakeAmount) public returns (bool) {
