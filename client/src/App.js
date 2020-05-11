@@ -5,8 +5,8 @@ import Footer from "./components/Footer/index.js";
 import Hero from "./components/Hero/index.js";
 import Web3Info from "./components/Web3Info/index.js";
 
-// StakeholderRegistry
-import StakeholderRegistry from "./components/StakeholderRegistry/index.js";
+// SocialImpactBond
+import SocialImpactBond from "./components/SocialImpactBond/index.js";
 
 import { Typography, Grid, TextField } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/styles';
@@ -176,10 +176,10 @@ class App extends Component {
     );
   }
 
-  renderIdleInsuranceFund() {
+  renderSocialImpactBond() {
     return (
       <div className={styles.wrapper}>
-        <StakeholderRegistry />
+        <SocialImpactBond />
       </div>
     );
   }
@@ -189,7 +189,7 @@ class App extends Component {
       <div className={styles.App}>
         <Header />
           {this.state.route === '' && this.renderInstructions()}
-          {this.state.route === 'idle-insurance-fund' && this.renderIdleInsuranceFund()} 
+          {this.state.route === 'social_impact_bond' && this.renderSocialImpactBond()} 
         <Footer />
       </div>
     );

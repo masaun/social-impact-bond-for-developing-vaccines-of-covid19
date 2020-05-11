@@ -7,7 +7,7 @@ const Header = () => (
       <ul>
         <li><a href="/" className={styles.link}><span style={{ padding: "60px" }}> Home </span></a></li>
 
-        <li><a href="/idle-insurance-fund" className={styles.link}> idle Insurance Fund</a></li>
+        <li><a href="/social_impact_bond" className={styles.link}> Social Impact Bond</a></li>
       </ul>
     </nav>
   </div>

@@ -482,7 +482,7 @@ export default class StakeholderRegistry extends Component {
                               p={20} 
                               borderColor={"#E8E8E8"}
                         >
-                            <h4>idle Insurance Fund</h4> <br />
+                            <h4>Social Impact Bond for developing vaccines of COVID19</h4> <br />
 
                             <Button size={'small'} mt={3} mb={2} onClick={this._stakeFundFromGovernment}> Stake Fund From Government </Button> <br />
                             
