@@ -67,7 +67,40 @@ export default class StakeholderRegistry extends Component {
         //@dev - FundManagerForGovernment contract execute stakeFundFromGovernment()
         let res = await fundmanager_for_government.methods.stakeFundFromGovernment(_objectiveId, _governmentId, _stakeAmount).send({ from: accounts[0] });
         console.log('=== response of stakeFundFromGovernment() function ===\n', res);
+
+        //@dev - Lend
+        this.lendPooledGovFund(_objectiveId, _stakeAmount);
     }
+
+    lendPooledGovFund = async (_objectiveId, _stakeAmount) => {
+        const { accounts, web3, social_impact_bond, stakeholder_registry, dai, idle_dai, IDLE_DAI_ADDRESS } = this.state;
+
+        let ProxyGovernmentFundFactory = {};
+        ProxyGovernmentFundFactory = require("../../../../build/contracts/ProxyGovernmentFundFactory.json");
+
+        //@dev - Create instance of DAI-contract
+        let instanceProxyGovernmentFundFactory = null;
+        const objective = social_impact_bond.methods.getObjective(_objectiveId).call();
+        let ProxyGovernmentFundFactory_ADDRESS = objective.objectiveAddressForGovernmentFund;
+        instanceProxyGovernmentFundFactory = new web3.eth.Contract(
+            ProxyGovernmentFundFactory.abi,
+            ProxyGovernmentFundFactory_ADDRESS,
+        );
+        console.log('=== instanceProxyGovernmentFundFactory ===', instanceProxyGovernmentFundFactory);
+        this.setState({ proxy_governmentfund_factory: instanceProxyGovernmentFundFactory });
+        const { proxy_governmentfund_factory } = this.state;
+
+        const mintAmount = 0.1;  // Expected transferred value is 0.1 DAI（= 10000000000000000 Wei）
+        let _mintAmount = web3.utils.toWei(mintAmount.toString(), 'ether');
+        const _clientProtocolAmounts = [];
+
+        let res1 = await proxy_governmentfund_factory.methods.lendPooledFund(_mintAmount, _clientProtocolAmounts).send({ from: accounts[0] });
+        console.log('=== lendPooledFund() - ProxyGovernmentFundFactory.sol ===\n', res1);        
+    }
+
+
+
+
 
     _registerInvestor = async () => {
         const { accounts, web3, stakeholder_registry } = this.state;
@@ -393,7 +426,7 @@ export default class StakeholderRegistry extends Component {
             console.log('=== instanceBokkyPooBahsDateTimeContract ===', instanceBokkyPooBahsDateTimeContract);
 
 
-            if (StakeholderRegistry || SocialImpactBond) {
+            if (StakeholderRegistry || SocialImpactBond || FundManagerForGovernment || Dai || IdleToken || BokkyPooBahsDateTimeContract) {
               // Set web3, accounts, and contract to the state, and then proceed with an
               // example of interacting with the contract's methods.
               this.setState({ 
