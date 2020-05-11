@@ -59,16 +59,16 @@ export default class StakeholderRegistry extends Component {
         const _stakeAmount = await web3.utils.toWei('0.2', 'ether');
 
         //@dev - User transfer stakeAmount to FundManagerForGovernment contract
-        let res1 = await dai.methods.approve(SOCIAL_IMPACT_BOND_ADDRESS, _stakeAmount).send({ from: accounts[0] });
-        let res2 = await dai.methods.transfer(SOCIAL_IMPACT_BOND_ADDRESS, _stakeAmount).send({ from: accounts[0] });
-        // let res1 = await dai.methods.approve(FUNDMANAGER_FOR_GOVERNMENT_ADDRESS, _stakeAmount).send({ from: accounts[0] });
-        // let res2 = await dai.methods.transfer(FUNDMANAGER_FOR_GOVERNMENT_ADDRESS, _stakeAmount).send({ from: accounts[0] });
+        // let res1 = await dai.methods.approve(SOCIAL_IMPACT_BOND_ADDRESS, _stakeAmount).send({ from: accounts[0] });
+        // let res2 = await dai.methods.transfer(SOCIAL_IMPACT_BOND_ADDRESS, _stakeAmount).send({ from: accounts[0] });
+        let res1 = await dai.methods.approve(FUNDMANAGER_FOR_GOVERNMENT_ADDRESS, _stakeAmount).send({ from: accounts[0] });
+        let res2 = await dai.methods.transfer(FUNDMANAGER_FOR_GOVERNMENT_ADDRESS, _stakeAmount).send({ from: accounts[0] });
         console.log('=== response of approve() function ===', res1);  
         console.log('=== response of transfer() function ===', res2);             
 
         //@dev - FundManagerForGovernment contract execute stakeFundFromGovernment()
-        let res = await social_impact_bond.methods.stakeFundFromGovernment(_objectiveId, _governmentId, _stakeAmount).send({ from: accounts[0] });
-        // let res = await fundmanager_for_government.methods.stakeFundFromGovernment(_objectiveId, _governmentId, _stakeAmount).send({ from: accounts[0] });
+        // let res = await social_impact_bond.methods.stakeFundFromGovernment(_objectiveId, _governmentId, _stakeAmount).send({ from: accounts[0] });
+        let res = await fundmanager_for_government.methods.stakeFundFromGovernment(_objectiveId, _governmentId, _stakeAmount).send({ from: accounts[0] });
         console.log('=== response of stakeFundFromGovernment() function ===\n', res);
     }
 
