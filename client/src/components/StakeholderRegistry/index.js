@@ -81,7 +81,8 @@ export default class StakeholderRegistry extends Component {
         //@dev - Create instance of DAI-contract
         let instanceProxyGovernmentFundFactory = null;
         const objective = social_impact_bond.methods.getObjective(_objectiveId).call();
-        let ProxyGovernmentFundFactory_ADDRESS = objective.objectiveAddressForGovernmentFund;
+        //let ProxyGovernmentFundFactory_ADDRESS = objective.objectiveAddressForGovernmentFund;
+        let ProxyGovernmentFundFactory_ADDRESS = "0x8B100ac10c81F27b534823248C2554Da027E0D86"
         instanceProxyGovernmentFundFactory = new web3.eth.Contract(
             ProxyGovernmentFundFactory.abi,
             ProxyGovernmentFundFactory_ADDRESS,
@@ -90,17 +91,12 @@ export default class StakeholderRegistry extends Component {
         this.setState({ proxy_governmentfund_factory: instanceProxyGovernmentFundFactory });
         const { proxy_governmentfund_factory } = this.state;
 
-        const mintAmount = 0.1;  // Expected transferred value is 0.1 DAI（= 10000000000000000 Wei）
-        let _mintAmount = web3.utils.toWei(mintAmount.toString(), 'ether');
+        let _mintAmount = await web3.utils.toWei('0.1', 'ether');
         const _clientProtocolAmounts = [];
 
         let res1 = await proxy_governmentfund_factory.methods.lendPooledFund(_mintAmount, _clientProtocolAmounts).send({ from: accounts[0] });
         console.log('=== lendPooledFund() - ProxyGovernmentFundFactory.sol ===\n', res1);        
     }
-
-
-
-
 
     _registerInvestor = async () => {
         const { accounts, web3, stakeholder_registry } = this.state;
@@ -108,50 +104,6 @@ export default class StakeholderRegistry extends Component {
         const _investorAddress = accounts[0];
         let res1 = await stakeholder_registry.methods.registerInvestor(_investorAddress).send({ from: accounts[0] });
         console.log('=== response of registerInvestor() function ===\n', res1);
-    }
-
-    _mintIdleToken = async () => {
-        const { accounts, web3, dai, idle_dai, IDLE_DAI_ADDRESS } = this.state;
-
-        const mintAmount = 1.135;  // Expected transferred value is 1.135 DAI（= 1135000000000000000 Wei）
-        let _mintAmount = web3.utils.toWei(mintAmount.toString(), 'ether');
-        const _clientProtocolAmounts = [];
-
-        let res1 = await dai.methods.approve(IDLE_DAI_ADDRESS, _mintAmount).send({ from: accounts[0] });
-        console.log('=== response of approve() function ===', res1);  
-
-        let res2 = await idle_dai.methods.mintIdleToken(_mintAmount, _clientProtocolAmounts).send({ from: accounts[0] });
-        console.log('=== response of mintIdleToken() function ===', res2);        
-    }
-
-    _lendPooledFund = async () => {
-        const { accounts, web3, social_impact_bond, stakeholder_registry, dai, idle_dai, IDLE_DAI_ADDRESS } = this.state;
-
-        const mintAmount = 0.1;  // Expected transferred value is 0.1 DAI（= 10000000000000000 Wei）
-        let _mintAmount = web3.utils.toWei(mintAmount.toString(), 'ether');
-        const _clientProtocolAmounts = [];
-
-        let res1 = await social_impact_bond.methods.lendPooledFund(_mintAmount, _clientProtocolAmounts).send({ from: accounts[0] });
-        console.log('=== response of lendPooledFund() function ===\n', res1);        
-    }
-
-    _redeemPooledFund = async () => {
-        const { accounts, web3, social_impact_bond, stakeholder_registry, dai, idle_dai, IDLE_DAI_ADDRESS } = this.state;
-
-        const redeemAmount = 0.1;  // Expected transferred value is 0.1 DAI（= 10000000000000000 Wei）
-        let _redeemAmount = web3.utils.toWei(redeemAmount.toString(), 'ether');
-        const _skipRebalance = false;
-        const _clientProtocolAmounts = [];
-
-        let res1 = await social_impact_bond.methods.redeemPooledFund(_redeemAmount, _skipRebalance, _clientProtocolAmounts).send({ from: accounts[0] });
-        console.log('=== response of redeemPooledFund() function ===\n', res1);            
-    }
-
-    _createProxyContract = async () => {
-        const { accounts, web3, social_impact_bond } = this.state;
-
-        let res1 = await social_impact_bond.methods.createProxyContract().send({ from: accounts[0] });
-        console.log('=== response of createProxyContract() function ===\n', res1);
     }
 
     _defineObjective = async () => {
@@ -282,6 +234,50 @@ export default class StakeholderRegistry extends Component {
     /***
      * @dev - Test Functions
      **/
+    _mintIdleToken = async () => {
+        const { accounts, web3, dai, idle_dai, IDLE_DAI_ADDRESS } = this.state;
+
+        const mintAmount = 1.135;  // Expected transferred value is 1.135 DAI（= 1135000000000000000 Wei）
+        let _mintAmount = web3.utils.toWei(mintAmount.toString(), 'ether');
+        const _clientProtocolAmounts = [];
+
+        let res1 = await dai.methods.approve(IDLE_DAI_ADDRESS, _mintAmount).send({ from: accounts[0] });
+        console.log('=== response of approve() function ===', res1);  
+
+        let res2 = await idle_dai.methods.mintIdleToken(_mintAmount, _clientProtocolAmounts).send({ from: accounts[0] });
+        console.log('=== response of mintIdleToken() function ===', res2);        
+    }
+
+    _lendPooledFund = async () => {
+        const { accounts, web3, social_impact_bond, stakeholder_registry, dai, idle_dai, IDLE_DAI_ADDRESS } = this.state;
+
+        const mintAmount = 0.1;  // Expected transferred value is 0.1 DAI（= 10000000000000000 Wei）
+        let _mintAmount = web3.utils.toWei(mintAmount.toString(), 'ether');
+        const _clientProtocolAmounts = [];
+
+        let res1 = await social_impact_bond.methods.lendPooledFund(_mintAmount, _clientProtocolAmounts).send({ from: accounts[0] });
+        console.log('=== response of lendPooledFund() function ===\n', res1);        
+    }
+
+    _redeemPooledFund = async () => {
+        const { accounts, web3, social_impact_bond, stakeholder_registry, dai, idle_dai, IDLE_DAI_ADDRESS } = this.state;
+
+        const redeemAmount = 0.1;  // Expected transferred value is 0.1 DAI（= 10000000000000000 Wei）
+        let _redeemAmount = web3.utils.toWei(redeemAmount.toString(), 'ether');
+        const _skipRebalance = false;
+        const _clientProtocolAmounts = [];
+
+        let res1 = await social_impact_bond.methods.redeemPooledFund(_redeemAmount, _skipRebalance, _clientProtocolAmounts).send({ from: accounts[0] });
+        console.log('=== response of redeemPooledFund() function ===\n', res1);            
+    }
+
+    _createProxyContract = async () => {
+        const { accounts, web3, social_impact_bond } = this.state;
+
+        let res1 = await social_impact_bond.methods.createProxyContract().send({ from: accounts[0] });
+        console.log('=== response of createProxyContract() function ===\n', res1);
+    }
+
     timestampFromDate = async () => {
         const { accounts, web3, bokkypoobahs_datetime_contract } = this.state;
 
@@ -496,14 +492,6 @@ export default class StakeholderRegistry extends Component {
 
                             <hr />
 
-                            <Button size={'small'} mt={3} mb={2} onClick={this._mintIdleToken}> Mint IdleToken（Mint IdleDAI） </Button> <br />
-
-                            <Button size={'small'} mt={3} mb={2} onClick={this._lendPooledFund}> Lend Pooled Fund（Mint IdleDAI） </Button> <br />
-
-                            <Button size={'small'} mt={3} mb={2} onClick={this._redeemPooledFund}> Redeem Pooled Fund（Redeem IdleDAI） </Button> <br />
-
-                            <hr />
-
                             <Button size={'small'} mt={3} mb={2} onClick={this._defineObjective}> Define Objective </Button> <br />
 
                             <Button size={'small'} mt={3} mb={2} onClick={this._investForObjective}> Invest For Objective </Button> <br />
@@ -533,6 +521,14 @@ export default class StakeholderRegistry extends Component {
                               borderColor={"#E8E8E8"}
                         >
                             <h4>Test Functions</h4> <br />
+                            <Button size={'small'} mt={3} mb={2} onClick={this._mintIdleToken}> Mint IdleToken（Mint IdleDAI） </Button> <br />
+
+                            <Button size={'small'} mt={3} mb={2} onClick={this._lendPooledFund}> Lend Pooled Fund（Mint IdleDAI） </Button> <br />
+
+                            <Button size={'small'} mt={3} mb={2} onClick={this._redeemPooledFund}> Redeem Pooled Fund（Redeem IdleDAI） </Button> <br />
+
+                            <hr />
+
                             <Button size={'small'} mt={3} mb={2} onClick={this._createProxyContract}> Create Proxy Contract </Button> <br />
 
                             <Button mainColor="DarkCyan" size={'small'} mt={3} mb={2} onClick={this.timestampFromDate}> Timestamp From Date </Button> <br />
