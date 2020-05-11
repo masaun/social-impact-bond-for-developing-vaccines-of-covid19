@@ -1,8 +1,8 @@
-# Idle Insurance Fund
+# Social Impact Bond for developing vaccines of COVID19
 
 
 ***
-## 【Introduction of Idle Insurance Fund】
+## 【Introduction of Social Impact Bond for developing vaccines of COVID19】
 - 
 
 &nbsp;
@@ -17,18 +17,18 @@ https://metamask.io/
 
 2. Adjust appropriate newwork below 
 ```
-Rinkeby Test Network
+Kovan Test Network
 ```
 
 &nbsp;
 
 
 ### Setup backend
-1. Deploy contracts to Rinkeby Test Network
+1. Deploy contracts to Kovan Test Network
 ```
 (root directory)
 
-$ npm run migrate:Rinkeby
+$ npm run migrate:Kovan
 ```
 
 &nbsp;
