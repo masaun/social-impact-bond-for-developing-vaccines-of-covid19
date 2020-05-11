@@ -8,6 +8,7 @@ var contractAddressList = require('./contractAddress/contractAddress.js');
 var walletAddressList = require('./walletAddress/walletAddress.js');
 
 const _erc20 = tokenAddressList["Kovan"]["DAI"];        // DAI address on Kovan
+const _idleDAI = tokenAddressList["Kovan"]["IdleDAI"];  // IdleDAI address on Kovan
 const _socialImpactBond = SocialImpactBond.address;
 
 
@@ -15,7 +16,7 @@ module.exports = function(deployer, network, accounts) {
     // Initialize owner address if you want to transfer ownership of contract to some other address
     let ownerAddress = walletAddressList["WalletAddress1"];
 
-    deployer.deploy(FundManagerForGovernment, _erc20, _socialImpactBond).then(async function(fundManagerForGovernment) {
+    deployer.deploy(FundManagerForGovernment, _erc20, _idleDAI, _socialImpactBond).then(async function(fundManagerForGovernment) {
         if(ownerAddress && ownerAddress!="") {
             console.log(`=== Transfering ownerhip to address ${ownerAddress} ===`)
             await fundManagerForGovernment.transferOwnership(ownerAddress);

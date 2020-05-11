@@ -60,6 +60,12 @@ contract McEvents {
         uint dividedAmount
     );
 
+    event TransferDaiFromGoverment(
+        address spender, 
+        address objectiveAddress, 
+        uint stakeAmount
+    );    
+
     event PayForSuccessful(
         address spender, 
         address investorAddress, 

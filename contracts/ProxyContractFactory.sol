@@ -30,5 +30,4 @@ contract ProxyContractFactory is McEvents {
 
         emit TransferDAI(spender, investorAddress, dividedAmount);
     }
-    
 }
