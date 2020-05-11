@@ -194,10 +194,13 @@ export default class StakeholderRegistry extends Component {
      * @dev - Getter function
      **/
     _balanceOfContract = async () => {
-        const { accounts, web3, social_impact_bond, stakeholder_registry, dai, idle_dai, IDLE_DAI_ADDRESS } = this.state;
+        const { accounts, web3, dai, idle_dai, social_impact_bond, stakeholder_registry, fundmanager_for_government } = this.state;
 
         let res1 = await social_impact_bond.methods.balanceOfContract().call();
-        console.log('=== response of balanceOfContract() function ===\n', res1);
+        console.log('=== balanceOfContract() - SocialImpactBond.sol ===\n', res1);
+
+        let res2 = await fundmanager_for_government.methods.balanceOfContract().call();
+        console.log('=== balanceOfContract() - FundManagerForGovernment.sol ===', res2);  
     }
 
     _balanceOfObjective = async () => {

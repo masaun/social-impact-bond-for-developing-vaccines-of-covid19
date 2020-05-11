@@ -37,9 +37,10 @@ contract FundManagerForGovernment is OwnableOriginal(msg.sender), McStorage, McC
     ProxyGovernmentFundFactory public proxyGovernmentFundFactory;
 
 
-    constructor(address _erc20, address _socialImpactBond) public {
+    constructor(address _erc20, address _idleDAI) public {
         dai = Dai(_erc20);
         erc20 = IERC20(_erc20);
+        idleDAI = IdleToken(_idleDAI);
     }
 
     /***
