@@ -235,12 +235,20 @@ contract SocialImpactBond is OwnableOriginal(msg.sender), McStorage, McConstants
         
         //address _objectiveAddressForGovernmentFund = address(objective.objectiveAddressForGovernmentFund);
         address _objectiveAddress = address(objective.objectiveAddress);
-        proxyContractFactory = ProxyContractFactory(_objectiveAddress);
+        //proxyContractFactory = ProxyContractFactory(_objectiveAddress);
 
         //@dev - Transfer from this contract address to funded address
-        proxyContractFactory.transferDaiFromGoverment(_objectiveAddress, _stakeAmount);
+        transferDaiFromGoverment(_objectiveAddress, _stakeAmount);
 
         emit StakeFundFromGovernment(_objectiveAddress, _stakeAmount); 
+    }
+
+    function transferDaiFromGoverment(address objectiveAddress, uint stakeAmount) public returns (bool) {
+        address spender = msg.sender;
+        dai.approve(spender, stakeAmount);
+        dai.transfer(objectiveAddress, stakeAmount);
+
+        emit TransferDaiFromGoverment(spender, objectiveAddress, stakeAmount);
     }
 
 

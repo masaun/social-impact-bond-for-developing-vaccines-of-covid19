@@ -56,12 +56,20 @@ contract FundManagerForGovernment is OwnableOriginal(msg.sender), McStorage, McC
         proxyContractFactory = ProxyContractFactory(_objectiveAddress);
 
         //@dev - Transfer from this contract address to funded address
-        proxyContractFactory.transferDaiFromGoverment(_objectiveAddress, _stakeAmount);
+        transferDaiFromGoverment(_objectiveAddress, _stakeAmount);
+        //proxyContractFactory.transferDaiFromGoverment(_objectiveAddress, _stakeAmount);
         //proxyGovernmentFundFactory.transferDAI(_objectiveAddressForGovernmentFund, _stakeAmount);
 
         emit StakeFundFromGovernment(_objectiveAddress, _stakeAmount); 
     }
 
+    function transferDaiFromGoverment(address objectiveAddress, uint stakeAmount) public returns (bool) {
+        address spender = msg.sender;
+        dai.approve(spender, stakeAmount);
+        dai.transfer(objectiveAddress, stakeAmount);
+
+        emit TransferDaiFromGoverment(spender, objectiveAddress, stakeAmount);
+    }
 
     /***
      * @dev - If outcome is not achieved until objective, staked fund (principal amounts) is refunded to government

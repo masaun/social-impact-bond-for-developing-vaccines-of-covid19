@@ -30,12 +30,4 @@ contract ProxyContractFactory is McEvents {
 
         emit TransferDAI(spender, investorAddress, dividedAmount);
     }
-    
-    function transferDaiFromGoverment(address objectiveAddress, uint stakeAmount) public returns (bool) {
-        address spender = msg.sender;
-        dai.approve(spender, stakeAmount);
-        dai.transfer(objectiveAddress, stakeAmount);
-
-        emit TransferDaiFromGoverment(spender, objectiveAddress, stakeAmount);
-    }
 }
