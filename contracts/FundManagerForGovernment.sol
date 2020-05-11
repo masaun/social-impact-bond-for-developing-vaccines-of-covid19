@@ -49,7 +49,6 @@ contract FundManagerForGovernment is OwnableOriginal(msg.sender), McStorage, McC
     function stakeFundFromGovernment(uint _objectiveId, uint _governmentId, uint _stakeAmount) public returns (bool) {
         //@dev - Call funded address which correspond to objectiveId
         Objective memory objective = objectives[_objectiveId];
-        
         address _objectiveAddress = address(objective.objectiveAddress);
         //address _objectiveAddressForGovernmentFund = address(objective.objectiveAddressForGovernmentFund);
 
@@ -102,7 +101,14 @@ contract FundManagerForGovernment is OwnableOriginal(msg.sender), McStorage, McC
     /***
      * @dev - Getter function
      **/
+    function getObjective(uint _objectiveId) public view returns (Objective memory) {
+        Objective memory objective = objectives[_objectiveId];
+        return objective;
+    }
+     
     function balanceOfContract() public view returns (uint balanceOfContract_DAI, uint balanceOfContract_idleDAI) {
         return (dai.balanceOf(address(this)), idleDAI.balanceOf(address(this)));
     }
+
+
 }

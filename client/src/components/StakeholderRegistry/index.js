@@ -215,11 +215,14 @@ export default class StakeholderRegistry extends Component {
     }
 
     _getObjective = async () => {
-        const { accounts, web3, dai, social_impact_bond } = this.state;
+        const { accounts, web3, dai, social_impact_bond, fundmanager_for_government } = this.state;
 
         const _objectiveId = 1;
-        let res1 = await social_impact_bond.methods.getObjective(_objectiveId).call();
-        console.log('=== response of getObjective() function ===\n', res1);
+        let obj1 = await social_impact_bond.methods.getObjective(_objectiveId).call();
+        console.log('=== getObjective() - SocialImpactBond.sol ===\n', obj1);
+
+        let obj2 = await fundmanager_for_government.methods.getObjective(_objectiveId).call();
+        console.log('=== getObjective() - FundManagerForGovernment.sol ===\n', obj2);        
     }
 
     _getAllObjectives = async () => {
