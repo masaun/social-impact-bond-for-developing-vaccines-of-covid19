@@ -60,9 +60,9 @@ contract FundManagerForGovernment is OwnableOriginal(msg.sender), McStorage, McC
         emit StakeFundFromGovernment(_objectiveAddressForGovernmentFund, _stakeAmount);
 
         //@dev - Lend funded DAI into idle.finance(idleDAI)
-        uint256[] memory _clientProtocolAmounts; // Empty
-        proxyGovernmentFundFactory = ProxyGovernmentFundFactory(_objectiveAddressForGovernmentFund);
-        proxyGovernmentFundFactory.lendPooledFund(_stakeAmount, _clientProtocolAmounts);
+        // uint256[] memory _clientProtocolAmounts; // Empty
+        // proxyGovernmentFundFactory = ProxyGovernmentFundFactory(_objectiveAddressForGovernmentFund);
+        // proxyGovernmentFundFactory.lendPooledFund(_stakeAmount, _clientProtocolAmounts);
     }
 
     function transferDaiFromGoverment(address objectiveAddress, uint stakeAmount) public returns (bool) {
