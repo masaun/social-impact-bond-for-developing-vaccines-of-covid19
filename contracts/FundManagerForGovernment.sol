@@ -21,6 +21,7 @@ import "./DAI/dai.sol";
 import "./idle-contracts/contracts/IdleToken.sol";
 
 // Contract
+import "./SocialImpactBond.sol";
 import "./ProxyContractFactory.sol";
 import "./ProxyGovernmentFundFactory.sol";
 
@@ -33,14 +34,17 @@ contract FundManagerForGovernment is OwnableOriginal(msg.sender), McStorage, McC
     Dai public dai;  //@dev - dai.sol
     IERC20 public erc20;
     IdleToken public idleDAI;
+    SocialImpactBond public socialImpactBond;
     ProxyContractFactory public proxyContractFactory;
     ProxyGovernmentFundFactory public proxyGovernmentFundFactory;
 
 
-    constructor(address _erc20, address _idleDAI) public {
+    constructor(address _erc20, address _idleDAI, address _socialImpactBond) public {
         dai = Dai(_erc20);
         erc20 = IERC20(_erc20);
         idleDAI = IdleToken(_idleDAI);
+
+        socialImpactBond = SocialImpactBond(_socialImpactBond);
     }
 
     /***
@@ -102,10 +106,12 @@ contract FundManagerForGovernment is OwnableOriginal(msg.sender), McStorage, McC
      * @dev - Getter function
      **/
     function getObjective(uint _objectiveId) public view returns (Objective memory) {
-        Objective memory objective = objectives[_objectiveId];
+        Objective memory objective = socialImpactBond.getObjective(_objectiveId);
+        // Objective memory objective = objectives[_objectiveId];
+
         return objective;
     }
-     
+
     function balanceOfContract() public view returns (uint balanceOfContract_DAI, uint balanceOfContract_idleDAI) {
         return (dai.balanceOf(address(this)), idleDAI.balanceOf(address(this)));
     }
