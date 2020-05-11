@@ -57,8 +57,12 @@ contract FundManagerForGovernment is OwnableOriginal(msg.sender), McStorage, McC
 
         //@dev - Transfer from this contract address to funded address
         transferDaiFromGoverment(_objectiveAddressForGovernmentFund, _stakeAmount);
+        emit StakeFundFromGovernment(_objectiveAddressForGovernmentFund, _stakeAmount);
 
-        emit StakeFundFromGovernment(_objectiveAddressForGovernmentFund, _stakeAmount); 
+        //@dev - Lend funded DAI into idle.finance(idleDAI)
+        // uint256[] memory _clientProtocolAmounts; // Empty
+        // proxyGovernmentFundFactory = ProxyGovernmentFundFactory(_objectiveAddressForGovernmentFund);
+        // proxyGovernmentFundFactory.lendPooledFund(_stakeAmount, _clientProtocolAmounts);
     }
 
     function transferDaiFromGoverment(address objectiveAddress, uint stakeAmount) public returns (bool) {
@@ -80,33 +84,11 @@ contract FundManagerForGovernment is OwnableOriginal(msg.sender), McStorage, McC
 
     }
 
-
-    /***
-     * @dev - If outcome is achieved until objective, staked fund is distributed from this contract to SocialImpactBond.sol contract (for investors)
-     **/
-    function payForSuccessful(address investorAddress, uint dividedAmount) public returns (bool) {
-        address spender = msg.sender;
-        dai.approve(spender, dividedAmount);
-        dai.transfer(investorAddress, dividedAmount);
-
-        emit PayForSuccessful(spender, investorAddress, dividedAmount);        
-    }
-
-    // function transferDAI(address investorAddress, uint dividedAmount) public returns (bool) {
-    //     address spender = msg.sender;
-    //     dai.approve(spender, dividedAmount);
-    //     dai.transfer(investorAddress, dividedAmount);
-
-    //     emit TransferDAI(spender, investorAddress, dividedAmount);
-    // }
-
-
     /***
      * @dev - Getter function
      **/
     function getObjective(uint _objectiveId) public view returns (Objective memory) {
         Objective memory objective = socialImpactBond.getObjective(_objectiveId);
-        // Objective memory objective = objectives[_objectiveId];
 
         return objective;
     }
@@ -114,6 +96,5 @@ contract FundManagerForGovernment is OwnableOriginal(msg.sender), McStorage, McC
     function balanceOfContract() public view returns (uint balanceOfContract_DAI, uint balanceOfContract_idleDAI) {
         return (dai.balanceOf(address(this)), idleDAI.balanceOf(address(this)));
     }
-
 
 }
