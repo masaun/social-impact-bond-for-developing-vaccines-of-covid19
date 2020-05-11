@@ -8,16 +8,18 @@
 &nbsp;
 
 ## 【User Flow】
-- ① Institutions of developing vaccines set (define) a objective for evaluation.
+- ① Institutions of developing vaccines set (define) a `objective for evaluation` .
   - Estimated budget amount
   - Requested budget amount
-  - Objective of saving cost（=Substract `requested budget amount` from `estimated budget amount` ）
+  - `Objective of saving cost` （=Substract `requested budget amount` from `estimated budget amount` ）
   - start date & end date of developing vaccines
     etc,...
 
 
-- ② Government stake funds of `"estimated budget amount"` above
+- ② Government stake funds which is equal to `"estimated budget amount"` above
   - Staked amount are lended to `idle.finance`
+
+<br>
 
 - ③ Investors invest funds for institutions of developing vaccines as investment of principal
   （Maximum invested amount is until `"requested budget amount"` above）
