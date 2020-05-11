@@ -50,15 +50,11 @@ contract FundManagerForGovernment is OwnableOriginal(msg.sender), McStorage, McC
         //@dev - Call funded address which correspond to objectiveId
         Objective memory objective = objectives[_objectiveId];
         
-        //address _objectiveAddressForGovernmentFund = address(objective.objectiveAddressForGovernmentFund);
-        //proxyGovernmentFundFactory = ProxyGovernmentFundFactory(_objectiveAddressForGovernmentFund);
         address _objectiveAddress = address(objective.objectiveAddress);
-        proxyContractFactory = ProxyContractFactory(_objectiveAddress);
+        //address _objectiveAddressForGovernmentFund = address(objective.objectiveAddressForGovernmentFund);
 
         //@dev - Transfer from this contract address to funded address
         transferDaiFromGoverment(_objectiveAddress, _stakeAmount);
-        //proxyContractFactory.transferDaiFromGoverment(_objectiveAddress, _stakeAmount);
-        //proxyGovernmentFundFactory.transferDAI(_objectiveAddressForGovernmentFund, _stakeAmount);
 
         emit StakeFundFromGovernment(_objectiveAddress, _stakeAmount); 
     }
