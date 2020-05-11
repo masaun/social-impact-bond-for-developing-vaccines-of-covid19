@@ -17,15 +17,15 @@
 
 
 - ② Government stake funds of `"estimated budget amount"` above
-  - Staked amount lend to idle.finance
+  - Staked amount are lended to `idle.finance`
 
 - ③ Investors invest funds for institutions of developing vaccines as investment of principal
   （Maximum invested amount is until `"requested budget amount"` above）
 
 - ④ Evaluate outcome of institution towards objective.
-  - If outcome of institution is achieved to objective, staked funds from government is disributed to investors. (Investors receieve investment of principal amount and interest amount)
-    - Investment of principal amount is amount which is divided that interest amount by number of investors.
-    - Interest amount is amount which is redeemed from idle.finance and divided that interest amount by number of investors.
+  - If outcome of institution is achieved to objective, staked funds from government is disributed to investors. (Investors receieve `investment of principal amount` and `interest amount` )
+    - `Investment of principal amount` is amount which is divided that interest amount by number of investors.
+    - `Interest amount` is amount which is redeemed from `idle.finance` and divided that interest amount by number of investors.
 
   - If outcome of institution is not achieved to objective, staked funds is refund to government.
 
